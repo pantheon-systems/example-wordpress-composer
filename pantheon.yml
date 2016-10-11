@@ -1,0 +1,14 @@
+api_version: 1
+web_docroot: true
+php_version: 7.0
+workflows:
+  deploy_product:
+    after:
+      -
+        type: webphp
+        description: 'Run composer install'
+        script: private/scripts/deploy_product/composer-install.php
+      -
+        type: webphp
+        description: 'Run composer drupal-scaffold'
+        script: private/scripts/deploy_product/drupal-scaffold.php
