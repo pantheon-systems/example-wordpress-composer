@@ -2,7 +2,7 @@
 
 This repository can be used to set up a Composer-Managed Drupal 8 site on [Pantheon](https://pantheon.io).
 
-## Intallation
+## Installation
 
 This project can either be used as an upstream repository, or it can be set up manually.
 
