@@ -60,10 +60,7 @@
       "includes": [
         "sites/default/default.services.pantheon.preproduction.yml",
         "sites/default/settings.pantheon.php"
-      ],
-      "initial": {
-        "sites/default/settings.php": "sites/default/settings.php"
-      }
+      ]
     }
   }
 }
