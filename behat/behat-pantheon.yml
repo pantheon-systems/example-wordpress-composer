@@ -1,0 +1,23 @@
+#
+# behat.yml file for testing on Pantheon.
+#
+default:
+  suites:
+    default:
+      paths:
+        - %paths.base%/features
+        - %paths.base%/installer-features
+        - %paths.base%/pantheon-features
+        - %paths.base%/site-features
+      contexts:
+        - FeatureContext
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\MinkContext
+  extensions:
+    Behat\MinkExtension:
+      goutte: ~
+      selenium2: ~
+      files_path: './data-files'
+    Drupal\DrupalExtension:
+      blackbox: ~
+      api_driver: 'drush'

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Exit immediately on errors, and echo commands as they are executed.
+set -ex
+
+# Set the $PATH to include the global composer bin directory.
+PATH=$PATH:~/.composer/vendor/bin
+
+# Log in so that we can fetch the connection info and create a new environment.
+terminus auth login --machine-token=$TERMINUS_TOKEN
+
+# Somehow the remote might already be there (CI service caching).
+git remote show | grep -q pantheon || git remote add pantheon $(terminus site connection-info --field=git_url --env=dev)
+git fetch pantheon
+git checkout -b $TERMINUS_ENV
+
+# Commit the results from the previously-executed composer-install, so that
+# we can push changes to the Pantheon site.
+# TODO: If we know this is the upstream for the Pantheon site, then we would
+# not need to force-push.
+git add -A .
+git commit -m "Commit results of 'composer install' for test."
+git push pantheon $TERMINUS_ENV -f
+
+# Create a new environment for this test.
+terminus site create-env --to-env=$TERMINUS_ENV --from-env=dev
+terminus site set-connection-mode --mode=sftp
