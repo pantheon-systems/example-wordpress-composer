@@ -31,6 +31,6 @@ dependencies:
     - behat/scripts/delete-old-multidevs
 test:
   override:
-    - cd web/core && ../../vendor/bin/phpunit --testsuite=unit
+    - cd web/core && ../../vendor/bin/phpunit --testsuite=unit --exclude-group Composer,DependencyInjection,PageCache
     - behat/scripts/create-pantheon-multidev
     - cd behat && ./scripts/run-behat
