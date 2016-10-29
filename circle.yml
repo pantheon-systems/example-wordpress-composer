@@ -4,9 +4,9 @@ machine:
     # https://circleci.com/docs/environment#php
     version: 7.0.7
   environment:
-    TERMINUS_SITE: ci-drops-8
-    TERMINUS_ENV: cr-$CIRCLE_BUILD_NUM
-    MULTIDEV_DELETE_PATTERN: ^cr-
+    TERMINUS_SITE: ci-example-d8-composer
+    TERMINUS_ENV: ci-$CIRCLE_BUILD_NUM
+    MULTIDEV_DELETE_PATTERN: ^ci-
     PATH: $PATH:~/.composer/vendor/bin:~/.config/composer/vendor/bin
 
 dependencies:
