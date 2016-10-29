@@ -6,9 +6,6 @@ set -ex
 # Set the $PATH to include the global composer bin directory.
 PATH=$PATH:~/.composer/vendor/bin
 
-# Log in so that we can fetch the connection info and create a new environment.
-terminus auth login --machine-token=$TERMINUS_TOKEN
-
 # Somehow the remote might already be there (CI service caching).
 git remote show | grep -q pantheon || git remote add pantheon $(terminus site connection-info --field=git_url --env=dev)
 git fetch pantheon

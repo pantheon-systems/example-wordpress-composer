@@ -25,7 +25,9 @@ dependencies:
     - cgr "pantheon-systems/terminus:0.12.0"
     - cgr "drush/drush:~8"
     - composer install
+    - composer drupal-scaffold
   post:
+    - terminus auth login --machine-token=$TERMINUS_TOKEN
     - behat/scripts/delete-old-multidevs
 test:
   override:
