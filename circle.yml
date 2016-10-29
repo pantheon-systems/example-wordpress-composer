@@ -26,7 +26,7 @@ dependencies:
     - cgr "drush/drush:~8"
     - composer install
   post:
-    - behat/scripts/delte-old-multidevs
+    - behat/scripts/delete-old-multidevs
 test:
   override:
     - cd web/core && ../../vendor/bin/phpunit --testsuite=unit
