@@ -1,0 +1,36 @@
+# https://circleci.com/docs/configuration#machine
+machine:
+  php:
+    # https://circleci.com/docs/environment#php
+    version: 7.0.7
+  environment:
+    TERMINUS_SITE: ci-example-d8-composer
+    TERMINUS_ENV: ci-$CIRCLE_BUILD_NUM
+    MULTIDEV_DELETE_PATTERN: ^ci-
+    PATH: $PATH:~/.composer/vendor/bin:~/.config/composer/vendor/bin
+
+dependencies:
+  cache_directories:
+    - ~/.composer/cache
+  pre:
+    # Set the PHP timezone so that Behat script does not fail.
+    # Using > instead of >> will overwrite the file and disable xdebug.
+    # xdebug makes composer slower.
+    - git config --global user.email "$GIT_EMAIL"
+    - git config --global user.name "Circle CI"
+    - echo "date.timezone = 'US/Central'"  >  /opt/circleci/php/7.0.7/etc/conf.d/xdebug.ini
+  override:
+    - composer global require "hirak/prestissimo:^0.3"
+    - composer global require "consolidation/cgr"
+    - cgr "pantheon-systems/terminus:0.12.0"
+    - cgr "drush/drush:~8"
+    - composer install
+    - composer drupal-scaffold
+  post:
+    - terminus auth login --machine-token=$TERMINUS_TOKEN
+    - behat/scripts/delete-old-multidevs
+test:
+  override:
+    - cd web/core && ../../vendor/bin/phpunit --testsuite=unit --exclude-group Composer,DependencyInjection,PageCache
+    - behat/scripts/create-pantheon-multidev
+    - cd behat && ./scripts/run-behat
