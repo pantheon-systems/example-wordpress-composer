@@ -7,7 +7,7 @@ machine:
     TERMINUS_SITE: ci-drops-8
     TERMINUS_ENV: cr-$CIRCLE_BUILD_NUM
     MULTIDEV_DELETE_PATTERN: ^cr-
-    PATH: $PATH:~/.composer/vendor/bin
+    PATH: $PATH:~/.composer/vendor/bin:~/.config/composer/vendor/bin
 
 dependencies:
   cache_directories:
@@ -22,7 +22,7 @@ dependencies:
   override:
     - composer global require "hirak/prestissimo:^0.3"
     - composer global require "consolidation/cgr"
-    - cgr "pantheon-systems/terminus:^0.13.3"
+    - cgr "pantheon-systems/terminus:0.12.0"
     - cgr "drush/drush:~8"
     - composer install
   post:
