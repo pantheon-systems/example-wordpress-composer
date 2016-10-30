@@ -2,6 +2,8 @@
 
 This repository can be used to set up a Composer-Managed Drupal 8 site on [Pantheon](https://pantheon.io).
 
+[![CircleCI](https://circleci.com/gh/pantheon-systems/example-drops-8-composer.svg?style=svg)](https://circleci.com/gh/pantheon-systems/example-drops-8-composer)
+
 ## Installation
 
 This project can either be used as an upstream repository, or it can be set up manually.
