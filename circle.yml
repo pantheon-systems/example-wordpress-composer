@@ -28,9 +28,9 @@ dependencies:
     - composer drupal-scaffold
   post:
     - terminus auth login --machine-token=$TERMINUS_TOKEN
-    - behat/scripts/delete-old-multidevs
+    - tests/scripts/delete-old-multidevs
 test:
   override:
     - cd web/core && ../../vendor/bin/phpunit --testsuite=unit --exclude-group Composer,DependencyInjection,PageCache
-    - behat/scripts/create-pantheon-multidev
-    - cd behat && ./scripts/run-behat
+    - tests/scripts/create-pantheon-multidev
+    - cd tests && ./scripts/run-behat
