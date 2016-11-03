@@ -48,3 +48,14 @@ Feature: Update database
     Then I should see "Updates were attempted"
     # TODO: find some text that would always appear if there were an error
 
+  @api
+  Scenario: Ensure that the previous test finished in maintenance mode, then turn maintenance mode off
+    Given I am logged in as a user with the "administrator" role
+    And I am on "/"
+    Then I should see "Operating in maintenance mode."
+    When I have run the drush command 'sset system.maintenance_mode 0'
+    And I have run the drush command 'cr'
+    And I am on "/"
+    Then I should not see "Operating in maintenance mode."
+
+
