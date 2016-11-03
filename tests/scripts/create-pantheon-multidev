@@ -22,3 +22,14 @@ git push pantheon $TERMINUS_ENV -f
 # Create a new environment for this test.
 terminus site create-env --to-env=$TERMINUS_ENV --from-env=dev
 terminus site set-connection-mode --mode=sftp
+
+# If called from Circle CI, then add a comment containing a link to the test environment.
+# Turn off command echoing here.
+set +x
+if [ -n "$CIRCLE_SHA1" ] && [ -n "$GITHUB_TOKEN" ] ; then
+  SITE_ID=$(terminus site info --field=id)
+  DASHBOARD="https://dashboard.pantheon.io/sites/$SITE_ID#$TERMINUS_ENV"
+  export comment="Created multidev environment for test $CIRCLE_BUILD_NUM: [$TERMINUS_ENV](http://$TERMINUS_ENV-$TERMINUS_SITE.pantheonsite.io/) in site [$TERMINUS_SITE]($DASHBOARD)."
+  echo $comment
+  curl -d '{ "body": "'"$comment"'" }' -X POST https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commits/$CIRCLE_SHA1/comments?access_token=$GITHUB_TOKEN
+fi
