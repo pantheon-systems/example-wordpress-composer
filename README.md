@@ -21,7 +21,7 @@ $ cd my-site
 $ composer install
 $ composer drupal-scaffold
 $ git add -A .
-$ git commit -m “web and vendor directory from composer install”
+$ git commit -m "web and vendor directory from composer install"
 $ git remote set-url origin ssh://ID@ID.drush.in:2222/~/repository.git
 $ git push --force origin master
 ```
