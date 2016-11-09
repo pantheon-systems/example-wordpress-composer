@@ -16,14 +16,17 @@
 
     "drupal/core": "~8",
 
-    "drupal/console": "~1.0.0-rc5",
+    "drupal/console": "^1.0.0-rc8",
     "drush/drush": "~8"
   },
   "require-dev": {
+    "mikey179/vfsstream": "~1.2",
     "behat/behat": "3.*",
     "behat/mink": "~1.7",
     "behat/mink-extension": "*",
     "behat/mink-goutte-driver": "~1.2",
+    "jcalderonzumba/gastonjs": "~1.0.2",
+    "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
     "drupal/drupal-extension": "*",
     "drush-ops/behat-drush-endpoint": "*",
     "phpunit/phpunit": "~4.8",
@@ -41,6 +44,7 @@
   },
   "scripts": {
     "drupal-unit-tests": "cd web/core && ../../vendor/bin/phpunit --testsuite=unit --exclude-group Composer,DependencyInjection,PageCache",
+    "drupal": "drupal --ansi",
     "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
     "post-install-cmd": [
       "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
