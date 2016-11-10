@@ -37,7 +37,7 @@ When using this repository to manage your Drupal 8 site, you will no longer use 
 
 ### Update with Terminus
 
-Install [Terminus 0.12.0](https://github.com/pantheon-systems/terminus/releases/tag/0.12.0) and the [Terminus Composer plugin](https://github.com/rvtraveller/terminus-composer).  Then, to update your site, ensure it is in SFTP mode, and then run:
+Install [Terminus 0.13.4](https://github.com/pantheon-systems/terminus/releases/tag/0.13.4) and the [Terminus Composer plugin](https://github.com/rvtraveller/terminus-composer).  Then, to update your site, ensure it is in SFTP mode, and then run:
 ```
 terminus composer update --site=sitename --env=dev
 ```
