@@ -6,22 +6,37 @@ set -ex
 # Set the $PATH to include the global composer bin directory.
 PATH=$PATH:~/.composer/vendor/bin
 
-# Somehow the remote might already be there (CI service caching).
+# Run 'composer install' or 'composer update', depending on whether the
+# composer.json is newer than or older than the composer.lock file.
+if [ $(git log -1 --format="%at" -- composer.json) -gt $(git log -1 --format="%at" -- composer.lock) ] ; then
+  composer update --optimize-autoloader
+else
+  composer install --optimize-autoloader
+fi
+composer drupal-scaffold
+
+# Run the build step, if any
+composer build-assets
+
+# Add a remote named 'pantheon' to point at the Pantheon site's git repository.
+# Skip this step if the remote is already there (e.g. due to CI service caching).
 git remote show | grep -q pantheon || git remote add pantheon $(terminus site connection-info --field=git_url --env=dev)
 git fetch pantheon
-git checkout -b $TERMINUS_ENV
 
-# Commit the results from the previously-executed composer-install, so that
-# we can push changes to the Pantheon site.
-# TODO: If we know this is the upstream for the Pantheon site, then we would
-# not need to force-push.
+# Create a new branch and commit the results from anything that may have changed
+git checkout -b $TERMINUS_ENV
 git add -A .
-git commit -m "Commit results of 'composer install' for test."
-git push pantheon $TERMINUS_ENV -f
+git commit -m "Prepare for test $CIRCLE_BUILD_NUM."
+git push pantheon $TERMINUS_ENV
 
 # Create a new environment for this test.
 terminus site create-env --to-env=$TERMINUS_ENV --from-env=dev
 terminus site set-connection-mode --mode=sftp
+
+# Import configuration if it exists in the `config` directory
+if [ -f config/system.site.yml ] ; then
+  terminus drush 'config-import --yes'
+fi
 
 # If called from Circle CI, then add a comment containing a link to the test environment.
 # Turn off command echoing here.

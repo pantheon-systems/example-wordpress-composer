@@ -24,8 +24,6 @@ dependencies:
     - composer global require "consolidation/cgr"
     - cgr "pantheon-systems/terminus:~0.13"
     - cgr "drush/drush:~8"
-    - composer install
-    - composer drupal-scaffold
     - mkdir -p ~/terminus/plugins; cd ~/terminus/plugins && git clone git@github.com:greg-1-anderson/terminus-composer.git
   post:
     - terminus auth login --machine-token=$TERMINUS_TOKEN
