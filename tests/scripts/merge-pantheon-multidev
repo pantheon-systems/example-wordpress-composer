@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Exit immediately on errors, and echo commands as they are executed.
+set -ex
+
+# Set the $PATH to include the global composer bin directory.
+PATH=$PATH:~/.composer/vendor/bin
+
+# Switch the dev site back to git mode. It should remain in git mode, though.
+terminus site set-connection-mode --env=dev --mode=git
+
+# Look up the git url for the pantheon repository.
+PANTHEON_REPOSITORY=$(terminus site connection-info --field=git_url --env=dev)
+
+# Make a shallow local working copy.
+PANTHEON_WORKING_COPY=$HOME/pantheon-site
+git clone --depth=1 $PANTHEON_REPOSITORY $PANTHEON_WORKING_COPY
+
+# Replace .git repository for local repository with the
+# .git repository for the pantheon site we just cloned.
+# The local files are the same ones that were just tested
+# (i.e. they still contain the built assets).
+rm -rf .git
+mv $PANTHEON_WORKING_COPY/.git .
+
+# Get rid of any .git directories created by composer
+rm -rf $(find * -name ".git")
+
+# Commit the build assets and anything merged into the latest
+# test back to Pantheon. Note that this is all squashed into a
+# single commit; the commit history is not saved. This is okay,
+# because this is just a deployment repository. The commit history
+# is preserved in the GitHub repository, which remains free of
+# the build assets.
+git add -A .
+git commit -m "Merge assets built for CI-$CIRCLE_BUILD_NUM."
+git push origin master

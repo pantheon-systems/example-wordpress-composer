@@ -33,3 +33,10 @@ test:
   override:
     - terminus composer drupal-unit-tests
     - cd tests && ./scripts/run-behat
+
+deployment:
+  build-assets:
+    branch: master
+    commands:
+      - tests/scripts/merge-pantheon-multidev
+      - terminus drush updatedb
