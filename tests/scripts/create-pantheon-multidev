@@ -18,6 +18,11 @@ composer drupal-scaffold
 # Run the build step, if any
 composer build-assets
 
+# Alter .gitignore file for Pantheon. Everything above ":: cut ::" line
+# is removed, so that we can commit our build assets to the Pantheon
+# repository, but not commit them to the GitHub repository
+sed -i -e '1,/^# ::* cut ::*$/d' .gitignore
+
 # Add a remote named 'pantheon' to point at the Pantheon site's git repository.
 # Skip this step if the remote is already there (e.g. due to CI service caching).
 git remote show | grep -q pantheon || git remote add pantheon $(terminus site connection-info --field=git_url --env=dev)
