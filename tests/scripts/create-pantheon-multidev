@@ -31,8 +31,8 @@ git fetch pantheon
 # Create a new branch and commit the results from anything that may have changed
 git checkout -b $TERMINUS_ENV
 git add -A .
-git commit -m "Build assets for CI-$CIRCLE_BUILD_NUM."
-git push pantheon $TERMINUS_ENV
+git commit -q -m "Build assets for CI-$CIRCLE_BUILD_NUM."
+git push -q pantheon $TERMINUS_ENV
 
 # Create a new environment for this test.
 terminus site create-env --to-env=$TERMINUS_ENV --from-env=dev
@@ -49,7 +49,10 @@ set +x
 if [ -n "$CIRCLE_SHA1" ] && [ -n "$GITHUB_TOKEN" ] ; then
   SITE_ID=$(terminus site info --field=id)
   DASHBOARD="https://dashboard.pantheon.io/sites/$SITE_ID#$TERMINUS_ENV"
-  export comment="Created multidev environment [$TERMINUS_ENV-$TERMINUS_SITE]($DASHBOARD). [[Visit $TERMINUS_ENV Site](http://$TERMINUS_ENV-$TERMINUS_SITE.pantheonsite.io/)]"
+  comment="Created multidev environment [$TERMINUS_SITE#$TERMINUS_ENV]($DASHBOARD)."
+  visit_site="[![Visit Site](https://raw.githubusercontent.com/pantheon-systems/ci-drops-8/0.1.0/data/img/visit-site-36.png)](https://$TERMINUS_ENV-$TERMINUS_SITE.pantheonsite.io/)"
   echo $comment
-  curl -d '{ "body": "'"$comment"'" }' -X POST https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commits/$CIRCLE_SHA1/comments?access_token=$GITHUB_TOKEN
+  echo
+  echo $visit_site
+  curl -d '{ "body": "'"$comment\\n\\n$visit_site"'" }' -X POST https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commits/$CIRCLE_SHA1/comments?access_token=$GITHUB_TOKEN
 fi

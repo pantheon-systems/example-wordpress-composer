@@ -5,11 +5,11 @@ Feature: Installer
 
   Scenario: Installer is ready
     Given I have wiped the site
-    And I am on "/core/installer"
+    And I am on "/core/install.php"
     Then I should see "Choose language"
 
   Scenario: Language selection
-    Given I am on "/core/installer"
+    Given I am on "/core/install.php"
     And I press "Save and continue"
     Then I should see "Select an installation profile"
 

@@ -14,7 +14,7 @@ PANTHEON_REPOSITORY=$(terminus site connection-info --field=git_url --env=dev)
 
 # Make a shallow local working copy.
 PANTHEON_WORKING_COPY=$HOME/pantheon-site
-git clone --depth=1 $PANTHEON_REPOSITORY $PANTHEON_WORKING_COPY
+git clone -q --depth=1 $PANTHEON_REPOSITORY $PANTHEON_WORKING_COPY
 
 # Replace .git repository for local repository with the
 # .git repository for the pantheon site we just cloned.
@@ -33,5 +33,5 @@ rm -rf $(find * -name ".git")
 # is preserved in the GitHub repository, which remains free of
 # the build assets.
 git add -A .
-git commit -m "Merge assets built for CI-$CIRCLE_BUILD_NUM."
-git push origin master
+git commit -q -m "Merge assets built for CI-$CIRCLE_BUILD_NUM."
+git push -q origin master
