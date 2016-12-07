@@ -13,6 +13,8 @@ dependencies:
   cache_directories:
     - ~/.composer/cache
   pre:
+    # Avoid ssh prompting when connecting to new ssh hosts
+    - echo "StrictHostKeyChecking no" >> "$HOME/.ssh/config"
     # Set the PHP timezone so that Behat script does not fail.
     # Using > instead of >> will overwrite the file and disable xdebug.
     # xdebug makes composer slower.
@@ -39,4 +41,4 @@ deployment:
     branch: master
     commands:
       - tests/scripts/merge-pantheon-multidev
-      - terminus drush updatedb
+      - terminus drush "updatedb --yes" --env=dev
