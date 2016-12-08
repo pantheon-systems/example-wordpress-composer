@@ -7,7 +7,7 @@ machine:
     TERMINUS_SITE: ci-example-d8-composer
     TERMINUS_ENV: ci-$CIRCLE_BUILD_NUM
     MULTIDEV_DELETE_PATTERN: ^ci-
-    PATH: $PATH:~/.composer/vendor/bin:~/.config/composer/vendor/bin
+    PATH: $PATH:~/.composer/vendor/bin:~/.config/composer/vendor/bin:tests/scripts
 
 dependencies:
   cache_directories:
@@ -29,16 +29,15 @@ dependencies:
     - mkdir -p ~/terminus/plugins; cd ~/terminus/plugins && git clone https://github.com/greg-1-anderson/terminus-composer
   post:
     - terminus auth login --machine-token=$TERMINUS_TOKEN
-    - tests/scripts/delete-old-multidevs
-    - tests/scripts/create-pantheon-multidev
+    - delete-old-multidevs
+    - create-pantheon-multidev
 test:
   override:
-    - terminus composer drupal-unit-tests
     - cd tests && ./scripts/run-behat
 
 deployment:
   build-assets:
     branch: master
     commands:
-      - tests/scripts/merge-pantheon-multidev
+      - merge-pantheon-multidev
       - terminus drush "updatedb --yes" --env=dev

@@ -6,6 +6,11 @@ set -ex
 # Set the $PATH to include the global composer bin directory.
 PATH=$PATH:~/.composer/vendor/bin
 
+# Add a remote named 'pantheon' to point at the Pantheon site's git repository.
+# Skip this step if the remote is already there (e.g. due to CI service caching).
+git remote show | grep -q pantheon || git remote add pantheon $(terminus site connection-info --field=git_url --env=dev)
+git fetch pantheon
+
 # Run 'composer install' or 'composer update', depending on whether the
 # composer.json is newer than or older than the composer.lock file.
 if [ $(git log -1 --format="%at" -- composer.json) -gt $(git log -1 --format="%at" -- composer.lock) ] ; then
@@ -26,25 +31,26 @@ rm -rf $(find * -name ".git")
 # repository, but not commit them to the GitHub repository
 sed -i -e '1,/^# ::* cut ::*$/d' .gitignore
 
-# Add a remote named 'pantheon' to point at the Pantheon site's git repository.
-# Skip this step if the remote is already there (e.g. due to CI service caching).
-git remote show | grep -q pantheon || git remote add pantheon $(terminus site connection-info --field=git_url --env=dev)
-git fetch pantheon
+# If we are testing against the dev environment, then simply force-push our build results to the master branch and exit.
+if [ "$TERMINUS_ENV" == "dev" ]
+then
+  terminus site set-connection-mode --mode=sftp
+  PANTHEON_SITE_ID=$(terminus site info --field=id)
+  rsync -rlIvz --ipv4 --exclude=.git -e 'ssh -p 2222' ./ $TERMINUS_ENV.$PANTHEON_SITE_ID@appserver.$TERMINUS_ENV.$PANTHEON_SITE_ID.drush.in:code/
+  exit 0
+fi
 
 # Create a new branch and commit the results from anything that may have changed
-git checkout -b $TERMINUS_ENV
+git checkout -B $TERMINUS_ENV
 git add -A .
 git commit -q -m "Build assets for CI-$CIRCLE_BUILD_NUM."
+
+# Push the branch to Pantheon, and create a new environment for it
 git push -q pantheon $TERMINUS_ENV
 
 # Create a new environment for this test.
 terminus site create-env --to-env=$TERMINUS_ENV --from-env=dev
 terminus site set-connection-mode --mode=sftp
-
-# Import configuration if it exists in the `config` directory
-if [ -f config/system.site.yml ] ; then
-  terminus drush 'config-import --yes'
-fi
 
 # If called from Circle CI, then add a comment containing a link to the test environment.
 # Turn off command echoing here.

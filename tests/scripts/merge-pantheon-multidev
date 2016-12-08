@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# If we are testing against the dev environment, then we placed the
+# environment in sftp mode and rsync'ed the build assets. In that
+# instance, we will commit the build assets if testing the master branch
+# of the GitHub repository (e.g. after a PR is merged).
+if [ "$TERMINUS_ENV" == "dev" ]
+then
+  terminus --yes site code commit --message="Build assets for CI-$CIRCLE_BUILD_NUM."
+  exit 0
+fi
+
 # Exit immediately on errors, and echo commands as they are executed.
 set -ex
 
