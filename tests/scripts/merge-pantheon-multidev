@@ -2,24 +2,24 @@
 
 TERMINUS_ENV_LABEL=${TERMINUS_ENV_LABEL:-$TERMINUS_ENV}
 
+# Exit immediately on errors, and echo commands as they are executed.
+set -ex
+
 # If we are testing against the dev environment, then we placed the
 # environment in sftp mode and rsync'ed the build assets. In that
 # instance, we will commit the build assets if testing the master branch
 # of the GitHub repository (e.g. after a PR is merged).
 if [ "$TERMINUS_ENV" == "dev" ]
 then
-  terminus --yes site code commit --message="Build assets for $TERMINUS_ENV_LABEL."
+  terminus env:commit $TERMINUS_SITE.$TERMINUS_ENV --yes --message="Build assets for $TERMINUS_ENV_LABEL."
   exit 0
 fi
-
-# Exit immediately on errors, and echo commands as they are executed.
-set -ex
 
 # Set the $PATH to include the global composer bin directory.
 PATH=$PATH:~/.composer/vendor/bin
 
 # Switch the dev site back to git mode. It should remain in git mode, though.
-terminus site set-connection-mode --env=dev --mode=git
+terminus connection:set $TERMINUS_SITE.$TERMINUS_ENV git
 
 # Replace the entire contentsof the master branch with the branch we just tested.
 git checkout master
