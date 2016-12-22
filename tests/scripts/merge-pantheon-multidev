@@ -1,12 +1,14 @@
 #!/bin/bash
 
+TERMINUS_ENV_LABEL=${TERMINUS_ENV_LABEL:-$TERMINUS_ENV}
+
 # If we are testing against the dev environment, then we placed the
 # environment in sftp mode and rsync'ed the build assets. In that
 # instance, we will commit the build assets if testing the master branch
 # of the GitHub repository (e.g. after a PR is merged).
 if [ "$TERMINUS_ENV" == "dev" ]
 then
-  terminus --yes site code commit --message="Build assets for CI-$CIRCLE_BUILD_NUM."
+  terminus --yes site code commit --message="Build assets for $TERMINUS_ENV_LABEL."
   exit 0
 fi
 
@@ -21,7 +23,7 @@ terminus site set-connection-mode --env=dev --mode=git
 
 # Replace the entire contentsof the master branch with the branch we just tested.
 git checkout master
-git merge -q -m "Merge build assets from test CI-$CIRCLE_BUILD_NUM." -X theirs $TERMINUS_ENV
+git merge -q -m "Merge build assets from test $TERMINUS_ENV_LABEL." -X theirs $TERMINUS_ENV
 
 # Push our changes back to the dev environment, replacing whatever was there before.
 git push --force -q pantheon master
