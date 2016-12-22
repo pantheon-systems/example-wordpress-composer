@@ -25,11 +25,13 @@ dependencies:
   override:
     - composer global require "hirak/prestissimo:^0.3"
     - composer global require "consolidation/cgr"
-    - cgr "pantheon-systems/terminus:~0.13"
+    - cgr "pantheon-systems/terminus:~1" --stability beta
+    - terminus --version
     - cgr "drush/drush:~8"
-    - mkdir -p ~/terminus/plugins; cd ~/terminus/plugins && git clone https://github.com/greg-1-anderson/terminus-composer
+    - mkdir -p ~/.terminus/plugins
+    - composer create-project -d ~/.terminus/plugins pantheon-systems/terminus-composer-plugin:~1
   post:
-    - terminus auth login --machine-token=$TERMINUS_TOKEN
+    - terminus auth:login --machine-token=$TERMINUS_TOKEN
     - delete-old-multidevs
     - create-pantheon-multidev
 test:
@@ -41,4 +43,4 @@ deployment:
     branch: master
     commands:
       - merge-pantheon-multidev
-      - terminus drush "updatedb --yes" --env=dev
+      - terminus drush $TERMINUS_SITE.dev -- updatedb --yes
