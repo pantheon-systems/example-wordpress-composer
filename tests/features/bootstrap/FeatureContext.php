@@ -87,13 +87,17 @@ class FeatureContext extends RawDrupalContext implements Context, SnippetAccepti
     }
 
     /**
-     * @Given I have reinstalled :arg1
+     * @Given I have reinstalled
      */
-    public function iHaveReinstalled($arg1)
+    public function iHaveReinstalled()
     {
         $site = getenv('TERMINUS_SITE');
         $env = getenv('TERMINUS_ENV');
-        passthru("terminus --yes drush $site.$env -- --yes site-install standard --site-name=\"$arg1\" --account-name=admin'");
+        $site_name = getenv('TEST_SITE_NAME');
+        $site_mail = getenv('ADMIN_EMAIL');
+        $admin_password = getenv('ADMIN_PASSWORD');
+
+        passthru("terminus --yes drush $site.$env -- --yes site-install standard --site-name=\"$site_name\" --site-mail=\"$site_mail\" --account-name=admin --account-pass=\"$admin_password\"'");
     }
 
     /**

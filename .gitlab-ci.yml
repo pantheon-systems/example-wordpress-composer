@@ -2,6 +2,8 @@ image: composer
 
 # Default Variables
 variables:
+  TEST_SITE_NAME: Example D8 Composer Test Site
+  ADMIN_EMAIL: admin@example.com
   TERMINUS_SITE: mg-ci-example-d8
   TERMINUS_ENV: ci-$CI_PIPELINE_ID
   TERMINUS_ENV_LABEL: CI-$CI_PIPELINE_ID

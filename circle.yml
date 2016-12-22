@@ -4,6 +4,8 @@ machine:
     # https://circleci.com/docs/environment#php
     version: 7.0.7
   environment:
+    TEST_SITE_NAME: Example D8 Composer Test Site
+    ADMIN_EMAIL: admin@example.com
     TERMINUS_SITE: ci-example-d8-composer
     TERMINUS_ENV: ci-$CIRCLE_BUILD_NUM
     TERMINUS_ENV_LABEL: CI-$CIRCLE_BUILD_NUM

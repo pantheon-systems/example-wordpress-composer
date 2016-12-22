@@ -21,12 +21,12 @@ Feature: Installer
 
   Scenario: Configure site
     Given I am on "/core/install.php?langcode=en&profile=standard"
-    And I enter "Example Dot Com Test Site" for "edit-site-name"
-    And I enter "john.doe@example.com" for "edit-site-mail"
+    And I enter the value of the env var "TEST_SITE_NAME" for "edit-site-name"
+    And I enter the value of the env var "ADMIN_EMAIL" for "edit-site-mail"
     And I enter "admin" for "Username"
     And I enter the value of the env var "ADMIN_PASSWORD" for "edit-account-pass-pass1"
     And I enter the value of the env var "ADMIN_PASSWORD" for "edit-account-pass-pass2"
-    And I enter "john.doe@example.com" for "edit-account-mail"
+    And I enter the value of the env var "ADMIN_EMAIL" for "edit-account-mail"
     And I press "Save and continue"
     And I visit "/"
-    Then I should see "Welcome to Example Dot Com"
+    Then I should see "No front page content has been created yet."
