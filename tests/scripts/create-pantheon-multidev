@@ -35,7 +35,7 @@ rm -rf $(find * -name ".git")
 # Alter .gitignore file for Pantheon. Everything above ":: cut ::" line
 # is removed, so that we can commit our build assets to the Pantheon
 # repository, but not commit them to the GitHub repository
-sed -i -e '1,/^# ::* cut ::*$/d' .gitignore
+composer prepare-for-pantheon
 
 # If we are testing against the dev environment, then simply force-push our build results to the master branch and exit.
 if [ "$TERMINUS_ENV" == "dev" ]

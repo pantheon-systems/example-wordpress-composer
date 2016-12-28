@@ -10,13 +10,16 @@ namespace DrupalProject\composer;
 use Composer\Script\Event;
 use Symfony\Component\Filesystem\Filesystem;
 
-class ScriptHandler {
+class ScriptHandler
+{
 
-  protected static function getDrupalRoot($project_root) {
+  protected static function getDrupalRoot($project_root)
+  {
     return $project_root .  '/web';
   }
 
-  public static function createRequiredFiles(Event $event) {
+  public static function createRequiredFiles(Event $event)
+  {
     $fs = new Filesystem();
     $root = static::getDrupalRoot(getcwd());
 
@@ -43,4 +46,11 @@ class ScriptHandler {
     }
   }
 
+  public static function prepareForPantheon()
+  {
+    $gitignoreFile = getcwd() . '/.gitignore';
+    $gitignoreContents = file_get_contents($gitignoreFile);
+    $gitignoreContents = preg_replace('/.*::: cut :::*/s', '', $gitignoreContents);
+    file_put_contents($gitignoreFile, $gitignoreContents);
+  }
 }

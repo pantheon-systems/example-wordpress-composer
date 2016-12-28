@@ -18,6 +18,7 @@ Start off by creating a new Drupal 8 site; then, before installing Drupal, set y
 ```
 $ git clone git@github.com:pantheon-systems/example-drops-8-composer.git my-site
 $ cd my-site
+$ composer prepare-for-pantheon
 $ composer install
 $ composer drupal-scaffold
 $ git add -A .
