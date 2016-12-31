@@ -31,10 +31,10 @@ dependencies:
     - terminus --version
     - cgr "drush/drush:~8"
     - mkdir -p ~/.terminus/plugins
-    - composer create-project -d ~/.terminus/plugins pantheon-systems/terminus-composer-plugin:~1
+    - composer create-project -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:~1
   post:
-    - terminus auth:login --machine-token=$TERMINUS_TOKEN
-    - delete-old-multidevs
+    - terminus auth:login --machine-token="$TERMINUS_TOKEN"
+    - terminus build-env:delete "$TERMINUS_SITE" "$MULTIDEV_DELETE_PATTERN" --keep=2 --delete-branch --yes
     - create-pantheon-multidev
 test:
   override:
