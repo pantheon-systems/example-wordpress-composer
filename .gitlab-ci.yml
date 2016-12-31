@@ -33,10 +33,11 @@ before_script:
   - export PATH="/composer/vendor/bin:tests/scripts:$PATH"
   - composer global require "hirak/prestissimo:^0.3"
   - composer global require "consolidation/cgr"
-  - cgr "pantheon-systems/terminus:~0.13"
+  - cgr "pantheon-systems/terminus:~1" --stability beta
   - cgr "drush/drush:~8"
-  - ( mkdir -p ~/terminus/plugins && cd ~/terminus/plugins && git clone https://github.com/greg-1-anderson/terminus-composer )
-  - terminus auth login --machine-token=$TERMINUS_TOKEN
+  - mkdir -p ~/.terminus/plugins
+  - composer create-project -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:~1
+  - terminus auth:login --machine-token="$TERMINUS_TOKEN"
 
 deploy_multidev:
   stage: build
@@ -46,7 +47,7 @@ deploy_multidev:
     on_stop: stop_review
   script:
     - create-pantheon-multidev
-    - delete-old-multidevs
+    - terminus build-env:delete "$TERMINUS_SITE" "$MULTIDEV_DELETE_PATTERN" --keep=2 --delete-branch --yes
 
 stop_review:
   variables:
@@ -61,7 +62,6 @@ stop_review:
 test:
   stage: test
   script:
-    - terminus composer drupal-unit-tests
     - run-behat
 
 deploy:
@@ -73,4 +73,4 @@ deploy:
     - master
   script:
     - tests/scripts/merge-pantheon-multidev
-    - terminus drush updatedb
+    - terminus drush $TERMINUS_SITE.dev -- updatedb --yes
