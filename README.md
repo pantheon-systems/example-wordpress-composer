@@ -16,10 +16,9 @@ Create a custom upstream for this project following the instructions in the [Pan
 
 Start off by creating a new Drupal 8 site; then, before installing Drupal, set your site to git mode and do the following from your local machine:
 ```
-$ git clone git@github.com:pantheon-systems/example-drops-8-composer.git my-site
+$ composer create-project pantheon-systems/example-drops-8-composer my-site
 $ cd my-site
 $ composer prepare-for-pantheon
-$ composer install
 $ composer drupal-scaffold
 $ git add -A .
 $ git commit -m "web and vendor directory from composer install"
