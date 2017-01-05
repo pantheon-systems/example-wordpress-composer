@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Exit immediately on errors
+set -e
+
+SITE_ID=$(terminus site:info $TERMINUS_SITE --field=id)
+DASHBOARD="https://dashboard.pantheon.io/sites/$SITE_ID#$TERMINUS_ENV"
+comment="Created multidev environment [$TERMINUS_SITE#$TERMINUS_ENV]($DASHBOARD)."
+visit_site="[![Visit Site](https://raw.githubusercontent.com/pantheon-systems/ci-drops-8/0.1.0/data/img/visit-site-36.png)](https://$TERMINUS_ENV-$TERMINUS_SITE.pantheonsite.io/)"
+
+if [ -n "$GITLAB_TOKEN" ] ; then
+  curl --header "PRIVATE-TOKEN: $GITLAB_TOKEN" --form "note=$comment\\n\\n$visit_site" -X POST https://gitlab.com/api/v3/projects/$CI_PROJECT_ID/repository/commits/$CI_BUILD_REF/comments
+fi
+
+echo $comment
+echo
+echo $visit_site

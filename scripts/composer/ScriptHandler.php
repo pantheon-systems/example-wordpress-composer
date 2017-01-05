@@ -9,6 +9,7 @@ namespace DrupalProject\composer;
 
 use Composer\Script\Event;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class ScriptHandler
 {
@@ -48,6 +49,14 @@ class ScriptHandler
 
   public static function prepareForPantheon()
   {
+    // Get rid of any .git directories that Composer may have added
+    $finder = new Finder();
+    foreach ($finder->files()->in(getcwd())->name('.git') as $dir) {
+      $fs = new Filesystem();
+      $fs->remove($dir);
+    }
+
+    // Fix up .gitignore: remove everything above the "::: cut :::" line
     $gitignoreFile = getcwd() . '/.gitignore';
     $gitignoreContents = file_get_contents($gitignoreFile);
     $gitignoreContents = preg_replace('/.*::: cut :::*/s', '', $gitignoreContents);

@@ -14,7 +14,7 @@
     "drupal-composer/drupal-scaffold": "^2.0.1",
     "cweagans/composer-patches": "~1.0",
 
-    "drupal/core": "~8",
+    "drupal/core": "8.2.4",
 
     "drupal/console": "^1.0.0-rc8",
     "drush/drush": "~8"
@@ -43,12 +43,15 @@
     ]
   },
   "scripts": {
-    "build-assets": "echo 'No build step defined.'",
+    "build-assets": [
+      "./scripts/composer/install-or-update",
+      "@prepare-for-pantheon"
+    ],
     "drupal-unit-tests": "cd web/core && ../../vendor/bin/phpunit --testsuite=unit --exclude-group Composer,DependencyInjection,PageCache",
-    "drupal": "drupal --ansi",
     "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
     "prepare-for-pantheon": "DrupalProject\\composer\\ScriptHandler::prepareForPantheon",
     "post-install-cmd": [
+      "@drupal-scaffold",
       "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
     ],
     "post-update-cmd": [

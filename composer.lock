@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b4b98ce7747a894fb6055ce0cef3988",
+
+    "content-hash": "ba7151b0027ca3f9bc8da730d506eab1",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1067,23 +1068,23 @@
         },
         {
             "name": "drupal/console",
-            "version": "1.0.0-rc13",
+            "version": "1.0.0-rc14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/drupal-console.git",
-                "reference": "c1a2be9123c9acc37fffd8226636eaa2eeea9d5b"
+                "reference": "eff9f5c0e6bdfd749880dac51d25eee642b3f7dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/drupal-console/zipball/c1a2be9123c9acc37fffd8226636eaa2eeea9d5b",
-                "reference": "c1a2be9123c9acc37fffd8226636eaa2eeea9d5b",
+                "url": "https://api.github.com/repos/hechoendrupal/drupal-console/zipball/eff9f5c0e6bdfd749880dac51d25eee642b3f7dc",
+                "reference": "eff9f5c0e6bdfd749880dac51d25eee642b3f7dc",
                 "shasum": ""
             },
             "require": {
                 "alchemy/zippy": "0.4.3",
                 "composer/installers": "~1.0",
                 "doctrine/annotations": "1.2.*",
-                "drupal/console-core": "1.0.0-rc13",
+                "drupal/console-core": "1.0.0-rc14",
                 "gabordemooij/redbean": "~4.3",
                 "guzzlehttp/guzzle": "~6.1",
                 "php": "^5.5.9 || ^7.0",
@@ -1140,25 +1141,25 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2017-01-03T17:42:41+00:00"
+            "time": "2017-01-04T19:49:39+00:00"
         },
         {
             "name": "drupal/console-core",
-            "version": "1.0.0-rc13",
+            "version": "1.0.0-rc14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/drupal-console-core.git",
-                "reference": "1946136a4a1e98956330b71101081075370d6073"
+                "reference": "8adb02bdd99e93f01ffb4897264c44687ac73f62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-core/zipball/1946136a4a1e98956330b71101081075370d6073",
-                "reference": "1946136a4a1e98956330b71101081075370d6073",
+                "url": "https://api.github.com/repos/hechoendrupal/drupal-console-core/zipball/8adb02bdd99e93f01ffb4897264c44687ac73f62",
+                "reference": "8adb02bdd99e93f01ffb4897264c44687ac73f62",
                 "shasum": ""
             },
             "require": {
                 "dflydev/dot-access-configuration": "dev-master",
-                "drupal/console-en": "1.0.0-rc13",
+                "drupal/console-en": "1.0.0-rc14",
                 "php": "^5.5.9 || ^7.0",
                 "stecman/symfony-console-completion": "~0.7",
                 "symfony/config": ">=2.7 <3.2",
@@ -1221,11 +1222,11 @@
                 "drupal",
                 "symfony"
             ],
-            "time": "2017-01-03T17:23:55+00:00"
+            "time": "2017-01-04T19:36:23+00:00"
         },
         {
             "name": "drupal/console-en",
-            "version": "1.0.0-rc13",
+            "version": "1.0.0-rc14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hechoendrupal/drupal-console-en.git",

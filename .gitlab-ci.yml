@@ -37,7 +37,6 @@ before_script:
   - cgr "drush/drush:~8"
   - mkdir -p ~/.terminus/plugins
   - composer create-project -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:~1
-  - terminus auth:login --machine-token="$TERMINUS_TOKEN"
 
 deploy_multidev:
   stage: build
@@ -46,8 +45,11 @@ deploy_multidev:
     url: https://ci-$CI_PIPELINE_ID-mg-ci-example-d8.pantheonsite.io/
     on_stop: stop_review
   script:
-    - create-pantheon-multidev
+    - terminus auth:login --machine-token="$TERMINUS_TOKEN"
     - terminus build-env:delete "$TERMINUS_SITE" "$MULTIDEV_DELETE_PATTERN" --keep=2 --delete-branch --yes
+    - composer build-assets
+    - create-pantheon-multidev
+    - scripts/gitlab/add-commit-comment
 
 stop_review:
   variables:

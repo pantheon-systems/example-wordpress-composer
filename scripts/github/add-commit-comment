@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Exit immediately on errors
+set -e
+
+# Support for multiple CI platforms
+CI_BUILD_REF=${CI_BUILD_REF:-$CIRCLE_SHA1}
+
+SITE_ID=$(terminus site:info $TERMINUS_SITE --field=id)
+DASHBOARD="https://dashboard.pantheon.io/sites/$SITE_ID#$TERMINUS_ENV"
+comment="Created multidev environment [$TERMINUS_SITE#$TERMINUS_ENV]($DASHBOARD)."
+visit_site="[![Visit Site](https://raw.githubusercontent.com/pantheon-systems/ci-drops-8/0.1.0/data/img/visit-site-36.png)](https://$TERMINUS_ENV-$TERMINUS_SITE.pantheonsite.io/)"
+
+if [ -n "$GITHUB_TOKEN" ] ; then
+  curl -d '{ "body": "'"$comment\\n\\n$visit_site"'" }' -X POST https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commits/$CIRCLE_SHA1/comments?access_token=$GITHUB_TOKEN
+fi
+
+echo $comment
+echo
+echo $visit_site

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Exit immediately on errors, and echo commands as they are executed.
+set -ex
+
+# Run 'composer install' or 'composer update', depending on whether the
+# composer.json is newer than or older than the composer.lock file.
+if [ $(git log -1 --format="%at" -- composer.json) -gt $(git log -1 --format="%at" -- composer.lock) ] ; then
+  composer update --optimize-autoloader
+else
+  composer install --optimize-autoloader
+fi
