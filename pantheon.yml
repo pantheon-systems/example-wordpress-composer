@@ -16,3 +16,8 @@ workflows:
         type: webphp
         description: 'Run composer drupal-scaffold'
         script: private/scripts/deploy_product/drupal-scaffold.php
+  sync_code:
+    after:
+      - type: webphp
+        description: Push changes back to GitHub if needed
+        script: private/scripts/sync_code/push-back-to-github.php
