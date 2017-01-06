@@ -14,7 +14,7 @@
     "drupal-composer/drupal-scaffold": "^2.0.1",
     "cweagans/composer-patches": "~1.0",
 
-    "drupal/core": "8.2.4",
+    "drupal/core": "~8",
 
     "drupal/console": "^1.0.0-rc8",
     "drush/drush": "~8"
