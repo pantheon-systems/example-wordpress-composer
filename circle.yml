@@ -54,5 +54,5 @@ deployment:
     branch: master
     commands:
       - terminus build-env:merge "$TERMINUS_SITE.$TERMINUS_ENV" --label="$TERMINUS_ENV_LABEL"
-      - terminus build-env:delete "$TERMINUS_SITE" "$PR_DELETE_PATTERN" --preserve-prs --delete-branch --yes
       - terminus drush $TERMINUS_SITE.dev -- updatedb --yes
+      - terminus build-env:delete "$TERMINUS_SITE" "$PR_DELETE_PATTERN" --preserve-prs --delete-branch --yes
