@@ -30,8 +30,10 @@ web/sites/example.sites.php
 web/update.php
 web/web.config
 
-# Add directories containing build assets above
-# the "cut" line below.
+# Add directories containing build assets below.
+# Keep all additions above the "cut" line.
+
+
 
 # :::::::::::::::::::::: cut ::::::::::::::::::::::
 

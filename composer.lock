@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b4b98ce7747a894fb6055ce0cef3988",
+    "content-hash": "d962b86d39ca1328aa838b4659657ec7",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1064,6 +1064,49 @@
             ],
             "description": "Composer Plugin for updating the Drupal scaffold files when using drupal/core",
             "time": "2016-11-05T10:46:44+00:00"
+        },
+        {
+            "name": "drupal/config_direct_save",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/config_direct_save",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_direct_save-8.x-1.0.zip",
+                "reference": null,
+                "shasum": "dae776d96310aa01aa6e3c536821a1b496ffae1f"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1476108239"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "matio89",
+                    "homepage": "https://www.drupal.org/user/2320090"
+                }
+            ],
+            "description": "This module allow you to export configuration after changes",
+            "homepage": "https://www.drupal.org/project/config_direct_save",
+            "support": {
+                "source": "http://cgit.drupalcode.org/config_direct_save"
+            }
         },
         {
             "name": "drupal/console",

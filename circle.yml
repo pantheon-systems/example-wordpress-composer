@@ -39,6 +39,7 @@ dependencies:
     - cgr "drush/drush:~8"
     - mkdir -p ~/.terminus/plugins
     - composer create-project -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:~1
+    - composer create-project -d ~/.terminus/plugins pantheon-systems/terminus-secrets-plugin:~1
   post:
     - terminus auth:login --machine-token="$TERMINUS_TOKEN"
     - terminus env:delete "$TERMINUS_SITE.$TERMINUS_ENV" --yes || echo "$TERMINUS_SITE.$TERMINUS_ENV does not exist yet."
@@ -50,6 +51,9 @@ dependencies:
 test:
   override:
     - run-behat
+  post:
+    - terminus secrets:set "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
+    - terminus drush "$TERMINUS_SITE.$TERMINUS_ENV" -- pm-enable config_direct_save --yes
 
 deployment:
   build-assets:
