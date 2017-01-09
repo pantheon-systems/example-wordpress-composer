@@ -102,7 +102,7 @@ if ($applyStatus == 0) {
   // push directly back to the original branch. If it does not match, then
   // we will push to a new branch name for the user to merge on GitHub.
   $targetBranch = $workBranch;
-  if ($remoteCommit == $fromSha) {
+  if (($remoteCommit == $fromSha) && ($branch != 'master')) {
     $targetBranch = $branch;
   }
 
