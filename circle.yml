@@ -32,33 +32,33 @@ dependencies:
     - git config --global user.email "$GIT_EMAIL"
     - git config --global user.name "Circle CI"
   override:
-    - composer global require "hirak/prestissimo:^0.3"
-    - composer global require "consolidation/cgr"
+    - composer global require -n "hirak/prestissimo:^0.3"
+    - composer global require -n "consolidation/cgr"
     - cgr "pantheon-systems/terminus:~1" --stability beta
     - terminus --version
     - cgr "drush/drush:~8"
     - mkdir -p ~/.terminus/plugins
-    - composer create-project -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:dev-force-add --stability dev
-    - composer create-project -d ~/.terminus/plugins pantheon-systems/terminus-secrets-plugin:~1
+    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:dev-force-add --keep-vcs --stability dev
+    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-secrets-plugin:~1
   post:
-    - terminus auth:login --machine-token="$TERMINUS_TOKEN"
-    - terminus env:delete "$TERMINUS_SITE.$TERMINUS_ENV" --yes || echo "$TERMINUS_SITE.$TERMINUS_ENV does not exist yet."
-    - terminus build-env:delete "$TERMINUS_SITE" "$MULTIDEV_DELETE_PATTERN" --keep=2 --delete-branch --yes
-    - composer build-assets
-    - terminus env:wake "$TERMINUS_SITE.dev"
-    - terminus build-env:create "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --label="$TERMINUS_ENV_LABEL" --yes
+    - terminus auth:login -n --machine-token="$TERMINUS_TOKEN"
+    - terminus env:delete -n "$TERMINUS_SITE.$TERMINUS_ENV" --yes || echo "$TERMINUS_SITE.$TERMINUS_ENV does not exist yet."
+    - terminus build-env:delete -n "$TERMINUS_SITE" "$MULTIDEV_DELETE_PATTERN" --keep=2 --delete-branch --yes
+    - composer -n build-assets
+    - terminus env:wake -n "$TERMINUS_SITE.dev"
+    - terminus build-env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --label="$TERMINUS_ENV_LABEL" --yes
     - scripts/github/add-commit-comment
 test:
   override:
     - run-behat
   post:
-    - terminus secrets:set "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
-    - terminus drush "$TERMINUS_SITE.$TERMINUS_ENV" -- pm-enable config_direct_save --yes
+    - terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
+    - terminus drush -n "$TERMINUS_SITE.$TERMINUS_ENV" -- pm-enable config_direct_save --yes
 
 deployment:
   build-assets:
     branch: master
     commands:
-      - terminus build-env:merge "$TERMINUS_SITE.$TERMINUS_ENV" --label="$TERMINUS_ENV_LABEL" --yes
-      - terminus drush $TERMINUS_SITE.dev -- updatedb --yes
-      - terminus build-env:delete "$TERMINUS_SITE" "$PR_DELETE_PATTERN" --preserve-prs --delete-branch --yes
+      - terminus build-env:merge -n "$TERMINUS_SITE.$TERMINUS_ENV" --label="$TERMINUS_ENV_LABEL" --yes
+      - terminus drush -n $TERMINUS_SITE.dev -- updatedb --yes
+      - terminus build-env:delete -n "$TERMINUS_SITE" "$PR_DELETE_PATTERN" --preserve-prs --delete-branch --yes
