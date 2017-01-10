@@ -12,7 +12,7 @@ machine:
     BRANCH: $(echo $CIRCLE_BRANCH | grep -v '^\(master\|[0-9]\+.x\)$')
     PR_LABEL: ${BRANCH:+pr-$BRANCH}
     CI_LABEL: ci-$CIRCLE_BUILD_NUM
-    TERMINUS_ENV: $(echo ${PR_LABEL:-$CI_LABEL} | cut -c -11)
+    TERMINUS_ENV: $(echo ${PR_LABEL:-$CI_LABEL} | cut -c -11 | sed 's/-$//')
     TERMINUS_ENV_LABEL: CI-$CIRCLE_BUILD_NUM
     MULTIDEV_DELETE_PATTERN: ^ci-
     PR_DELETE_PATTERN: ^pr-

@@ -1,9 +1,11 @@
 <?php
 
-// This is only for multidev environments.
-if (in_array($_ENV['PANTHEON_ENVIRONMENT'], ['dev', 'test', 'live'])) {
+// Do nothing for test or live environments.
+if (in_array($_ENV['PANTHEON_ENVIRONMENT'], ['test', 'live'])) {
   return;
 }
+
+include __DIR__ . '/../lean-repo-utils.php';
 
 /**
  * This script will attempt to push "lean" changes back upstream.
@@ -43,10 +45,6 @@ if (empty($gitHubSecrets)) {
   return;
 }
 
-print "::::::::::::::::: GitHub Secrets :::::::::::::::::\n";
-var_export($gitHubSecrets);
-print "\n\n";
-
 // The remote repo to push to
 $upstreamRepo = $buildMetadata['url'];
 if (!empty($gitHubSecrets) && array_key_exists('token', $gitHubSecrets)) {
@@ -61,60 +59,90 @@ $fromSha = $buildMetadata['sha'];
 // The name of the PR branch
 $branch = $buildMetadata['ref'];
 
-// A working branch to make changes on
-$workBranch = substr($currentCommit, 0, 5) . $branch;
-
 // The commit to cherry-pick
-$currentCommit = exec('git rev-parse HEAD');
+$commitToSubmit = exec('git rev-parse HEAD');
+
+// A working branch to make changes on
+$targetBranch = $branch;
 
 print "::::::::::::::::: Info :::::::::::::::::\n";
-print "We are going to check out $branch from $fromSha, then cherry-pick $currentCommit and push it back to {$buildMetadata['url']}\n";
+print "We are going to check out $branch from {$buildMetadata['url']}, branch from $fromSha and cherry-pick $commitToSubmit onto it\n";
 
-// Create our new branch without switching to it. We start with
-// '$fromSha' to avoid placing any build artifacts on our branch.
-passthru("git -C $repositoryRoot branch -f $workBranch $fromSha");
-
-$pantheonRepository = "file://$repositoryRoot";
 $workRepository = "$bindingDir/tmp/scratchRepository";
 
-// Clone our current repository -- but only take the current branch.
-// We need a separate working tree because we do not want to alter the
-// current repository, which is actively in use by the current multidev
-// environment. Git requires a modifiable working tree to cherry-pick commits.
-passthru("git clone $pantheonRepository --branch $workBranch --single-branch $workRepository");
+// Temporary:
+passthru("rm -rf $workRepository");
 
-// Use show | apply to do the equivalent of a cherry-pick
-// between the two repositories.
-exec("git -C $repositoryRoot show $currentCommit | git -c $workRepository apply -Xthiers", $output, $applyStatus);
+// Make a working clone of the GitHub branch. Clone just the branch
+// and commit we need.
+print "git clone $upstreamRepo --depth=1 --branch $branch --single-branch\n";
+passthru("git clone $upstreamRepo --depth=1 --branch $branch --single-branch $workRepository 2>&1");
 
-// We're done with the work branch now.
-passthru("git -C $repositoryRoot branch -D $workBranch");
-
-// If the apply worked, then push the commit back to the light repository.
-if ($applyStatus == 0) {
-  // Get the sha commit hash of the remote GitHub branch, to see if
-  // anyone has added any commits there since this environment was created.
-  // This comes back as "sha   refs/heads/branch", so we'll trim the end.
-  $remoteCommit = exec("git ls-remote $upstreamRepo $branch");
-  $remoteCommit = preg_replace('/ .*/', '', $remoteCommit);
-
-  // If the remote commit is the same as our base commit, then we will
-  // push directly back to the original branch. If it does not match, then
-  // we will push to a new branch name for the user to merge on GitHub.
-  $targetBranch = $workBranch;
-  if (($remoteCommit == $fromSha) && ($branch != 'master')) {
-    $targetBranch = $branch;
-  }
-
-  // Push the new branch back to Pantheon
-  passthru("git -C $workRepository push $upstreamRepo $workBranch:$targetBranch");
+// If there have been extra commits, then unshallow the repository so that
+// we can make a branch off of the commit this multidev was built from.
+print "git -C $workRepository rev-parse HEAD\n";
+$remoteHead = exec("git -C $workRepository rev-parse HEAD");
+if ($remoteHead != $fromSha) {
+  // TODO: If we had git 2.11.0, we could use --shallow-since with the date
+  // from $buildMetadata['commit-date'] to get exactly the commits we need.
+  // Until then, though, we will just `unshallow` the whole branch if there
+  // is a conflicting commit.
+  print "git -C $workRepository fetch --unshallow\n";
+  passthru("git -C $workRepository fetch --unshallow 2>&1");
 }
 
-// We don't need the work branch or the second working repository any longer
+// If there are conflicting commits, or if this new commit is on the master
+// branch, then we will work from and push to a branch with a different name.
+// The user should then create a new PR on GitHub, and use the GitHub UI
+// to resolve any conflicts (or clone the branch locally to do the same thing).
+$createNewBranchReason = '';
+if ($branch == 'master') {
+  $createNewBranchReason = "the $branch branch cannot be pushed to directly";
+}
+elseif ($remoteHead != $fromSha) {
+  $createNewBranchReason = "new conflicting commits (e.g. $remoteHead) were added to the upstream repository";
+}
+if (!empty($createNewBranchReason)) {
+  // Warn that a new branch is being created.
+  $targetBranch = substr($commitToSubmit, 0, 5) . $branch;
+  print "Creating a new branch, '$targetBranch', because $createNewBranchReason.\n";
+  print "git -C $workRepository checkout -B $targetBranch $fromSha\n";
+  passthru("git -C $workRepository checkout -B $targetBranch $fromSha 2>&1");
+}
+
+// Use `git format-patch | git am` to do the equivalent of a cherry-pick
+// between the two repositories. This should not fail, as we are applying
+// our changes on top of the commit this branch was built from.
+print "git -C $repositoryRoot format-patch --stdout {$commitToSubmit}~ | git -C $workRepository am\n";
+exec("git -C $repositoryRoot format-patch --stdout {$commitToSubmit}~ | git -C $workRepository am 2>&1", $output, $applyStatus);
+
+// Make sure that HEAD changed after 'git apply'
+$appliedCommit = exec('git -C $workRepository rev-parse HEAD');
+
+// Seatbelts: we expect this should only happen if $applyStatus != 0
+if ($appliedCommit == $remoteHead) {
+  print "'git apply' did not add any commits. Status code: $applyStatus\n";
+  print "Output:\n";
+  print implode("\n", $output) . "\n";
+}
+
+// If the apply worked, then push the commit back to the light repository.
+if (($applyStatus == 0) && ($appliedCommit != $remoteHead)) {
+  // Push the new branch back to Pantheon
+  print "git -C $workRepository push $upstreamRepo $targetBranch\n";
+  passthru("git -C $workRepository push $upstreamRepo $targetBranch 2>&1");
+
+  // TODO: If a new branch was created, it would be cool to use the GitHub API
+  // to create a new PR. If there is an existing PR (i.e. branch not master),
+  // it would also be cool to cross-reference the new PR to the old PR. The trouble
+  // here is converting the branch name to a PR number.
+}
+
+// Throw out the working repository.
 passthru("rm -rf $workRepository");
 
 // Post error to dashboard and exit if the merge fails.
 if ($applyStatus != 0) {
-  $message = "git apply failed with exit code $applyStatus.\n\n" . explode("\n", $output);
+  $message = "git apply failed with exit code $applyStatus.\n\n" . implode("\n", $output);
   pantheon_raise_dashboard_error($message, true);
 }
