@@ -33,6 +33,9 @@ web/web.config
 # Add directories containing build assets below.
 # Keep all additions above the "cut" line.
 
+# This distinction is only important when using this
+# repository as a custom upstream. The .gitignore file
+# is not modified in the GitHub PR workflow.
 
 
 # :::::::::::::::::::::: cut ::::::::::::::::::::::

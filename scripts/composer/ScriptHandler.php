@@ -48,7 +48,10 @@ class ScriptHandler
   }
 
   // This is called by the QuickSilver deploy hook to convert from
-  // a 'lean' repository to a 'fat' repository.
+  // a 'lean' repository to a 'fat' repository. This should only be
+  // called when using this repository as a custom upstream, and
+  // updating it with `terminus composer <site>.<env> update`. This
+  // is not used in the GitHub PR workflow.
   public static function prepareForPantheon()
   {
     // Get rid of any .git directories that Composer may have added.
