@@ -47,15 +47,27 @@ class ScriptHandler
     }
   }
 
+  // This is called by the QuickSilver deploy hook to convert from
+  // a 'lean' repository to a 'fat' repository.
   public static function prepareForPantheon()
   {
-    // Get rid of any .git directories that Composer may have added
+    // Get rid of any .git directories that Composer may have added.
+    // n.b. Ideally, there are none of these, as removing them may
+    // impair Composer's ability to update them later. However, leaving
+    // them in place prevents us from pushing to Pantheon.
     $finder = new Finder();
-    foreach ($finder->files()->in(getcwd())->name('.git') as $dir) {
+    foreach (
+      $finder
+        ->directories()
+        ->in(getcwd())
+        ->ignoreDotFiles(false)
+        ->ignoreVCS(false)
+        ->depth('> 0')
+        ->name('.git')
+      as $dir) {
       $fs = new Filesystem();
       $fs->remove($dir);
     }
-
     // Fix up .gitignore: remove everything above the "::: cut :::" line
     $gitignoreFile = getcwd() . '/.gitignore';
     $gitignoreContents = file_get_contents($gitignoreFile);

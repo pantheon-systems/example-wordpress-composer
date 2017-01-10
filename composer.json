@@ -45,8 +45,7 @@
   },
   "scripts": {
     "build-assets": [
-      "./scripts/composer/install-or-update",
-      "@prepare-for-pantheon"
+      "./scripts/composer/install-or-update"
     ],
     "drupal-unit-tests": "cd web/core && ../../vendor/bin/phpunit --testsuite=unit --exclude-group Composer,DependencyInjection,PageCache",
     "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",

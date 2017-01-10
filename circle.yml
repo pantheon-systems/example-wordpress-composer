@@ -38,7 +38,7 @@ dependencies:
     - terminus --version
     - cgr "drush/drush:~8"
     - mkdir -p ~/.terminus/plugins
-    - composer create-project -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:~1
+    - composer create-project -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:dev-force-add --stability dev
     - composer create-project -d ~/.terminus/plugins pantheon-systems/terminus-secrets-plugin:~1
   post:
     - terminus auth:login --machine-token="$TERMINUS_TOKEN"
