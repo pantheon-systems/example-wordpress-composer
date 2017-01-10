@@ -10,12 +10,8 @@ workflows:
         script: private/scripts/deploy_product/prepare-for-pantheon.php
       -
         type: webphp
-        description: 'Run composer install'
+        description: 'Run composer install & drupal-scaffold'
         script: private/scripts/deploy_product/composer-install.php
-      -
-        type: webphp
-        description: 'Run composer drupal-scaffold'
-        script: private/scripts/deploy_product/drupal-scaffold.php
   sync_code:
     after:
       - type: webphp
