@@ -47,10 +47,11 @@ if (empty($gitHubSecrets)) {
 
 // The remote repo to push to
 $upstreamRepo = $buildMetadata['url'];
+$upstreamRepoWithCredentials = $upstreamRepo;
 if (!empty($gitHubSecrets) && array_key_exists('token', $gitHubSecrets)) {
   $token = $gitHubSecrets['token'];
-  $upstreamRepo = str_replace('git@github.com:', 'https://github.com/', $upstreamRepo);
-  $upstreamRepo = str_replace('https://', "https://$token:x-oauth-basic@", $upstreamRepo);
+  $upstreamRepoWithCredentials = str_replace('git@github.com:', 'https://github.com/', $upstreamRepoWithCredentials);
+  $upstreamRepoWithCredentials = str_replace('https://', "https://$token:x-oauth-basic@", $upstreamRepoWithCredentials);
 }
 
 // The last commit made on the lean repo prior to creating the build artifacts
@@ -76,7 +77,7 @@ passthru("rm -rf $workRepository");
 // Make a working clone of the GitHub branch. Clone just the branch
 // and commit we need.
 print "git clone $upstreamRepo --depth=1 --branch $branch --single-branch\n";
-passthru("git clone $upstreamRepo --depth=1 --branch $branch --single-branch $workRepository 2>&1");
+passthru("git clone $upstreamRepoWithCredentials --depth=1 --branch $branch --single-branch $workRepository 2>&1");
 
 // If there have been extra commits, then unshallow the repository so that
 // we can make a branch off of the commit this multidev was built from.
@@ -130,7 +131,7 @@ if ($appliedCommit == $remoteHead) {
 if (($applyStatus == 0) && ($appliedCommit != $remoteHead)) {
   // Push the new branch back to Pantheon
   print "git -C $workRepository push $upstreamRepo $targetBranch\n";
-  passthru("git -C $workRepository push $upstreamRepo $targetBranch 2>&1");
+  passthru("git -C $workRepository push $upstreamRepoWithCredentials $targetBranch 2>&1");
 
   // TODO: If a new branch was created, it would be cool to use the GitHub API
   // to create a new PR. If there is an existing PR (i.e. branch not master),
