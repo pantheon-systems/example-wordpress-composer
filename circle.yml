@@ -16,6 +16,7 @@ machine:
     TERMINUS_ENV_LABEL: CI-$CIRCLE_BUILD_NUM
     MULTIDEV_DELETE_PATTERN: ^ci-
     PR_DELETE_PATTERN: ^pr-
+    NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     PATH: $PATH:~/.composer/vendor/bin:~/.config/composer/vendor/bin:tests/scripts
 
 dependencies:
@@ -46,8 +47,7 @@ dependencies:
     - terminus build-env:delete -n "$TERMINUS_SITE" "$MULTIDEV_DELETE_PATTERN" --keep=2 --delete-branch --yes
     - composer -n build-assets
     - terminus env:wake -n "$TERMINUS_SITE.dev"
-    - terminus build-env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --label="$TERMINUS_ENV_LABEL" --yes
-    - scripts/github/add-commit-comment
+    - terminus build-env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --label="$TERMINUS_ENV_LABEL" --yes --notify="$NOTIFY"
 test:
   override:
     - run-behat
