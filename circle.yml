@@ -14,8 +14,6 @@ machine:
     CI_LABEL: ci-$CIRCLE_BUILD_NUM
     TERMINUS_ENV: $(echo ${PR_LABEL:-$CI_LABEL} | cut -c -11 | sed 's/-$//')
     TERMINUS_ENV_LABEL: CI-$CIRCLE_BUILD_NUM
-    MULTIDEV_DELETE_PATTERN: ^ci-
-    PR_DELETE_PATTERN: ^pr-
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     PATH: $PATH:~/.composer/vendor/bin:~/.config/composer/vendor/bin:tests/scripts
 
@@ -44,7 +42,7 @@ dependencies:
   post:
     - terminus auth:login -n --machine-token="$TERMINUS_TOKEN"
     - terminus env:delete -n "$TERMINUS_SITE.$TERMINUS_ENV" --yes || echo "$TERMINUS_SITE.$TERMINUS_ENV does not exist yet."
-    - terminus build-env:delete -n "$TERMINUS_SITE" "$MULTIDEV_DELETE_PATTERN" --keep=2 --delete-branch --yes
+    - terminus build-env:delete:ci -n "$TERMINUS_SITE" --keep=2 --yes
     - composer -n build-assets
     - terminus env:wake -n "$TERMINUS_SITE.dev"
     - terminus build-env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --label="$TERMINUS_ENV_LABEL" --yes --notify="$NOTIFY"
@@ -61,4 +59,4 @@ deployment:
     commands:
       - terminus build-env:merge -n "$TERMINUS_SITE.$TERMINUS_ENV" --label="$TERMINUS_ENV_LABEL" --yes
       - terminus drush -n $TERMINUS_SITE.dev -- updatedb --yes
-      - terminus build-env:delete -n "$TERMINUS_SITE" "$PR_DELETE_PATTERN" --preserve-prs --delete-branch --yes
+      - terminus build-env:delete:pr -n "$TERMINUS_SITE" --yes
