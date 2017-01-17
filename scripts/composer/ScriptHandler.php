@@ -58,6 +58,7 @@ class ScriptHandler
     // n.b. Ideally, there are none of these, as removing them may
     // impair Composer's ability to update them later. However, leaving
     // them in place prevents us from pushing to Pantheon.
+    $dirsToDelete = [];
     $finder = new Finder();
     foreach (
       $finder
@@ -68,9 +69,11 @@ class ScriptHandler
         ->depth('> 0')
         ->name('.git')
       as $dir) {
-      $fs = new Filesystem();
-      $fs->remove($dir);
+      $dirsToDelete[] = $dir;
     }
+    $fs = new Filesystem();
+    $fs->remove($dirsToDelete);
+
     // Fix up .gitignore: remove everything above the "::: cut :::" line
     $gitignoreFile = getcwd() . '/.gitignore';
     $gitignoreContents = file_get_contents($gitignoreFile);

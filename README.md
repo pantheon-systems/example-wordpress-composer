@@ -19,10 +19,10 @@ Start off by creating a new Drupal 8 site; then, before installing Drupal, set y
 $ composer create-project pantheon-systems/example-drops-8-composer my-site
 $ cd my-site
 $ composer prepare-for-pantheon
-$ composer drupal-scaffold
+$ git init
 $ git add -A .
 $ git commit -m "web and vendor directory from composer install"
-$ git remote set-url origin ssh://ID@ID.drush.in:2222/~/repository.git
+$ git remote add origin ssh://ID@ID.drush.in:2222/~/repository.git
 $ git push --force origin master
 ```
 Replace my-site with the name that you gave your Pantheon site, and replace ssh://ID@ID.drush.in:2222/~/repository.git with the URL from the middle of the SSH clone URL from the Connection Info popup dialog on your dashboard.
