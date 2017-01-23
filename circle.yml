@@ -6,9 +6,6 @@ machine:
     # https://circleci.com/docs/build-image-trusty/#php
     version: 7.0.11
   environment:
-    TEST_SITE_NAME: Example D8 Composer Test Site
-    ADMIN_EMAIL: admin@example.com
-    TERMINUS_SITE: ci-example-d8-composer
     BRANCH: $(echo $CIRCLE_BRANCH | grep -v '^\(master\|[0-9]\+.x\)$')
     PR_LABEL: ${BRANCH:+pr-$BRANCH}
     CI_LABEL: ci-$CIRCLE_BUILD_NUM
