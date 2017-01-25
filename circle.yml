@@ -6,9 +6,29 @@ machine:
     # https://circleci.com/docs/build-image-trusty/#php
     version: 7.0.11
   environment:
-    TEST_SITE_NAME: Example D8 Composer Test Site
-    ADMIN_EMAIL: admin@example.com
-    TERMINUS_SITE: ci-example-d8-composer
+    # This repository requires environmental variables that are likely to change
+    # as it is copied for different websites. Those variables can be defined
+    # in the CircleCI UI which can keep the values of variables hidden.
+    # That functionality is important for variables like these:
+    ### The password to be used for Drupal's user 1 account.
+    # ADMIN_PASSWORD: xxxxxxxxxxxxxxx
+    ### Generate from https://dashboard.pantheon.io/users/#account/tokens/
+    ### Allows Terminus, the Pantheon CLI to authenticate with Pantheon.
+    # TERMINUS_TOKEN: xxxxxxxxxxxxxxx
+    ### Allows Pantheon to post back comments to Github pull requests.
+    ### Generate from https://github.com/settings/tokens
+    # GITHUB_TOKEN: xxxxxxxxxxxxxxx
+    # Some required variables are not necessarily sensitive pieces of
+    # information and could be defined here in the circle.yml or in the UI.
+    ### The email address to be used for Drupal's user 1 account.
+    # ADMIN_EMAIL: testing@example.com
+    ### The email address used for the user making git commits in CircleCI.
+    # GIT_EMAIL: me@example.com
+    ### The machine name of the site on Pantheon to which code is pushed.
+    # TERMINUS_SITE my-site-name
+    ### The name of the site to be used when installing Drupal through Behat.
+    # TEST_SITE_NAME: My Site Name
+    # These variables do not need to change with each copy of the repo.
     BRANCH: $(echo $CIRCLE_BRANCH | grep -v '^\(master\|[0-9]\+.x\)$')
     PR_LABEL: ${BRANCH:+pr-$BRANCH}
     CI_LABEL: ci-$CIRCLE_BUILD_NUM
