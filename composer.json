@@ -7,14 +7,11 @@
     {
       "type": "composer",
       "url": "https://packages.drupal.org/8"
-    },
-    {
-      "type": "vcs",
-      "url": "https://github.com/greg-1-anderson/installers"
     }
   ],
     "require": {
-    "composer/installers": "dev-quicksilver-installer as v1.0.25",
+    "composer/installers": "^1.0.20",
+    "rvtraveller/qs-composer-installer": "^1.1",
     "drupal-composer/drupal-scaffold": "^2.0.1",
     "cweagans/composer-patches": "^1.0",
 

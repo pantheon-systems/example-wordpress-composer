@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2ba523408cc12cfc7259e8b0cf70b43",
+    "content-hash": "45d1a1ee68f6af758ac8c5d4546c9f1c",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -115,16 +115,16 @@
         },
         {
             "name": "composer/installers",
-            "version": "dev-quicksilver-installer",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/greg-1-anderson/installers.git",
-                "reference": "4aeaea0e4c568eaf9f41f033f9af1e6fb8079fa8"
+                "url": "https://github.com/composer/installers.git",
+                "reference": "d78064c68299743e0161004f2de3a0204e33b804"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/greg-1-anderson/installers/zipball/4aeaea0e4c568eaf9f41f033f9af1e6fb8079fa8",
-                "reference": "4aeaea0e4c568eaf9f41f033f9af1e6fb8079fa8",
+                "url": "https://api.github.com/repos/composer/installers/zipball/d78064c68299743e0161004f2de3a0204e33b804",
+                "reference": "d78064c68299743e0161004f2de3a0204e33b804",
                 "shasum": ""
             },
             "require": {
@@ -150,11 +150,7 @@
                     "Composer\\Installers\\": "src/Composer/Installers"
                 }
             },
-            "scripts": {
-                "test": [
-                    "phpunit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -168,68 +164,61 @@
             "description": "A multi-framework Composer library installer",
             "homepage": "https://composer.github.io/installers/",
             "keywords": [
-                "AGL",
-                "Aimeos",
-                "AnnotateCms",
-                "Attogram",
-                "Bitrix",
-                "CakePHP",
-                "Chef",
-                "Cockpit",
-                "CodeIgniter",
                 "Craft",
-                "Croogo",
-                "DokuWiki",
                 "Dolibarr",
-                "Drupal",
-                "Elgg",
-                "ExpressionEngine",
-                "FuelPHP",
-                "Grav",
                 "Hurad",
                 "ImageCMS",
-                "Joomla",
-                "Kanboard",
-                "Kohana",
-                "Laravel",
-                "Lithium",
-                "MODULEWork",
                 "MODX Evo",
-                "Magento",
-                "Mako",
                 "Mautic",
-                "Maya",
-                "MediaWiki",
-                "Moodle",
                 "OXID",
-                "PPI",
-                "Piwik",
                 "Plentymarkets",
-                "Porto",
-                "Puppet",
-                "Quicksilver",
                 "RadPHP",
-                "ReIndex",
-                "Roundcube",
                 "SMF",
-                "SilverStripe",
-                "TYPO3",
                 "Thelia",
                 "WolfCMS",
-                "WordPress",
-                "YAWIK",
-                "Zend",
-                "Zikula",
+                "agl",
+                "aimeos",
+                "annotatecms",
+                "attogram",
+                "bitrix",
+                "cakephp",
+                "chef",
+                "cockpit",
+                "codeigniter",
                 "concrete5",
+                "croogo",
+                "dokuwiki",
+                "drupal",
+                "elgg",
+                "expressionengine",
+                "fuelphp",
+                "grav",
                 "installer",
-                "phpBB",
+                "joomla",
+                "kohana",
+                "laravel",
+                "lithium",
+                "magento",
+                "mako",
+                "mediawiki",
+                "modulework",
+                "moodle",
+                "phpbb",
+                "piwik",
+                "ppi",
+                "puppet",
+                "reindex",
+                "roundcube",
                 "shopware",
-                "symfony"
+                "silverstripe",
+                "symfony",
+                "typo3",
+                "wordpress",
+                "yawik",
+                "zend",
+                "zikula"
             ],
-            "support": {
-                "source": "https://github.com/greg-1-anderson/installers/tree/quicksilver-installer"
-            },
-            "time": "2017-01-26 19:33:06"
+            "time": "2016-08-13T20:53:52+00:00"
         },
         {
             "name": "composer/semver",
@@ -2510,6 +2499,44 @@
                 "shell"
             ],
             "time": "2016-12-07T17:15:07+00:00"
+        },
+        {
+            "name": "rvtraveller/qs-composer-installer",
+            "version": "1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rvtraveller/qs-composer-installer.git",
+                "reference": "20d6f4397e4b77599646767ad030092a60f5f92a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rvtraveller/qs-composer-installer/zipball/20d6f4397e4b77599646767ad030092a60f5f92a",
+                "reference": "20d6f4397e4b77599646767ad030092a60f5f92a",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "~1.0",
+                "composer/installers": "~1.0"
+            },
+            "require-dev": {
+                "composer/composer": "~1.0@dev"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "rvtraveller\\QuicksilverComposerInstaller\\QuicksilverComposerInstallerPlugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "rvtraveller\\QuicksilverComposerInstaller\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Install Quicksilver modules for Pantheon into custom locations.",
+            "homepage": "https://github.com/rvtraveller/qs-composer-installer",
+            "time": "2017-01-27T20:40:31+00:00"
         },
         {
             "name": "stack/builder",
@@ -6428,18 +6455,9 @@
             "time": "2017-01-02T20:32:22+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "v1.0.25",
-            "alias_normalized": "1.0.25.0",
-            "version": "dev-quicksilver-installer",
-            "package": "composer/installers"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "alpha",
-    "stability-flags": {
-        "composer/installers": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
