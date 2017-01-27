@@ -9,6 +9,7 @@
 /web/modules/contrib/
 /web/themes/contrib/
 /web/profiles/contrib/
+/web/private/scripts/quicksilver
 
 # Ignore scaffold files
 web/.csslintrc

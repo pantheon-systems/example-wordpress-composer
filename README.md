@@ -6,7 +6,7 @@ This repository can be used to set up a Composer-Managed Drupal 8 site on [Panth
 
 ## Installation
 
-This project can either be used as an upstream repository, or it can be set up manually.
+This project can either be used as an upstream repository, or it can be set up manually. It is also possible to set up this site as described in the [Terminus Build Tools Plugin](https://github.com/pantheon-systems/terminus-build-tools-plugin) documentations.
 
 ### As an Upstream
 
