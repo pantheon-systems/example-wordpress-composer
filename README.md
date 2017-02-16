@@ -104,20 +104,22 @@ Create a custom upstream for this project following the instructions in the [Pan
 
 Enter the commands below to create a a new site on Pantheon and push a copy of this project up to it.
 ```
-$ terminus site:create my-site "My Site" "Drupal 8" --org="My Team"
-$ composer create-project pantheon-systems/example-drops-8-composer my-site
-$ cd my-site
+$ SITE="my-site"
+$ terminus site:create $SITE "My Site" "Drupal 8" --org="My Team"
+$ composer create-project pantheon-systems/example-drops-8-composer $SITE
+$ cd $SITE
 $ composer prepare-for-pantheon
 $ git init
 $ git add -A .
-$ git commit -m "web and vendor directory from composer install"
-$ terminus  connection:set my-site.dev git
-$ PANTHEON_REPO=$(terminus connection:info my-site.dev --field=git_url)
-$ git remote add pantheon $PANTHEON_REPO
+$ git commit -m "Initial commit"
+$ terminus  connection:set $SITE.dev git
+$ PANTHEON_REPO=$(terminus connection:info $SITE.dev --field=git_url)
+$ git remote add origin $PANTHEON_REPO
 $ git push --force origin master
-$ terminus drush my-site.dev site-install --site-name="My Drupal Site"
+$ terminus drush $SITE.dev -- site-install --site-name="My Drupal Site"
+$ open "http://dev-$SITE.pantheonsite.io"
 ```
-Replace my-site with the name that you gave your Pantheon site. Customize the `site-install` line to suit.
+Replace my-site with the name that you gave your Pantheon site. Customize the parameters of the `site:create` and `site-install` lines to suit.
 
 ### Installing Drupal
 
