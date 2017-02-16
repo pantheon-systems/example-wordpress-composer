@@ -81,8 +81,10 @@ Enable the GitHub project for your site in Circle CI. Define the environment var
 - ADMIN_PASSWORD: Used to set the password for the uid 1 user during site installation.
 - GIT_EMAIL: Used to configure the git user’s email address for commits we make.
 
-Also, create a [public/private key pair](https://pantheon.io/docs/ssh-keys/) and add the private key to Circle CI, and the public key to your Pantheon site.
-
+Also, create a [public/private key pair](https://pantheon.io/docs/ssh-keys/) and add the private key to Circle CI, and the public key to your Pantheon site. You may use Terminus to add the public key to your Pantheon site:
+```
+$ terminus ssh-key:add ~/.ssh/id_rsa.pub
+```
 At this point, you should be able to click "rebuild" on your last Circle CI build, and all of the tests should run and pass.
 
 ## Pantheon "Standalone" Development
