@@ -55,17 +55,20 @@ First, [bring up this project in GitHub](https://github.com/pantheon-systems/exa
 
 Next, click on the "Clone or Download" button and make a local working copy of your new repository. This is where we will do most of our work. To start out, install the project assets with Composer:
 ```
-$ cd my-pantheon-site
+$ cd my-site
 $ composer install
 ```
 
 ### Create a Pantheon Site
 
-Since our goal is to use Pantheon, we should next create a new site (https://pantheon.io/docs/create-sites/). Give it a name similar to the one you used for the GitHub repository you forked.
+Since our goal is to use Pantheon, we should next [create a new site](https://pantheon.io/docs/create-sites/). Give it a name similar to the one you used for the GitHub repository you forked. You may use Terminus to create the nwe site:
+```
+$ terminus site:create my-site "My Site" "Drupal 8" --org="My Team"
+```
 
 Next, use Terminus to find out the URL to the Pantheon repository, and add a new remote to your local working copy of your canonical repository created in the previous step.
 ```
-$ PANTHEON_REPO=$(terminus connection:info my-pantheon-site.dev --field=git_url)
+$ PANTHEON_REPO=$(terminus connection:info my-site.dev --field=git_url)
 $ git remote add pantheon $PANTHEON_REPO
 $ git push --force pantheon master
 ```
@@ -99,18 +102,22 @@ Create a custom upstream for this project following the instructions in the [Pan
 
 ### Manual Setup
 
-Start off by creating a new Drupal 8 site; then, before installing Drupal, set your site to git mode and do the following from your local machine:
+Enter the commands below to create a a new site on Pantheon and push a copy of this project up to it.
 ```
+$ terminus site:create my-site "My Site" "Drupal 8" --org="My Team"
 $ composer create-project pantheon-systems/example-drops-8-composer my-site
 $ cd my-site
 $ composer prepare-for-pantheon
 $ git init
 $ git add -A .
 $ git commit -m "web and vendor directory from composer install"
-$ git remote add origin ssh://ID@ID.drush.in:2222/~/repository.git
+$ terminus  connection:set my-site.dev git
+$ PANTHEON_REPO=$(terminus connection:info my-site.dev --field=git_url)
+$ git remote add pantheon $PANTHEON_REPO
 $ git push --force origin master
+$ terminus drush my-site.dev site-install --site-name="My Drupal Site"
 ```
-Replace my-site with the name that you gave your Pantheon site, and replace ssh://ID@ID.drush.in:2222/~/repository.git with the URL from the middle of the SSH clone URL from the Connection Info popup dialog on your dashboard.
+Replace my-site with the name that you gave your Pantheon site. Customize the `site-install` line to suit.
 
 ### Installing Drupal
 
