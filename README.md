@@ -117,7 +117,7 @@ $ PANTHEON_REPO=$(terminus connection:info $SITE.dev --field=git_url)
 $ git remote add origin $PANTHEON_REPO
 $ git push --force origin master
 $ terminus drush $SITE.dev -- site-install --site-name="My Drupal Site"
-$ open "http://dev-$SITE.pantheonsite.io"
+$ terminus dashboard:view $SITE
 ```
 Replace my-site with the name that you gave your Pantheon site. Customize the parameters of the `site:create` and `site-install` lines to suit.
 
