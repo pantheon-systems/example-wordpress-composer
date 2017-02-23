@@ -2,7 +2,7 @@
   "name": "pantheon-systems/example-drops-8-composer",
   "description": "Install drops-8 with Composer on Pantheon.",
   "type": "project",
-  "license": "GPL-2.0+",
+  "license": "MIT",
   "repositories": [
     {
       "type": "composer",
