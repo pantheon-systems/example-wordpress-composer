@@ -3,6 +3,8 @@
 This repository can be used to set up a Composer-Managed Drupal 8 site on [Pantheon](https://pantheon.io).
 
 [![CircleCI](https://circleci.com/gh/pantheon-systems/example-drops-8-composer.svg?style=svg)](https://circleci.com/gh/pantheon-systems/example-drops-8-composer)
+[![Pantheon example-drops-8-composer](https://img.shields.io/badge/pantheon-drops_8-yellow.svg)](https://dashboard.pantheon.io/sites/c401fd14-f745-4e51-9af2-f30b45146a0c#dev/code) 
+[![Dev Site example-drops-8-composer](https://img.shields.io/badge/site-drops_8-blue.svg)](http://dev-example-drops-8-composer.pantheonsite.io/)
 
 ## Overview
 
@@ -127,7 +129,7 @@ Note that this example repository sets the installation profile to 'standard' in
 
 ### Updating Your Site
 
-When using this repository to manage your Drupal 8 site, you will no longer use the Pantheon dashboard to update your Drupal version. Instead, you will manage your updates using Composer. Updates can be applied either directly on Pantheon, by using Terminus, or on your local machine.
+When using this repository to manage your Drupal site, you will no longer use the Pantheon dashboard to update your Drupal version. Instead, you will manage your updates using Composer. Updates can be applied either directly on Pantheon, by using Terminus, or on your local machine.
 
 #### Update with Terminus
 
