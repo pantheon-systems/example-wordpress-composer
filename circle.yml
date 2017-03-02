@@ -22,9 +22,10 @@ machine:
     #
     # The variables below usually do not need to be modified.
     BRANCH: $(echo $CIRCLE_BRANCH | grep -v '^\(master\|[0-9]\+.x\)$')
-    PR_LABEL: ${BRANCH:+pr-$BRANCH}
-    CI_LABEL: ci-$CIRCLE_BUILD_NUM
-    TERMINUS_ENV: $(echo ${PR_LABEL:-$CI_LABEL} | cut -c -11 | sed 's/-$//')
+    PR_ENV: ${BRANCH:+pr-$BRANCH}
+    CIRCLE_ENV: ci-$CIRCLE_BUILD_NUM
+    DEFAULT_ENV: $(echo ${PR_ENV:-$CIRCLE_ENV} | cut -c -11 | sed 's/-$//')
+    TERMINUS_ENV: ${TERMINUS_ENV:-$DEFAULT_ENV}
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     PATH: $PATH:~/.composer/vendor/bin:~/.config/composer/vendor/bin:tests/scripts
 
@@ -32,7 +33,7 @@ dependencies:
   cache_directories:
     - ~/.composer/cache
   pre:
-    - echo "Begin build for $CI_LABEL${PR_LABEL:+ for }$PR_LABEL. Pantheon test environment is $TERMINUS_SITE.$TERMINUS_ENV"
+    - echo "Begin build for $CIRCLE_ENV${PR_ENV:+ for }$PR_ENV. Pantheon test environment is $TERMINUS_SITE.$TERMINUS_ENV"
     - |
       if [ -n "$GITHUB_TOKEN" ] ; then
         composer config --global github-oauth.github.com $GITHUB_TOKEN
