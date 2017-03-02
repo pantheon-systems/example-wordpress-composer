@@ -6,29 +6,21 @@ machine:
     # https://circleci.com/docs/build-image-trusty/#php
     version: 7.0.11
   environment:
-    # This repository requires environmental variables that are likely to change
-    # as it is copied for different websites. Those variables can be defined
-    # in the CircleCI UI which can keep the values of variables hidden.
-    # That functionality is important for variables like these:
-    ### The password to be used for Drupal's user 1 account.
-    # ADMIN_PASSWORD: xxxxxxxxxxxxxxx
-    ### Generate from https://dashboard.pantheon.io/users/#account/tokens/
-    ### Allows Terminus, the Pantheon CLI to authenticate with Pantheon.
-    # TERMINUS_TOKEN: xxxxxxxxxxxxxxx
-    ### Allows Pantheon to post back comments to Github pull requests.
-    ### Generate from https://github.com/settings/tokens
-    # GITHUB_TOKEN: xxxxxxxxxxxxxxx
-    # Some required variables are not necessarily sensitive pieces of
-    # information and could be defined here in the circle.yml or in the UI.
-    ### The email address to be used for Drupal's user 1 account.
-    # ADMIN_EMAIL: testing@example.com
-    ### The email address used for the user making git commits in CircleCI.
-    # GIT_EMAIL: me@example.com
-    ### The machine name of the site on Pantheon to which code is pushed.
-    # TERMINUS_SITE my-site-name
-    ### The name of the site to be used when installing Drupal through Behat.
-    # TEST_SITE_NAME: My Site Name
-    # These variables do not need to change with each copy of the repo.
+    # In addition to the environment variables defined in this file, also
+    # add the following variables in the Circle CI UI.
+    #
+    # See: https://circleci.com/docs/1.0/environment-variables/
+    #
+    # TERMINUS_SITE:  Name of the Pantheon site to run tests on, e.g. my_site
+    # TERMINUS_TOKEN: The Pantheon machine token
+    # GITHUB_TOKEN:   The GitHub personal access token
+    # GIT_EMAIL:      The email address to use when making commits
+    #
+    # TEST_SITE_NAME: The name of the test site to provide when installing.
+    # ADMIN_PASSWORD: The admin password to use when installing.
+    # ADMIN_EMAIL:    The email address to give the admin when installing.
+    #
+    # The variables below usually do not need to be modified.
     BRANCH: $(echo $CIRCLE_BRANCH | grep -v '^\(master\|[0-9]\+.x\)$')
     PR_LABEL: ${BRANCH:+pr-$BRANCH}
     CI_LABEL: ci-$CIRCLE_BUILD_NUM
@@ -50,12 +42,12 @@ dependencies:
   override:
     - composer global require -n "hirak/prestissimo:^0.3"
     - composer global require -n "consolidation/cgr"
-    - cgr "pantheon-systems/terminus:~1" --stability beta
+    - cgr "pantheon-systems/terminus:^1"
     - terminus --version
     - cgr "drush/drush:~8"
     - mkdir -p ~/.terminus/plugins
-    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:~1
-    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-secrets-plugin:~1
+    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:^1
+    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
   post:
     - terminus auth:login -n --machine-token="$TERMINUS_TOKEN"
     - terminus build-env:delete:ci -n "$TERMINUS_SITE" --keep=2 --yes
