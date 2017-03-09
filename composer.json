@@ -47,6 +47,7 @@
   },
   "scripts": {
     "build-assets": [
+      "@prepare-for-pantheon",
       "./scripts/composer/install-or-update"
     ],
     "drupal-unit-tests": "cd web/core && ../../vendor/bin/phpunit --testsuite=unit --exclude-group Composer,DependencyInjection,PageCache",
@@ -77,6 +78,14 @@
       "includes": [
         "sites/default/default.services.pantheon.preproduction.yml",
         "sites/default/settings.pantheon.php"
+      ],
+      "excludes": [
+        ".csslintrc",
+        ".editorconfig",
+        ".eslintignore",
+        ".eslintrc.json",
+        ".htaccess",
+        "web.config"
       ]
     }
   }
