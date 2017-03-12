@@ -69,7 +69,6 @@
   },
   "scripts": {
     "build-assets": [
-      "@prepare-for-pantheon",
       "./scripts/composer/install-or-update"
     ],
     "cleanup": [
