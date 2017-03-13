@@ -1,92 +1,92 @@
 {
-  "name": "pantheon-systems/example-drops-8-composer",
-  "description": "Install drops-8 with Composer on Pantheon.",
+  "name": "Advanced-WordPress-on-Pantheon",
+  "description": "",
+  "version": "0.1.0",
   "type": "project",
-  "license": "MIT",
+  "keywords": [],
+  "minimum-stability": "dev",
+  "authors": [
+    {
+      "name": "Andrew Taylor",
+      "email": "andrew@ataylor.me",
+      "homepage": "http://www.ataylor.me"
+    }
+  ],
   "repositories": [
     {
       "type": "composer",
-      "url": "https://packages.drupal.org/8"
+      "url": "https://wpackagist.org"
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "pantheon-systems/wordpress",
+        "version": "4.7.3",
+        "dist": {
+          "url": "https://github.com/pantheon-systems/WordPress/archive/4.7.3.zip",
+          "type": "zip"
+        },
+        "source": {
+          "url": "git@github.com:pantheon-systems/WordPress.git",
+          "type": "git",
+          "reference": "4.7.3"
+        },
+        "type": "wordpress-core",
+        "require": {
+          "johnpbloch/wordpress-core-installer": "~0.1"
+        },
+        "extra": {
+          "wordpress-install-dir": "web/wp"
+        }
+      }
     }
   ],
-    "require": {
-    "composer/installers": "^1.0.20",
-    "rvtraveller/qs-composer-installer": "^1.1",
-    "drupal-composer/drupal-scaffold": "^2.0.1",
-    "cweagans/composer-patches": "^1.0",
-
-    "drupal/core": "~8",
-
-    "drupal/console": "^1.0.0-rc8",
-    "drush/drush": "~8",
-    "drupal/config_direct_save": "^1.0"
+  "require": {
+    "php": ">=5.2",
+    "composer/installers": "~1.0",
+    "vlucas/phpdotenv": "^2.4.0",
+    "wpackagist-plugin/wp-native-php-sessions": "^0.6.0",
+    "wpackagist-plugin/pantheon-advanced-page-cache": "^0.1.2",
+    "wpackagist-plugin/wp-cfm": "^1.4.5",
+    "wpackagist-theme/twentyseventeen": "^1.1",
+    "pantheon-systems/wordpress": "^4.7.3",
+    "roots/wp-password-bcrypt": "^1.0.0"
   },
-  "require-dev": {
-    "mikey179/vfsstream": "^1.2",
-    "behat/behat": "3.*",
-    "behat/mink": "^1.7",
-    "behat/mink-extension": "^2.2",
-    "behat/mink-goutte-driver": "^1.2",
-    "jcalderonzumba/gastonjs": "^1.0.2",
-    "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
-    "drupal/drupal-extension": "^3.1",
-    "drush-ops/behat-drush-endpoint": "^0.0.4",
-    "pantheon-systems/quicksilver-pushback": "~1",
-    "phpunit/phpunit": "^4.8",
-    "symfony/css-selector": "^2.8"
-  },
-  "conflict": {
-      "drupal/drupal": "*"
-  },
-  "minimum-stability": "alpha",
-  "prefer-stable": true,
-  "autoload": {
-    "classmap": [
-      "scripts/composer/ScriptHandler.php"
-    ]
-  },
-  "scripts": {
-    "build-assets": [
-      "@prepare-for-pantheon",
-      "./scripts/composer/install-or-update"
-    ],
-    "drupal-unit-tests": "cd web/core && ../../vendor/bin/phpunit --testsuite=unit --exclude-group Composer,DependencyInjection,PageCache",
-    "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
-    "prepare-for-pantheon": "DrupalProject\\composer\\ScriptHandler::prepareForPantheon",
-    "post-install-cmd": [
-      "@drupal-scaffold",
-      "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
-    ],
-    "post-update-cmd": [
-      "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
-    ],
-    "post-create-project-cmd": [
-      "@drupal-scaffold",
-      "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
-    ]
+  "config": {
+    "vendor-dir": "vendor",
+    "preferred-install": "dist",
+    "secure-http": false
   },
   "extra": {
     "installer-paths": {
-      "web/core": ["type:drupal-core"],
-      "web/modules/contrib/{$name}": ["type:drupal-module"],
-      "web/profiles/contrib/{$name}": ["type:drupal-profile"],
-      "web/themes/contrib/{$name}": ["type:drupal-theme"],
-      "drush/contrib/{$name}": ["type:drupal-drush"]
-    },
-    "drupal-scaffold": {
-      "source": "https://raw.githubusercontent.com/pantheon-systems/drops-8/{version}/{path}",
-      "includes": [
-        "sites/default/default.services.pantheon.preproduction.yml",
-        "sites/default/settings.pantheon.php"
+      "web/wp-content/plugins/{$name}/": [
+        "type:wordpress-plugin"
       ],
-      "excludes": [
-        ".csslintrc",
-        ".editorconfig",
-        ".eslintignore",
-        ".eslintrc.json",
-        ".htaccess",
-        "web.config"
+      "web/wp-content/themes/{$name}/": [
+        "type:wordpress-theme"
       ]
     }
+  },
+  "scripts": {
+    "build-assets": [
+      "./scripts/composer/install-or-update"
+    ],
+    "cleanup": [
+      "rsync -a web/wp/wp-content/mu-plugins/* web/wp-content/mu-plugins/",
+      "rm web/wp/wp-config.php",
+      "rm -rf web/wp/wp-content"
+    ],
+    "post-install-cmd": [
+      "@cleanup"
+    ],
+    "post-update-cmd": [
+      "@cleanup"
+    ],
+    "post-create-project-cmd": [
+      "@cleanup"
+    ]
   }
 }
+
+
+

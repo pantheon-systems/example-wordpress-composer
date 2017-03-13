@@ -55,27 +55,15 @@ dependencies:
     - composer -n build-assets
     - terminus env:wake -n "$TERMINUS_SITE.dev"
     - terminus build-env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes --notify="$NOTIFY"
-    - |
-      if [ ! -f "config/system.site.yml" ] ; then
-        terminus drush "$TERMINUS_SITE.$TERMINUS_ENV" -- site-install --yes --site-name="$TEST_SITE_NAME" --account-mail="$ADMIN_EMAIL" --account-pass="$ADMIN_PASSWORD"
-      else
-        terminus drush "$TERMINUS_SITE.$TERMINUS_ENV" -- site-install --yes --site-name="$TEST_SITE_NAME" --account-mail="$ADMIN_EMAIL" --account-pass="$ADMIN_PASSWORD" --config-dir=../config
-      fi
 test:
   override:
-    - run-behat
+    - echo test
   post:
     - terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
-    # If configuration was not imported during site install, then enable config_direct_save.
-    - |
-      if [ ! -f "config/system.site.yml" ] ; then
-        terminus drush -n "$TERMINUS_SITE.$TERMINUS_ENV" -- pm-enable --yes config_direct_save
-      fi
 
 deployment:
   build-assets:
     branch: master
     commands:
       - terminus build-env:merge -n "$TERMINUS_SITE.$TERMINUS_ENV" --yes
-      - terminus drush -n $TERMINUS_SITE.dev -- updatedb --yes
       - terminus build-env:delete:pr -n "$TERMINUS_SITE" --yes
