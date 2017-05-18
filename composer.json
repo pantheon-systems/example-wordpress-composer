@@ -85,8 +85,8 @@
     "post-create-project-cmd": [
       "@cleanup"
     ]
+  },
+  "require-dev": {
+    "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-handle-wp-subdir--rebase"
   }
 }
-
-
-
