@@ -64,7 +64,6 @@ test:
     # @todo, remove the need for this update and for this dependency to be
     # on an alternate branch.
 #    - composer update pantheon-systems/pantheon-wordpress-upstream-tests
-    - terminus env:wipe $TERMINUS_SITE.$TERMINUS_ENV --yes
     - run-behat
   post:
     - terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
