@@ -29,18 +29,12 @@ machine:
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     PATH: $PATH:~/.composer/vendor/bin:~/.config/composer/vendor/bin:tests/scripts
     WORDPRESS_ADMIN_USERNAME: pantheon
-    # A random password is set in the dependencies:pre stage as a text file.
-    # This line reads the same file repeatedly. If the openssl call were used
-    # in this step, it would result in a different password being used in each
-    # line of other steps. Each CircleCI command runs in a separate shell.
-    WORDPRESS_ADMIN_PASSWORD: $(cat ~/WORDPRESS_ADMIN_PASSWORD)
+    WORDPRESS_ADMIN_PASSWORD: ADMIN_PASSWORD
 
 dependencies:
   cache_directories:
     - ~/.composer/cache
   pre:
-    # The environment step uses this file to set a global variable.
-    - echo $(openssl rand -hex 8) > ~/WORDPRESS_ADMIN_PASSWORD
     - echo "Begin build for $CIRCLE_ENV${PR_ENV:+ for }$PR_ENV. Pantheon test environment is $TERMINUS_SITE.$TERMINUS_ENV"
     - |
       if [ -n "$GITHUB_TOKEN" ] ; then
