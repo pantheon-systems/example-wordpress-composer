@@ -29,7 +29,7 @@ machine:
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     PATH: $PATH:~/.composer/vendor/bin:~/.config/composer/vendor/bin:tests/scripts
     WORDPRESS_ADMIN_USERNAME: pantheon
-    WORDPRESS_ADMIN_PASSWORD: ADMIN_PASSWORD
+    WORDPRESS_ADMIN_PASSWORD: $ADMIN_PASSWORD
 
 dependencies:
   cache_directories:
