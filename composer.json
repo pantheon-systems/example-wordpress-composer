@@ -5,13 +5,6 @@
   "type": "project",
   "keywords": [],
   "minimum-stability": "dev",
-  "authors": [
-    {
-      "name": "Andrew Taylor",
-      "email": "andrew@ataylor.me",
-      "homepage": "http://www.ataylor.me"
-    }
-  ],
   "repositories": [
     {
       "type": "composer",
