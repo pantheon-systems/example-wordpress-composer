@@ -28,6 +28,12 @@ machine:
     TERMINUS_ENV: ${TERMINUS_ENV:-$DEFAULT_ENV}
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     PATH: $PATH:~/.composer/vendor/bin:~/.config/composer/vendor/bin:tests/scripts
+    WORDPRESS_ADMIN_USERNAME: pantheon
+    # A random password is set in the dependencies:pre stage as a text file.
+    # This line reads the same file repeatedly. If the openssl call were used
+    # in this step, it would result in a different password being used in each
+    # line of other steps. Each CircleCI command runs in a separate shell.
+    WORDPRESS_ADMIN_PASSWORD: $(cat ~/WORDPRESS_ADMIN_PASSWORD)
 
 dependencies:
   cache_directories:
@@ -56,6 +62,12 @@ dependencies:
     - terminus build-env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes --notify="$NOTIFY"
 test:
   override:
+    # The tests in the suite have spurious fails when working with an
+    # all-Composer based site. Pull in latest fixes that might not be present
+    # in composer.lock.
+    # @todo, remove the need for this update and for this dependency to be
+    # on an alternate branch.
+    - composer update pantheon-systems/pantheon-wordpress-upstream-tests
     - run-behat
   post:
     - terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
