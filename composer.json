@@ -71,9 +71,7 @@
       "./scripts/composer/install-or-update"
     ],
     "cleanup": [
-      "rsync -a web/wp/wp-content/mu-plugins/* web/wp-content/mu-plugins/",
-      "rm web/wp/wp-config.php",
-      "rm -rf web/wp/wp-content"
+      "./scripts/composer/cleanup-composer"
     ],
     "post-install-cmd": [
       "@cleanup"
