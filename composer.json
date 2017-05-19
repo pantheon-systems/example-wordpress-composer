@@ -58,6 +58,12 @@
     "secure-http": false
   },
   "extra": {
+    "build-env": {
+      "install-cms": [
+        "wp core install --title={site-name} --url=' ' --admin_user={account-name} --admin_email={account-mail} --admin_password={account-pass}",
+        "wp option update permalink_structure '/%postname%/'"
+      ]
+    },
     "installer-paths": {
       "web/wp-content/plugins/{$name}/": [
         "type:wordpress-plugin"
@@ -85,8 +91,8 @@
     "post-create-project-cmd": [
       "@cleanup"
     ]
+  },
+  "require-dev": {
+    "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-handle-wp-subdir--rebase"
   }
 }
-
-
-

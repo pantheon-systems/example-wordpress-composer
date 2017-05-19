@@ -28,6 +28,7 @@ machine:
     TERMINUS_ENV: ${TERMINUS_ENV:-$DEFAULT_ENV}
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     PATH: $PATH:~/.composer/vendor/bin:~/.config/composer/vendor/bin:tests/scripts
+    WORDPRESS_ADMIN_USERNAME: pantheon
 
 dependencies:
   cache_directories:
@@ -54,9 +55,16 @@ dependencies:
     - composer -n build-assets
     - terminus env:wake -n "$TERMINUS_SITE.dev"
     - terminus build-env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes --notify="$NOTIFY"
+    # @todo, Right now it is necessary to re-copy the db from dev, to multidev
+    # on the non-first build of a PR. Behat tests make assumptions about the
+    # number of comments/posts/tags. Behat tests should be fixed but also
+    # there is a question of how environments should be reset. Should the DB
+    # be recopied for every build?
+    - terminus env:clone-content "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes
+
 test:
   override:
-    - echo test
+    - run-behat
   post:
     - terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
 
