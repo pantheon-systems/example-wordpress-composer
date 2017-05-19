@@ -60,7 +60,7 @@
   "extra": {
     "build-env": {
       "install-cms": [
-        "wp core install --title={site-name} --url=' ' --admin_user={account-name} --admin_email={account-mail} --admin_password={account-pass}"
+        "wp core install --title={site-name} --url=' ' --admin_user={account-name} --admin_email={account-mail} --admin_password={account-pass}",
         "wp option update permalink_structure '/%postname%/'"
       ]
     },
