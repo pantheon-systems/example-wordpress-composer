@@ -1,21 +1,18 @@
-#
-# behat.yml file for testing on Pantheon.
-#
+# behat.yml
 default:
   suites:
-    default:
+    # This suite is present as an example. The tests in this suite will only
+    # pass on freshly installed copy of WordPress.
+    core:
+      filters:
+       tags: "~@upstreamonly"
       paths:
-        - %paths.base%/features
-        - %paths.base%/site-features
+        - ../vendor/pantheon-systems/pantheon-wordpress-upstream-tests/features/
       contexts:
-        - FeatureContext
-        - Drupal\DrupalExtension\Context\DrupalContext
-        - Drupal\DrupalExtension\Context\MinkContext
+        - Behat\MinkExtension\Context\MinkContext
+        - PantheonSystems\PantheonWordPressUpstreamTests\Behat\AdminLogIn
+        - PantheonSystems\PantheonWordPressUpstreamTests\Behat\ResponseHeader
   extensions:
     Behat\MinkExtension:
+      # base_url set by ENV
       goutte: ~
-      selenium2: ~
-      files_path: './data-files'
-    Drupal\DrupalExtension:
-      blackbox: ~
-      api_driver: 'drush'
