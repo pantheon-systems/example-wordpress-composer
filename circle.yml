@@ -39,6 +39,8 @@ dependencies:
   cache_directories:
     - ~/.composer/cache
   pre:
+    # The environment step uses this file to set a global variable.
+    - echo $(openssl rand -hex 8) > ~/WORDPRESS_ADMIN_PASSWORD
     - echo "Begin build for $CIRCLE_ENV${PR_ENV:+ for }$PR_ENV. Pantheon test environment is $TERMINUS_SITE.$TERMINUS_ENV"
     - |
       if [ -n "$GITHUB_TOKEN" ] ; then
@@ -67,7 +69,7 @@ test:
     # in composer.lock.
     # @todo, remove the need for this update and for this dependency to be
     # on an alternate branch.
-    - composer update pantheon-systems/pantheon-wordpress-upstream-tests
+#    - composer update pantheon-systems/pantheon-wordpress-upstream-tests
     - run-behat
   post:
     - terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
