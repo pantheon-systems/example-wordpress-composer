@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "faebd240d5ac50a8b2a396e4148536a6",
+    "content-hash": "9deaa66b24bc59ff92676e8634cb66d0",
     "packages": [
         {
             "name": "composer/installers",
@@ -1075,7 +1075,7 @@
                     "email": "noreply@pantheon.io"
                 }
             ],
-            "time": "2017-05-19T18:02:52+00:00"
+            "time": "2017-05-19 18:02:52"
         },
         {
             "name": "psr/container",
@@ -1977,7 +1977,7 @@
     "stability-flags": {
         "pantheon-systems/pantheon-wordpress-upstream-tests": 20
     },
-    "prefer-stable": true,
+    "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=5.2"
