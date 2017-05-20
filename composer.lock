@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9deaa66b24bc59ff92676e8634cb66d0",
+    "content-hash": "ae9d2d5f2b6a389d314b43204649ba84",
     "packages": [
         {
             "name": "composer/installers",
@@ -1049,12 +1049,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pantheon-systems/pantheon-wordpress-upstream-tests.git",
-                "reference": "a4203746ffeca98ee1b23a0c31c4a14d769134d3"
+                "reference": "0fe69a9fba90353854c1448bbe05f31350c9c766"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pantheon-systems/pantheon-wordpress-upstream-tests/zipball/a4203746ffeca98ee1b23a0c31c4a14d769134d3",
-                "reference": "a4203746ffeca98ee1b23a0c31c4a14d769134d3",
+                "url": "https://api.github.com/repos/pantheon-systems/pantheon-wordpress-upstream-tests/zipball/0fe69a9fba90353854c1448bbe05f31350c9c766",
+                "reference": "0fe69a9fba90353854c1448bbe05f31350c9c766",
                 "shasum": ""
             },
             "require": {
@@ -1075,7 +1075,7 @@
                     "email": "noreply@pantheon.io"
                 }
             ],
-            "time": "2017-05-19 18:02:52"
+            "time": "2017-05-19T19:06:07+00:00"
         },
         {
             "name": "psr/container",
