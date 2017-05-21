@@ -15,9 +15,5 @@ echo
 # Exit immediately on errors, and echo commands as they are executed.
 set -ex
 
-terminus wp $TERMINUS_SITE.$TERMINUS_ENV -- option update permalink_structure "/%postname%/"
-terminus wp $TERMINUS_SITE.$TERMINUS_ENV -- option update permalink_structure ""
-terminus wp $TERMINUS_SITE.$TERMINUS_ENV -- option update permalink_structure "/%postname%/"
-
 export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"base_url" : "http://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/wp"} }}'
 cd tests && ../vendor/bin/behat --config=behat-pantheon.yml --strict "$@"
