@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ae9d2d5f2b6a389d314b43204649ba84",
+    "content-hash": "c14ad3a178fa8f641479edfa01fa1264",
     "packages": [
         {
             "name": "composer/installers",
@@ -1045,16 +1045,16 @@
         },
         {
             "name": "pantheon-systems/pantheon-wordpress-upstream-tests",
-            "version": "dev-handle-wp-subdir--rebase",
+            "version": "dev-handle-wp-subdir--rebase--with-mink",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pantheon-systems/pantheon-wordpress-upstream-tests.git",
-                "reference": "e7f3460155045511805d199cf58a9d320a877c0a"
+                "reference": "8f21271659965c41e26fa6fd602550ebf1a80838"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pantheon-systems/pantheon-wordpress-upstream-tests/zipball/e7f3460155045511805d199cf58a9d320a877c0a",
-                "reference": "e7f3460155045511805d199cf58a9d320a877c0a",
+                "url": "https://api.github.com/repos/pantheon-systems/pantheon-wordpress-upstream-tests/zipball/8f21271659965c41e26fa6fd602550ebf1a80838",
+                "reference": "8f21271659965c41e26fa6fd602550ebf1a80838",
                 "shasum": ""
             },
             "require": {
@@ -1075,7 +1075,7 @@
                     "email": "noreply@pantheon.io"
                 }
             ],
-            "time": "2017-05-21T03:32:24+00:00"
+            "time": "2017-05-23T22:57:43+00:00"
         },
         {
             "name": "psr/container",
