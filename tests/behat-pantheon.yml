@@ -9,7 +9,7 @@ default:
       paths:
         - ../vendor/pantheon-systems/pantheon-wordpress-upstream-tests/features/
       contexts:
-        - Behat\MinkExtension\Context\MinkContext
+        - PantheonSystems\PantheonWordPressUpstreamTests\Behat\MinkContext
         - PantheonSystems\PantheonWordPressUpstreamTests\Behat\AdminLogIn
         - PantheonSystems\PantheonWordPressUpstreamTests\Behat\ResponseHeader
   extensions:
