@@ -28,7 +28,16 @@ machine:
     TERMINUS_ENV: ${TERMINUS_ENV:-$DEFAULT_ENV}
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     PATH: $PATH:~/.composer/vendor/bin:~/.config/composer/vendor/bin:tests/scripts
-    WORDPRESS_ADMIN_USERNAME: pantheon
+    WORDPRESS_ADMIN_USERNAME: admin
+    # There is a mismatch in variable names used by
+    # the terminus build plugin and the Behat tests.
+    # So the variable ADMIN_PASSWORD needs to be
+    # reassigned to WORDPRESS_ADMIN_PASSWORD.
+    # And because CircleCI does not allow for simple
+    # setting of a private variable to a public
+    # variable, this workaround of writing to a file is
+    # used.
+    WORDPRESS_ADMIN_PASSWORD: $(cat  ~/WORDPRESS_ADMIN_PASSWORD)
 
 dependencies:
   cache_directories:
@@ -42,6 +51,7 @@ dependencies:
     - git config --global user.email "$GIT_EMAIL"
     - git config --global user.name "Circle CI"
   override:
+    - echo $ADMIN_PASSWORD > ~/WORDPRESS_ADMIN_PASSWORD
     - composer global require -n "hirak/prestissimo:^0.3"
     - composer global require -n "consolidation/cgr"
     - cgr "pantheon-systems/terminus:^1"
