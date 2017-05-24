@@ -74,6 +74,8 @@ dependencies:
 
 test:
   override:
+    # @todo, remove this composer update.
+    - composer update pantheon-systems/pantheon-wordpress-upstream-tests
     - run-behat
   post:
     - terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
