@@ -75,6 +75,7 @@ dependencies:
 test:
   override:
     # @todo, remove this composer update.
+    # https://github.com/stevector/example-wordpress-composer/issues/16
     - composer update pantheon-systems/pantheon-wordpress-upstream-tests
     - run-behat
   post:
