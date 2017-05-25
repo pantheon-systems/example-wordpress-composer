@@ -15,5 +15,7 @@ echo
 # Exit immediately on errors, and echo commands as they are executed.
 set -ex
 
-export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"base_url" : "http://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/wp"} }}'
+export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"base_url" : "https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/"} }}'
+export RELOCATED_WP_ADMIN=TRUE
+
 cd tests && ../vendor/bin/behat --config=behat-pantheon.yml --strict "$@"
