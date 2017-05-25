@@ -84,6 +84,6 @@
     ]
   },
   "require-dev": {
-    "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-handle-wp-subdir--rebase--with-mink"
+    "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-handle-wp-subdir--rebase--with-mink--rebase"
   }
 }
