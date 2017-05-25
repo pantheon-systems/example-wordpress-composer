@@ -1049,12 +1049,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pantheon-systems/pantheon-wordpress-upstream-tests.git",
-                "reference": "a272593a72e5a1de87006869dd76202ab7a1a2fa"
+                "reference": "733868ee51d499d2e09726de4b587efa890d442d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pantheon-systems/pantheon-wordpress-upstream-tests/zipball/a272593a72e5a1de87006869dd76202ab7a1a2fa",
-                "reference": "a272593a72e5a1de87006869dd76202ab7a1a2fa",
+                "url": "https://api.github.com/repos/pantheon-systems/pantheon-wordpress-upstream-tests/zipball/733868ee51d499d2e09726de4b587efa890d442d",
+                "reference": "733868ee51d499d2e09726de4b587efa890d442d",
                 "shasum": ""
             },
             "require": {
@@ -1075,7 +1075,7 @@
                     "email": "noreply@pantheon.io"
                 }
             ],
-            "time": "2017-05-24T19:55:05+00:00"
+            "time": "2017-05-25T01:21:16+00:00"
         },
         {
             "name": "psr/container",
