@@ -14,15 +14,15 @@
       "type": "package",
       "package": {
         "name": "pantheon-systems/wordpress",
-        "version": "4.7.3",
+        "version": "4.7.5",
         "dist": {
-          "url": "https://github.com/pantheon-systems/WordPress/archive/4.7.3.zip",
+          "url": "https://github.com/pantheon-systems/WordPress/archive/4.7.5.zip",
           "type": "zip"
         },
         "source": {
           "url": "git@github.com:pantheon-systems/WordPress.git",
           "type": "git",
-          "reference": "4.7.3"
+          "reference": "4.7.5"
         },
         "type": "wordpress-core",
         "require": {
@@ -35,15 +35,17 @@
     }
   ],
   "require": {
-    "php": ">=5.2",
     "composer/installers": "~1.0",
     "vlucas/phpdotenv": "^2.4.0",
     "wpackagist-plugin/wp-native-php-sessions": "^0.6.0",
-    "wpackagist-plugin/pantheon-advanced-page-cache": "^0.1.2",
+    "wpackagist-plugin/pantheon-advanced-page-cache": "^0.1.4",
     "wpackagist-plugin/wp-cfm": "^1.4.5",
     "wpackagist-theme/twentyseventeen": "^1.1",
-    "pantheon-systems/wordpress": "^4.7.3",
+    "pantheon-systems/wordpress": "^4.7.5",
     "roots/wp-password-bcrypt": "^1.0.0"
+  },
+  "require-dev": {
+    "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-handle-wp-subdir--rebase--with-mink--rebase"
   },
   "config": {
     "vendor-dir": "vendor",
@@ -83,7 +85,5 @@
       "@cleanup"
     ]
   },
-  "require-dev": {
-    "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-handle-wp-subdir--rebase--with-mink--rebase"
-  }
+  "prefer-stable": true
 }
