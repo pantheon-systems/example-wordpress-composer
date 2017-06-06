@@ -320,7 +320,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-cfm.zip",
+                "url": "https://downloads.wordpress.org/plugin/wp-cfm.zip?timestamp=1467943964",
                 "reference": "trunk",
                 "shasum": null
             },
@@ -1049,12 +1049,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pantheon-systems/pantheon-wordpress-upstream-tests.git",
-                "reference": "733868ee51d499d2e09726de4b587efa890d442d"
+                "reference": "64bf0a95bee100699e9e519a4c0618d9c3284449"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pantheon-systems/pantheon-wordpress-upstream-tests/zipball/733868ee51d499d2e09726de4b587efa890d442d",
-                "reference": "733868ee51d499d2e09726de4b587efa890d442d",
+                "url": "https://api.github.com/repos/pantheon-systems/pantheon-wordpress-upstream-tests/zipball/64bf0a95bee100699e9e519a4c0618d9c3284449",
+                "reference": "64bf0a95bee100699e9e519a4c0618d9c3284449",
                 "shasum": ""
             },
             "require": {
@@ -1075,7 +1075,7 @@
                     "email": "noreply@pantheon.io"
                 }
             ],
-            "time": "2017-05-25T01:21:16+00:00"
+            "time": "2017-06-04T23:25:50+00:00"
         },
         {
             "name": "psr/container",
