@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d3373af532981d63822cf937ed75df8",
+    "content-hash": "62283b629d9707494c179f38598ec9af",
     "packages": [
         {
             "name": "composer/installers",
@@ -308,7 +308,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/plugin/pantheon-advanced-page-cache.0.1.5.zip",
-                "reference": null,
+                "reference": "tags/0.1.5",
                 "shasum": null
             },
             "require": {
@@ -348,7 +348,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/plugin/wp-native-php-sessions.0.6.1.zip",
-                "reference": null,
+                "reference": "tags/0.6.1",
                 "shasum": null
             },
             "require": {
@@ -368,7 +368,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/theme/twentyseventeen.1.2.zip",
-                "reference": null,
+                "reference": "1.2",
                 "shasum": null
             },
             "require": {
@@ -1052,16 +1052,16 @@
         },
         {
             "name": "pantheon-systems/pantheon-wordpress-upstream-tests",
-            "version": "dev-handle-wp-subdir--rebase--with-mink--rebase",
+            "version": "dev-relocated-wp-admin-support",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pantheon-systems/pantheon-wordpress-upstream-tests.git",
-                "reference": "64bf0a95bee100699e9e519a4c0618d9c3284449"
+                "reference": "7f3c8285ee6cc2e15fb8fe435a525ab1bc8a90c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pantheon-systems/pantheon-wordpress-upstream-tests/zipball/64bf0a95bee100699e9e519a4c0618d9c3284449",
-                "reference": "64bf0a95bee100699e9e519a4c0618d9c3284449",
+                "url": "https://api.github.com/repos/pantheon-systems/pantheon-wordpress-upstream-tests/zipball/7f3c8285ee6cc2e15fb8fe435a525ab1bc8a90c2",
+                "reference": "7f3c8285ee6cc2e15fb8fe435a525ab1bc8a90c2",
                 "shasum": ""
             },
             "require": {
@@ -1082,7 +1082,7 @@
                     "email": "noreply@pantheon.io"
                 }
             ],
-            "time": "2017-06-04T23:25:50+00:00"
+            "time": "2017-06-07T02:22:49+00:00"
         },
         {
             "name": "psr/container",

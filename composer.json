@@ -45,7 +45,7 @@
     "roots/wp-password-bcrypt": "^1.0.0"
   },
   "require-dev": {
-    "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-handle-wp-subdir--rebase--with-mink--rebase"
+    "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-relocated-wp-admin-support"
   },
   "config": {
     "vendor-dir": "vendor",
