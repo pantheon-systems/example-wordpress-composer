@@ -70,7 +70,7 @@
   },
   "scripts": {
     "build-assets": [
-      "./scripts/composer/install-or-update"
+      "composer install --optimize-autoloader"
     ],
     "cleanup": [
       "./scripts/composer/cleanup-composer"
