@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "name": "pantheon-systems/example-wordpress-composer",
-=======
-  "name": "stevector/example-wordpress-composer",
->>>>>>> 15eebdee79010c08596a9da9325b2530b0b8a614
   "description": "",
   "version": "0.1.0",
   "type": "project",
@@ -37,7 +33,7 @@
         }
       }
     },
-    {           
+    {
       "type": "vcs",
       "url": "https://github.com/ataylorme/behat-wordpress-extension"
     }
