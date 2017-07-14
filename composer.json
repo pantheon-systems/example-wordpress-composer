@@ -1,0 +1,96 @@
+{
+  "name": "pantheon-systems/example-wordpress-composer",
+  "description": "",
+  "version": "0.1.0",
+  "type": "project",
+  "keywords": [],
+  "minimum-stability": "dev",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "pantheon-systems/wordpress",
+        "version": "4.8",
+        "dist": {
+          "url": "https://github.com/pantheon-systems/WordPress/archive/4.8.zip",
+          "type": "zip"
+        },
+        "source": {
+          "url": "git@github.com:pantheon-systems/WordPress.git",
+          "type": "git",
+          "reference": "4.8"
+        },
+        "type": "wordpress-core",
+        "require": {
+          "johnpbloch/wordpress-core-installer": "~0.1"
+        },
+        "extra": {
+          "wordpress-install-dir": "web/wp"
+        }
+      }
+    },
+    {           
+      "type": "vcs",
+      "url": "https://github.com/ataylorme/behat-wordpress-extension"
+    }
+  ],
+  "require": {
+    "composer/installers": "~1.0",
+    "vlucas/phpdotenv": "^2.4.0",
+    "wpackagist-plugin/wp-native-php-sessions": "^0.6.0",
+    "wpackagist-plugin/pantheon-advanced-page-cache": "^0.1.4",
+    "wpackagist-plugin/wp-cfm": "^1.4.5",
+    "wpackagist-theme/twentyseventeen": "^1.1",
+    "pantheon-systems/wordpress": "^4.8",
+    "roots/wp-password-bcrypt": "^1.0.0"
+  },
+  "require-dev": {
+    "ataylorme/behat-wordpress-extension": "dev-pantheon-fixes",
+    "behat/mink-goutte-driver": "^1.2",
+    "behat/mink-selenium2-driver": "^1.3",
+	  "roave/security-advisories": "dev-master"
+  },
+  "config": {
+    "vendor-dir": "vendor",
+    "preferred-install": "dist",
+    "secure-http": false
+  },
+  "extra": {
+    "build-env": {
+      "install-cms": [
+        "wp core install --title={site-name} --url={site-url} --admin_user={account-name} --admin_email={account-mail} --admin_password={account-pass}",
+        "wp option update permalink_structure '/%postname%/'"
+      ]
+    },
+    "installer-paths": {
+      "web/wp-content/plugins/{$name}/": [
+        "type:wordpress-plugin"
+      ],
+      "web/wp-content/themes/{$name}/": [
+        "type:wordpress-theme"
+      ]
+    }
+  },
+  "scripts": {
+    "build-assets": [
+      "composer install --optimize-autoloader"
+    ],
+    "cleanup": [
+      "./scripts/composer/cleanup-composer"
+    ],
+    "post-install-cmd": [
+      "@cleanup"
+    ],
+    "post-update-cmd": [
+      "@cleanup"
+    ],
+    "post-create-project-cmd": [
+      "@cleanup"
+    ]
+  },
+  "prefer-stable": true
+}
