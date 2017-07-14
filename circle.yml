@@ -4,7 +4,7 @@ machine:
     America/Chicago
   php:
     # https://circleci.com/docs/build-image-trusty/#php
-    version: 7.0.11
+    version: 7.1.0
   environment:
     # In addition to the environment variables defined in this file, also
     # add the following variables in the Circle CI UI.

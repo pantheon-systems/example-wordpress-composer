@@ -1,18 +1,34 @@
 # behat.yml
 default:
   suites:
-    # This suite is present as an example. The tests in this suite will only
-    # pass on freshly installed copy of WordPress.
-    core:
-      filters:
-       tags: "~@upstreamonly"
+    default:
       paths:
-        - ../vendor/pantheon-systems/pantheon-wordpress-upstream-tests/features/
+        - ./behat/
       contexts:
-        - PantheonSystems\PantheonWordPressUpstreamTests\Behat\MinkContext
-        - PantheonSystems\PantheonWordPressUpstreamTests\Behat\AdminLogIn
-        - PantheonSystems\PantheonWordPressUpstreamTests\Behat\ResponseHeader
+        - Behat\MinkExtension\Context\MinkContext
+        - PaulGibbs\WordpressBehatExtension\Context\ContentContext
+        - PaulGibbs\WordpressBehatExtension\Context\DashboardContext
+        - PaulGibbs\WordpressBehatExtension\Context\SiteContext
+        - PaulGibbs\WordpressBehatExtension\Context\UserContext
+        - PaulGibbs\WordpressBehatExtension\Context\WordpressContext
+        - PaulGibbs\WordpressBehatExtension\Context\EditPostContext
+        - PaulGibbs\WordpressBehatExtension\Context\WidgetContext
+
   extensions:
     Behat\MinkExtension:
       # base_url set by ENV
-      goutte: ~
+      browser_name: chrome
+      default_session: default
+      javascript_session: selenium2
+      sessions:
+        default:
+          goutte:
+            guzzle_parameters:
+              verify: false  # Allow self-signed SSL certificates
+        selenium2:
+          selenium2: ~
+
+    PaulGibbs\WordpressBehatExtension:
+      # WordPress username/password and site_url set by ENV
+      default_driver: wpcli
+      path: web/wp
