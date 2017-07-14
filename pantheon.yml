@@ -1,0 +1,19 @@
+api_version: 1
+web_docroot: true
+php_version: 7.0
+workflows:
+  deploy_product:
+    after:
+      -
+        type: webphp
+        description: 'Run composer prepare-for-pantheon'
+        script: private/scripts/deploy_product/prepare-for-pantheon.php
+      -
+        type: webphp
+        description: 'Run composer install & drupal-scaffold'
+        script: private/scripts/deploy_product/composer-install.php
+  sync_code:
+    after:
+      - type: webphp
+        description: Push changes back to GitHub if needed
+        script: private/scripts/quicksilver/quicksilver-pushback/push-back-to-github.php

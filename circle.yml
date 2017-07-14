@@ -1,0 +1,83 @@
+# https://circleci.com/docs/configuration#machine
+machine:
+  timezone:
+    America/Chicago
+  php:
+    # https://circleci.com/docs/build-image-trusty/#php
+    version: 7.1.0
+  environment:
+    # In addition to the environment variables defined in this file, also
+    # add the following variables in the Circle CI UI.
+    #
+    # See: https://circleci.com/docs/1.0/environment-variables/
+    #
+    # TERMINUS_SITE:  Name of the Pantheon site to run tests on, e.g. my_site
+    # TERMINUS_TOKEN: The Pantheon machine token
+    # GITHUB_TOKEN:   The GitHub personal access token
+    # GIT_EMAIL:      The email address to use when making commits
+    #
+    # TEST_SITE_NAME: The name of the test site to provide when installing.
+    # ADMIN_PASSWORD: The admin password to use when installing.
+    # ADMIN_EMAIL:    The email address to give the admin when installing.
+    #
+    # The variables below usually do not need to be modified.
+    BRANCH: $(echo $CIRCLE_BRANCH | grep -v '^\(master\|[0-9]\+.x\)$')
+    PR_ENV: ${BRANCH:+pr-$BRANCH}
+    CIRCLE_ENV: ci-$CIRCLE_BUILD_NUM
+    DEFAULT_ENV: $(echo ${PR_ENV:-$CIRCLE_ENV} | tr '[:upper:]' '[:lower:]' | sed 's/[^0-9a-z-]//g' | cut -c -11 | sed 's/-$//')
+    TERMINUS_ENV: ${TERMINUS_ENV:-$DEFAULT_ENV}
+    NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
+    PATH: $PATH:~/bin:tests/scripts
+    WORDPRESS_ADMIN_USERNAME: admin
+    # There is a mismatch in variable names used by
+    # the terminus build plugin and the Behat tests.
+    # So the variable ADMIN_PASSWORD needs to be
+    # reassigned to WORDPRESS_ADMIN_PASSWORD.
+    # And because CircleCI does not allow for simple
+    # setting of a private variable to a public
+    # variable, this workaround of writing to a file is
+    # used.
+    WORDPRESS_ADMIN_PASSWORD: $(cat  ~/WORDPRESS_ADMIN_PASSWORD)
+
+dependencies:
+  cache_directories:
+    - ~/.composer/cache
+  pre:
+    - echo "Begin build for $CIRCLE_ENV${PR_ENV:+ for }$PR_ENV. Pantheon test environment is $TERMINUS_SITE.$TERMINUS_ENV"
+    - |
+      if [ -n "$GITHUB_TOKEN" ] ; then
+        composer config --global github-oauth.github.com $GITHUB_TOKEN
+      fi
+    - git config --global user.email "$GIT_EMAIL"
+    - git config --global user.name "Circle CI"
+  override:
+    - echo $ADMIN_PASSWORD > ~/WORDPRESS_ADMIN_PASSWORD
+    - composer global require -n "hirak/prestissimo:^0.3"
+    - composer global require -n "consolidation/cgr"
+    - cgr "pantheon-systems/terminus:^1"
+    - terminus --version
+    - mkdir -p ~/.terminus/plugins
+    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:^1
+    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
+  post:
+    - terminus auth:login -n --machine-token="$TERMINUS_TOKEN"
+    - terminus build:env:delete:ci -n "$TERMINUS_SITE" --keep=2 --yes
+    - composer -n build-assets
+    - terminus env:wake -n "$TERMINUS_SITE.dev"
+    - terminus build:env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes --notify="$NOTIFY"
+    # This line will re-copy the database to the multidev environment to account
+    # for multiple CI builds running on the same multidev.
+    - terminus env:clone-content "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes
+
+test:
+  override:
+    - run-behat
+  post:
+    - terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
+
+deployment:
+  build-assets:
+    branch: master
+    commands:
+      - terminus build-env:merge -n "$TERMINUS_SITE.$TERMINUS_ENV" --yes
+      - terminus build-env:delete:pr -n "$TERMINUS_SITE" --yes
