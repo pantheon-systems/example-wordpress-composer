@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "374fd895c0b4532d77d13e97d168df1d",
+    "content-hash": "392b36e4e6dec9d751edc00be9abe551",
     "packages": [
         {
             "name": "composer/installers",
@@ -169,26 +169,38 @@
             "time": "2015-06-11T15:15:30+00:00"
         },
         {
-            "name": "pantheon-systems/wordpress",
+            "name": "pantheon-systems/wordpress-composer",
             "version": "4.8",
             "source": {
                 "type": "git",
-                "url": "git@github.com:pantheon-systems/WordPress.git",
-                "reference": "4.8"
+                "url": "https://github.com/pantheon-systems/wordpress-composer.git",
+                "reference": "2ab6e15c25e1bc24d97f99145fa7e927f485878e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/pantheon-systems/WordPress/archive/4.8.zip",
-                "reference": "4.8",
-                "shasum": null
+                "url": "https://api.github.com/repos/pantheon-systems/wordpress-composer/zipball/2ab6e15c25e1bc24d97f99145fa7e927f485878e",
+                "reference": "2ab6e15c25e1bc24d97f99145fa7e927f485878e",
+                "shasum": ""
             },
             "require": {
                 "johnpbloch/wordpress-core-installer": "~0.1"
             },
             "type": "wordpress-core",
             "extra": {
+                "branch-alias": {
+                    "dev-master": "4.x-dev"
+                },
                 "wordpress-install-dir": "web/wp"
-            }
+            },
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "WordPress for Pantheon with a composer.json file.",
+            "support": {
+                "source": "https://github.com/pantheon-systems/wordpress-composer/tree/4.8",
+                "issues": "https://github.com/pantheon-systems/wordpress-composer/issues"
+            },
+            "time": "2017-07-20T21:17:28+00:00"
         },
         {
             "name": "roots/wp-password-bcrypt",
