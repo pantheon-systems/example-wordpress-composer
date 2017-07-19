@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2faaf1db1cf3aa63a5ccb5ec0750aa1",
+    "content-hash": "374fd895c0b4532d77d13e97d168df1d",
     "packages": [
         {
             "name": "composer/installers",
@@ -308,7 +308,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/plugin/pantheon-advanced-page-cache.0.1.5.zip",
-                "reference": "tags/0.1.5",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -328,7 +328,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/plugin/wp-cfm.zip?timestamp=1467943964",
-                "reference": "trunk",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -368,7 +368,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/theme/twentyseventeen.1.3.zip",
-                "reference": "1.3",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -379,68 +379,6 @@
         }
     ],
     "packages-dev": [
-        {
-            "name": "ataylorme/behat-wordpress-extension",
-            "version": "dev-pantheon-fixes",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ataylorme/behat-wordpress-extension.git",
-                "reference": "6da988ecc23633388d7b5f5d13b571977b60f60a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ataylorme/behat-wordpress-extension/zipball/6da988ecc23633388d7b5f5d13b571977b60f60a",
-                "reference": "6da988ecc23633388d7b5f5d13b571977b60f60a",
-                "shasum": ""
-            },
-            "require": {
-                "behat/behat": "~3.1",
-                "behat/mink-goutte-driver": "~1.2",
-                "behat/mink-selenium2-driver": "~1.3",
-                "php": ">=5.6.0",
-                "roave/security-advisories": "dev-master",
-                "sensiolabs/behat-page-object-extension": "~2.1"
-            },
-            "require-dev": {
-                "squizlabs/php_codesniffer": "~3.0",
-                "wp-cli/wp-cli": "~1.0"
-            },
-            "suggest": {
-                "behat/mink-selenium2-driver": "JS-enabled Mink driver (requires Selenium2)"
-            },
-            "type": "behat-extension",
-            "autoload": {
-                "psr-4": {
-                    "PaulGibbs\\WordpressBehatExtension\\": "src"
-                },
-                "files": [
-                    "src/Util/functions.php"
-                ]
-            },
-            "license": [
-                "GPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Paul Gibbs",
-                    "email": "djpaul@gmail.com",
-                    "homepage": "http://byotos.com"
-                }
-            ],
-            "description": "WordHat is a Behat extension, integrating Behat, Mink, and WordPress. It provides WordPress-specific functionality for common testing scenarios specific to WordPress sites.",
-            "homepage": "https://wordhat.info",
-            "keywords": [
-                "WordPress",
-                "bdd",
-                "behat",
-                "extension",
-                "mink"
-            ],
-            "support": {
-                "source": "https://github.com/ataylorme/behat-wordpress-extension/tree/pantheon-fixes"
-            },
-            "time": "2017-07-13T22:44:51+00:00"
-        },
         {
             "name": "behat/behat",
             "version": "v3.3.1",
@@ -1353,6 +1291,66 @@
             "time": "2017-05-04T11:12:50+00:00"
         },
         {
+            "name": "paulgibbs/behat-wordpress-extension",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paulgibbs/behat-wordpress-extension.git",
+                "reference": "bf7650859898755071f909a0f5d29684c8d44633"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paulgibbs/behat-wordpress-extension/zipball/bf7650859898755071f909a0f5d29684c8d44633",
+                "reference": "bf7650859898755071f909a0f5d29684c8d44633",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "~3.1",
+                "behat/mink-goutte-driver": "~1.2",
+                "behat/mink-selenium2-driver": "~1.3",
+                "php": ">=5.6.0",
+                "roave/security-advisories": "dev-master",
+                "sensiolabs/behat-page-object-extension": "~2.1"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "~3.0",
+                "wp-cli/wp-cli": "~1.0"
+            },
+            "suggest": {
+                "behat/mink-selenium2-driver": "JS-enabled Mink driver (requires Selenium2)"
+            },
+            "type": "behat-extension",
+            "autoload": {
+                "psr-4": {
+                    "PaulGibbs\\WordpressBehatExtension\\": "src"
+                },
+                "files": [
+                    "src/Util/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Gibbs",
+                    "email": "djpaul@gmail.com",
+                    "homepage": "http://byotos.com"
+                }
+            ],
+            "description": "WordHat is a Behat extension, integrating Behat, Mink, and WordPress. It provides WordPress-specific functionality for common testing scenarios specific to WordPress sites.",
+            "homepage": "https://wordhat.info",
+            "keywords": [
+                "BDD",
+                "Behat",
+                "Mink",
+                "extension",
+                "wordpress"
+            ],
+            "time": "2017-07-19T11:34:14+00:00"
+        },
+        {
             "name": "psr/container",
             "version": "1.0.0",
             "source": {
@@ -1504,12 +1502,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "c1bdf69b424087447dc8e12d95b373c2b1cc77f2"
+                "reference": "fa53c38b02d1ec883f4ea2b2c05492da0c7611cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/c1bdf69b424087447dc8e12d95b373c2b1cc77f2",
-                "reference": "c1bdf69b424087447dc8e12d95b373c2b1cc77f2",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/fa53c38b02d1ec883f4ea2b2c05492da0c7611cf",
+                "reference": "fa53c38b02d1ec883f4ea2b2c05492da0c7611cf",
                 "shasum": ""
             },
             "conflict": {
@@ -1575,11 +1573,11 @@
                 "symfony/http-foundation": ">=2,<2.3.27|>=2.4,<2.5.11|>=2.6,<2.6.6",
                 "symfony/http-kernel": ">=2,<2.3.29|>=2.4,<2.5.12|>=2.6,<2.6.8",
                 "symfony/routing": ">=2,<2.0.19",
-                "symfony/security": ">=2.3,<2.3.37|>=2.4,<2.6.13|>=2.7,<2.7.9|>=2,<2.0.25|>=2.1,<2.1.13|>=2.2,<2.2.9",
-                "symfony/security-core": ">=2.8,<2.8.6|>=3,<3.0.6|>=2.4,<2.6.13|>=2.7,<2.7.9",
+                "symfony/security": ">=2.7.30,<2.7.32|>=2.8.23,<2.8.25|>=3.2.10,<3.2.12|>=3.3.3,<3.3.5|>=2.3,<2.3.37|>=2.4,<2.6.13|>=2.7,<2.7.9|>=2,<2.0.25|>=2.1,<2.1.13|>=2.2,<2.2.9",
+                "symfony/security-core": ">=2.7.30,<2.7.32|>=2.8.23,<2.8.25|>=3.2.10,<3.2.12|>=3.3.3,<3.3.5|>=2.8,<2.8.6|>=3,<3.0.6|>=2.4,<2.6.13|>=2.7,<2.7.9",
                 "symfony/security-http": ">=2.4,<2.7.13|>=2.3,<2.3.41|>=2.8,<2.8.6|>=3,<3.0.6",
                 "symfony/serializer": ">=2,<2.0.11",
-                "symfony/symfony": ">=2,<2.3.41|>=2.4,<2.7.13|>=2.8,<2.8.6|>=3,<3.0.6",
+                "symfony/symfony": ">=2,<2.3.41|>=2.4,<2.7.13|>=2.7.30,<2.7.32|>=2.8.23,<2.8.25|>=3.2.10,<3.2.12|>=3.3.3,<3.3.5|>=2.8,<2.8.6|>=3,<3.0.6",
                 "symfony/translation": ">=2,<2.0.17",
                 "symfony/validator": ">=2,<2.0.24|>=2.1,<2.1.12|>=2.2,<2.2.5|>=2.3,<2.3.3",
                 "symfony/web-profiler-bundle": ">=2,<2.3.19|>=2.4,<2.4.9|>=2.5,<2.5.4",
@@ -1633,7 +1631,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2017-07-12T12:45:47+00:00"
+            "time": "2017-07-18T08:09:10+00:00"
         },
         {
             "name": "sensiolabs/behat-page-object-extension",
@@ -1704,16 +1702,16 @@
         },
         {
             "name": "symfony/browser-kit",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/browser-kit.git",
-                "reference": "3a4435e79a8401746e8525e98039199d0924b4e5"
+                "reference": "8079a6b3668ef15cdbf73a4c7d31081abb8bb5f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/3a4435e79a8401746e8525e98039199d0924b4e5",
-                "reference": "3a4435e79a8401746e8525e98039199d0924b4e5",
+                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/8079a6b3668ef15cdbf73a4c7d31081abb8bb5f0",
+                "reference": "8079a6b3668ef15cdbf73a4c7d31081abb8bb5f0",
                 "shasum": ""
             },
             "require": {
@@ -1757,11 +1755,11 @@
             ],
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
-            "time": "2017-06-24T09:29:48+00:00"
+            "time": "2017-07-12T13:03:20+00:00"
         },
         {
             "name": "symfony/class-loader",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/class-loader.git",
@@ -1817,7 +1815,7 @@
         },
         {
             "name": "symfony/config",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
@@ -1879,7 +1877,7 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
@@ -1948,7 +1946,7 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
@@ -2001,7 +1999,7 @@
         },
         {
             "name": "symfony/debug",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
@@ -2057,16 +2055,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "986a633c92220ecb22ad06820a1df126c7a4f9eb"
+                "reference": "761e51a86f35f5b3e213e9b7f554fd91f9bffae4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/986a633c92220ecb22ad06820a1df126c7a4f9eb",
-                "reference": "986a633c92220ecb22ad06820a1df126c7a4f9eb",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/761e51a86f35f5b3e213e9b7f554fd91f9bffae4",
+                "reference": "761e51a86f35f5b3e213e9b7f554fd91f9bffae4",
                 "shasum": ""
             },
             "require": {
@@ -2123,11 +2121,11 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2017-06-20T14:01:46+00:00"
+            "time": "2017-07-17T14:07:10+00:00"
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
@@ -2183,7 +2181,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
@@ -2246,16 +2244,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "311fa718389efbd8b627c272b9324a62437018cc"
+                "reference": "427987eb4eed764c3b6e38d52a0f87989e010676"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/311fa718389efbd8b627c272b9324a62437018cc",
-                "reference": "311fa718389efbd8b627c272b9324a62437018cc",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/427987eb4eed764c3b6e38d52a0f87989e010676",
+                "reference": "427987eb4eed764c3b6e38d52a0f87989e010676",
                 "shasum": ""
             },
             "require": {
@@ -2291,7 +2289,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2017-06-24T09:29:48+00:00"
+            "time": "2017-07-11T07:17:58+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -2354,7 +2352,7 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
@@ -2419,7 +2417,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
@@ -2583,7 +2581,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "ataylorme/behat-wordpress-extension": 20,
+        "paulgibbs/behat-wordpress-extension": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,
