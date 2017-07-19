@@ -18,7 +18,7 @@
     "wpackagist-plugin/pantheon-advanced-page-cache": "^0.1.4",
     "wpackagist-plugin/wp-cfm": "^1.4.5",
     "wpackagist-theme/twentyseventeen": "^1.1",
-    "pantheon-systems/wordpress-composer": "dev-master",
+    "pantheon-systems/wordpress-composer": "^4.9",
     "roots/wp-password-bcrypt": "^1.0.0"
   },
   "require-dev": {
