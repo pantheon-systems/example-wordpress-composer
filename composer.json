@@ -46,7 +46,8 @@
       "web/wp-content/themes/{$name}/": [
         "type:wordpress-theme"
       ]
-    }
+    },
+    "wordpress-install-dir": "web/wp"
   },
   "scripts": {
     "build-assets": [

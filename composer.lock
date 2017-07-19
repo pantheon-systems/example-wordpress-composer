@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8e8292cc0fecf230c4ec69feb2b5f1b",
+    "content-hash": "40457f5941c75d487bf614d5802f1f4d",
     "packages": [
         {
             "name": "composer/installers",
@@ -121,31 +121,83 @@
             "time": "2017-04-24T06:37:16+00:00"
         },
         {
-            "name": "pantheon-systems/wordpress-composer",
-            "version": "dev-master",
+            "name": "johnpbloch/wordpress-core-installer",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pantheon-systems/wordpress-composer.git",
-                "reference": "a669949176ea72de20b502e678808026bd3e2867"
+                "url": "https://github.com/johnpbloch/wordpress-core-installer.git",
+                "reference": "a04c2c383ef13aae077f36799ed2eafdebd618d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pantheon-systems/wordpress-composer/zipball/a669949176ea72de20b502e678808026bd3e2867",
-                "reference": "a669949176ea72de20b502e678808026bd3e2867",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core-installer/zipball/a04c2c383ef13aae077f36799ed2eafdebd618d2",
+                "reference": "a04c2c383ef13aae077f36799ed2eafdebd618d2",
                 "shasum": ""
             },
-            "type": "project",
+            "require": {
+                "composer-plugin-api": "^1.0"
+            },
+            "conflict": {
+                "composer/installers": "<1.0.6"
+            },
+            "require-dev": {
+                "composer/composer": "1.0.*@dev"
+            },
+            "type": "composer-plugin",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "4.x-dev"
+                "class": "johnpbloch\\Composer\\WordPressCorePlugin"
+            },
+            "autoload": {
+                "psr-0": {
+                    "johnpbloch\\Composer\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0+"
             ],
+            "authors": [
+                {
+                    "name": "John P. Bloch",
+                    "email": "me@johnpbloch.com"
+                }
+            ],
+            "description": "A custom installer to handle deploying WordPress with composer",
+            "keywords": [
+                "wordpress"
+            ],
+            "time": "2015-06-11T15:15:30+00:00"
+        },
+        {
+            "name": "pantheon-systems/wordpress-composer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pantheon-systems/wordpress-composer.git",
+                "reference": "1ea870c37924a0430b6a6a4681452b6602374391"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pantheon-systems/wordpress-composer/zipball/1ea870c37924a0430b6a6a4681452b6602374391",
+                "reference": "1ea870c37924a0430b6a6a4681452b6602374391",
+                "shasum": ""
+            },
+            "require": {
+                "johnpbloch/wordpress-core-installer": "~0.1"
+            },
+            "type": "wordpress-core",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.x-dev"
+                },
+                "wordpress-install-dir": "web/wp"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
             "description": "WordPress for Pantheon with a composer.json file.",
-            "time": "2017-07-10T23:53:44+00:00"
+            "time": "2017-07-19T16:46:51+00:00"
         },
         {
             "name": "roots/wp-password-bcrypt",
