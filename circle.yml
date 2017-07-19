@@ -57,7 +57,7 @@ dependencies:
     - cgr "pantheon-systems/terminus:^1"
     - terminus --version
     - mkdir -p ~/.terminus/plugins
-    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:^1
+    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:$BUILD_TOOLS_VERSION
     - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
   post:
     - terminus auth:login -n --machine-token="$TERMINUS_TOKEN"
