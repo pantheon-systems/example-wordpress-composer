@@ -1296,12 +1296,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/paulgibbs/behat-wordpress-extension.git",
-                "reference": "bf7650859898755071f909a0f5d29684c8d44633"
+                "reference": "e9e22cb2935927005217bab576214f858221d3e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paulgibbs/behat-wordpress-extension/zipball/bf7650859898755071f909a0f5d29684c8d44633",
-                "reference": "bf7650859898755071f909a0f5d29684c8d44633",
+                "url": "https://api.github.com/repos/paulgibbs/behat-wordpress-extension/zipball/e9e22cb2935927005217bab576214f858221d3e3",
+                "reference": "e9e22cb2935927005217bab576214f858221d3e3",
                 "shasum": ""
             },
             "require": {
@@ -1348,7 +1348,7 @@
                 "extension",
                 "wordpress"
             ],
-            "time": "2017-07-19T11:34:14+00:00"
+            "time": "2017-07-20T15:08:46+00:00"
         },
         {
             "name": "psr/container",
