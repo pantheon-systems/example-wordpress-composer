@@ -74,8 +74,8 @@
   "scripts": {
     "prepare-for-pantheon": "WordPressProject\\composer\\ScriptHandler::prepareForPantheon",
     "build-assets": [
-      "composer install --optimize-autoloader",
-      "@prepare-for-pantheon"
+      "@prepare-for-pantheon",
+      "composer install --optimize-autoloader"
     ],
     "cleanup": [
       "./scripts/composer/cleanup-composer"
