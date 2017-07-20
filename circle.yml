@@ -79,5 +79,5 @@ deployment:
   build-assets:
     branch: master
     commands:
-      - terminus build-env:merge -n "$TERMINUS_SITE.$TERMINUS_ENV" --yes
-      - terminus build-env:delete:pr -n "$TERMINUS_SITE" --yes
+      - terminus build:env:merge -n "$TERMINUS_SITE.$TERMINUS_ENV" --yes
+      - terminus build:env:delete:pr -n "$TERMINUS_SITE" --yes
