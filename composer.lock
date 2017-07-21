@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "61fc2701f2c2ad3bfa98265d92040903",
+    "content-hash": "c0c78641f1b4c2daec534aa085deaa41",
     "packages": [
         {
             "name": "composer/installers",
@@ -170,7 +170,7 @@
         },
         {
             "name": "pantheon-systems/quicksilver-pushback",
-            "version": "dev-master",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pantheon-systems/quicksilver-pushback.git",
@@ -2656,7 +2656,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "pantheon-systems/quicksilver-pushback": 20,
         "paulgibbs/behat-wordpress-extension": 20
     },
     "prefer-stable": true,
