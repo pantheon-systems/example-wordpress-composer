@@ -57,11 +57,11 @@
     ]
   },
   "scripts": {
-    "prepare-for-pantheon": "WordPressProject\\composer\\ScriptHandler::prepareForPantheon",
     "build-assets": [
       "@prepare-for-pantheon",
       "composer install --optimize-autoloader"
     ],
+    "prepare-for-pantheon": "WordPressProject\\composer\\ScriptHandler::prepareForPantheon",
     "cleanup": [
       "./scripts/composer/cleanup-composer"
     ],
