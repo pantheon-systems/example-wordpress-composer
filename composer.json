@@ -11,27 +11,8 @@
       "url": "https://wpackagist.org"
     },
     {
-      "type": "package",
-      "package": {
-        "name": "pantheon-systems/wordpress",
-        "version": "4.8",
-        "dist": {
-          "url": "https://github.com/pantheon-systems/WordPress/archive/4.8.zip",
-          "type": "zip"
-        },
-        "source": {
-          "url": "git@github.com:pantheon-systems/WordPress.git",
-          "type": "git",
-          "reference": "4.8"
-        },
-        "type": "wordpress-core",
-        "require": {
-          "johnpbloch/wordpress-core-installer": "~0.1"
-        },
-        "extra": {
-          "wordpress-install-dir": "web/wp"
-        }
-      }
+      "type": "vcs",
+      "url": "https://github.com/pantheon-systems/wordpress-composer"
     }
   ],
   "require": {
@@ -41,7 +22,7 @@
     "wpackagist-plugin/pantheon-advanced-page-cache": "^0.1.4",
     "wpackagist-plugin/wp-cfm": "^1.4.5",
     "wpackagist-theme/twentyseventeen": "^1.1",
-    "pantheon-systems/wordpress": "^4.8",
+    "pantheon-systems/wordpress-composer": "^4.8",
     "roots/wp-password-bcrypt": "^1.0.0"
   },
   "require-dev": {
@@ -56,6 +37,7 @@
     "secure-http": false
   },
   "extra": {
+    "wordpress-install-dir": "web/wp",
     "build-env": {
       "install-cms": [
         "wp core install --title={site-name} --url={site-url} --admin_user={account-name} --admin_email={account-mail} --admin_password={account-pass}",
@@ -68,7 +50,8 @@
       ],
       "web/wp-content/themes/{$name}/": [
         "type:wordpress-theme"
-      ]
+      ],
+      "pantheon-systems/wordpress-composer": "web/wp"
     }
   },
   "scripts": {

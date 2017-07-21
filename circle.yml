@@ -28,16 +28,7 @@ machine:
     TERMINUS_ENV: ${TERMINUS_ENV:-$DEFAULT_ENV}
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     PATH: $PATH:~/bin:tests/scripts
-    WORDPRESS_ADMIN_USERNAME: admin
-    # There is a mismatch in variable names used by
-    # the terminus build plugin and the Behat tests.
-    # So the variable ADMIN_PASSWORD needs to be
-    # reassigned to WORDPRESS_ADMIN_PASSWORD.
-    # And because CircleCI does not allow for simple
-    # setting of a private variable to a public
-    # variable, this workaround of writing to a file is
-    # used.
-    WORDPRESS_ADMIN_PASSWORD: $(cat  ~/WORDPRESS_ADMIN_PASSWORD)
+    ADMIN_USERNAME: admin
     BUILD_TOOLS_VERSION: ^1
     TERM: dumb
 
@@ -53,23 +44,18 @@ dependencies:
     - git config --global user.email "$GIT_EMAIL"
     - git config --global user.name "Circle CI"
   override:
-    - echo $ADMIN_PASSWORD > ~/WORDPRESS_ADMIN_PASSWORD
     - composer global require -n "hirak/prestissimo:^0.3"
-    - composer global require -n "consolidation/cgr"
-    - cgr "pantheon-systems/terminus:^1"
+    - /usr/bin/env COMPOSER_BIN_DIR=$HOME/bin composer --working-dir=$HOME require pantheon-systems/terminus "^1"
     - terminus --version
     - mkdir -p ~/.terminus/plugins
-    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:$BUILD_TOOLS_VERSION --stability=dev --prefer-dist
+    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:$BUILD_TOOLS_VERSION
     - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
   post:
     - terminus auth:login -n --machine-token="$TERMINUS_TOKEN"
     - terminus build:env:delete:ci -n "$TERMINUS_SITE" --keep=2 --yes
     - composer -n build-assets
     - terminus env:wake -n "$TERMINUS_SITE.dev"
-    - terminus build:env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes --notify="$NOTIFY"
-    # This line will re-copy the database to the multidev environment to account
-    # for multiple CI builds running on the same multidev.
-    - terminus env:clone-content "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes
+    - terminus build:env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --clone-content --yes --notify="$NOTIFY"
 
 test:
   override:
