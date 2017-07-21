@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa22c45c66f85a2cf6155cf8c83768ef",
+    "content-hash": "a1aa82727d69800830297ea454ff6809",
     "packages": [
         {
             "name": "composer/installers",
@@ -170,7 +170,7 @@
         },
         {
             "name": "pantheon-systems/wordpress-composer",
-            "version": "dev-master",
+            "version": "4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pantheon-systems/wordpress-composer.git",
@@ -2593,7 +2593,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "pantheon-systems/wordpress-composer": 20,
         "paulgibbs/behat-wordpress-extension": 20,
         "roave/security-advisories": 20
     },
