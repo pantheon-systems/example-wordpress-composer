@@ -51,6 +51,11 @@
       "web/private/scripts/quicksilver/{$name}/": ["type:quicksilver-script"]
     }
   },
+  "autoload": {
+    "classmap": [
+      "scripts/composer/ScriptHandler.php"
+    ]
+  },
   "scripts": {
     "prepare-for-pantheon": "WordPressProject\\composer\\ScriptHandler::prepareForPantheon",
     "build-assets": [
