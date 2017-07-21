@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c0c78641f1b4c2daec534aa085deaa41",
+    "content-hash": "55370cdef72a5862cf2cdd3564bcab9d",
     "packages": [
         {
             "name": "composer/installers",
@@ -167,31 +167,6 @@
                 "wordpress"
             ],
             "time": "2015-06-11T15:15:30+00:00"
-        },
-        {
-            "name": "pantheon-systems/quicksilver-pushback",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/pantheon-systems/quicksilver-pushback.git",
-                "reference": "32c65effd6802bdf829f1c68fb75ade2bd5894a0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/pantheon-systems/quicksilver-pushback/zipball/32c65effd6802bdf829f1c68fb75ade2bd5894a0",
-                "reference": "32c65effd6802bdf829f1c68fb75ade2bd5894a0",
-                "shasum": ""
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "quicksilver-script",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Push commits made via the Pantheon dashboard back to original GitHub repository.",
-            "time": "2017-07-21T17:10:28+00:00"
         },
         {
             "name": "pantheon-systems/wordpress-composer",
@@ -1364,6 +1339,31 @@
                 "service proxies"
             ],
             "time": "2017-05-04T11:12:50+00:00"
+        },
+        {
+            "name": "pantheon-systems/quicksilver-pushback",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pantheon-systems/quicksilver-pushback.git",
+                "reference": "32c65effd6802bdf829f1c68fb75ade2bd5894a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pantheon-systems/quicksilver-pushback/zipball/32c65effd6802bdf829f1c68fb75ade2bd5894a0",
+                "reference": "32c65effd6802bdf829f1c68fb75ade2bd5894a0",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "quicksilver-script",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Push commits made via the Pantheon dashboard back to original GitHub repository.",
+            "time": "2017-07-21T17:10:28+00:00"
         },
         {
             "name": "paulgibbs/behat-wordpress-extension",
@@ -2654,8 +2654,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "alpha",
     "stability-flags": {
+        "roave/security-advisories": 20,
         "paulgibbs/behat-wordpress-extension": 20
     },
     "prefer-stable": true,

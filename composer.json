@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "project",
   "keywords": [],
-  "minimum-stability": "dev",
+  "minimum-stability": "alpha",
   "repositories": [
     {
       "type": "composer",
@@ -24,18 +24,20 @@
     "wpackagist-theme/twentyseventeen": "^1.1",
     "pantheon-systems/wordpress-composer": "^4.8",
     "roots/wp-password-bcrypt": "^1.0.0",
-    "rvtraveller/qs-composer-installer": "^1.1",
-    "pantheon-systems/quicksilver-pushback": "~1"
+    "rvtraveller/qs-composer-installer": "^1.1"
   },
   "require-dev": {
+    "roave/security-advisories": "dev-master",
     "paulgibbs/behat-wordpress-extension": "dev-master",
     "behat/mink-goutte-driver": "^1.2",
-    "behat/mink-selenium2-driver": "^1.3"
+    "behat/mink-selenium2-driver": "^1.3",
+    "pantheon-systems/quicksilver-pushback": "~1"
   },
   "config": {
     "vendor-dir": "vendor",
     "preferred-install": "dist",
-    "secure-http": false
+    "optimize-autoloader": true,
+    "sort-packages": true
   },
   "extra": {
     "wordpress-install-dir": "web/wp",
