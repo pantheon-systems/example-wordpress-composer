@@ -38,6 +38,7 @@ machine:
     # variable, this workaround of writing to a file is
     # used.
     WORDPRESS_ADMIN_PASSWORD: $(cat  ~/WORDPRESS_ADMIN_PASSWORD)
+    BUILD_TOOLS_VERSION: ^1
     TERM: dumb
 
 dependencies:
