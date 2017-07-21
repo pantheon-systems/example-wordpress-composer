@@ -66,13 +66,16 @@
       "./scripts/composer/cleanup-composer"
     ],
     "post-install-cmd": [
-      "@cleanup"
+      "@cleanup",
+      "WordPressProject\\composer\\ScriptHandler::createRequiredFiles"
     ],
     "post-update-cmd": [
-      "@cleanup"
+      "@cleanup",
+      "WordPressProject\\composer\\ScriptHandler::createRequiredFiles"
     ],
     "post-create-project-cmd": [
-      "@cleanup"
+      "@cleanup",
+      "WordPressProject\\composer\\ScriptHandler::createRequiredFiles"
     ]
   },
   "prefer-stable": true
