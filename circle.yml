@@ -28,9 +28,7 @@ machine:
     TERMINUS_ENV: ${TERMINUS_ENV:-$DEFAULT_ENV}
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     PATH: $PATH:~/bin:tests/scripts
-    WORDPRESS_ADMIN_USERNAME: admin
-    # The Behat tests expect WORDPRESS_ADMIN_PASSWORD to be set.
-    WORDPRESS_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    ADMIN_USERNAME: admin
     BUILD_TOOLS_VERSION: ^1
     TERM: dumb
 
