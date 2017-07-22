@@ -31,7 +31,7 @@ fi
 if [ !-f "$BASH_ENV" ]
 then
 	touch $BASH_ENV
-else
+fi
 
 echo 'export PATH="${PATH}:${HOME}/terminus/bin"' >> $BASH_ENV
 
