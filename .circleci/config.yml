@@ -46,10 +46,31 @@ jobs:
                 name: build assets
                 command: ./.circleci/build-assets.sh
 
+            - persist_to_workspace:
+            # Must be relative path from working_directory
+            root: .
+            # Must be relative path from root
+            paths:
+                - vendor
+                - web
+
     code_sniff:
         <<: *defaults
         steps:
             - checkout
+
+            - attach_workspace:
+                # Must be absolute path or relative path from working_directory
+                at: /tmp/workspace
+
+            - run:
+                name: copy vendor
+                run: cp -r /tmp/workspace/vendor .
+            
+            - run:
+                name: copy web
+                run: cp -r /tmp/workspace/web .
+
             - run:
                 name: dependencies
                 command: ./.circleci/set-up-globals.sh
@@ -61,6 +82,15 @@ jobs:
         <<: *defaults
         steps:
             - checkout
+
+            - run:
+                name: copy vendor
+                run: cp -r /tmp/vendor .
+            
+            - run:
+                name: copy web
+                run: cp -r /tmp/web .
+            
             - run:
                 name: dependencies
                 command: ./.circleci/set-up-globals.sh
@@ -72,6 +102,15 @@ jobs:
         <<: *defaults
         steps:
             - checkout
+
+            - run:
+                name: copy vendor
+                run: cp -r /tmp/vendor .
+            
+            - run:
+                name: copy web
+                run: cp -r /tmp/web .
+
             - run:
                 name: dependencies
                 command: ./.circleci/set-up-globals.sh
@@ -83,6 +122,15 @@ jobs:
         <<: *defaults
         steps:
             - checkout
+
+            - run:
+                name: copy vendor
+                run: cp -r /tmp/vendor .
+            
+            - run:
+                name: copy web
+                run: cp -r /tmp/web .
+
             - run:
                 name: dependencies
                 command: ./.circleci/set-up-globals.sh
