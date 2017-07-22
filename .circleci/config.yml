@@ -39,12 +39,29 @@ jobs:
         <<: *defaults
         steps:
             - checkout
+            - restore_cache:
+                keys:
+                    - composer-cache
+                    - terminus-install
+
             - run:
                 name: dependencies
                 command: ./.circleci/set-up-globals.sh
+
             - run:
                 name: build assets
                 command: ./.circleci/build-assets.sh
+
+            - save_cache:
+                key: composer-cache
+                paths:
+                    - $HOME/.composer/cache
+            
+            - save_cache:
+                key: terminus-install
+                paths:
+                    - $HOME/terminus
+                    - $HOME/.terminus
 
             - persist_to_workspace:
                 # Must be relative path from working_directory
@@ -58,6 +75,11 @@ jobs:
         <<: *defaults
         steps:
             - checkout
+
+            - restore_cache:
+                keys:
+                    - composer-cache
+                    - terminus-install
             
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
@@ -75,10 +97,26 @@ jobs:
                 name: check for WordPress coding standards
                 command: ./.circleci/code-sniff.sh
 
+            - save_cache:
+                key: composer-cache
+                paths:
+                    - $HOME/.composer/cache
+            
+            - save_cache:
+                key: terminus-install
+                paths:
+                    - $HOME/terminus
+                    - $HOME/.terminus
+
     unit_test:
         <<: *defaults
         steps:
             - checkout
+
+            - restore_cache:
+                keys:
+                    - composer-cache
+                    - terminus-install
 
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
@@ -100,10 +138,27 @@ jobs:
                 name: run unit tests
                 command: ./.circleci/unit-test.sh
 
+            - save_cache:
+                key: composer-cache
+                paths:
+                    - $HOME/.composer/cache
+            
+            - save_cache:
+                key: terminus-install
+                paths:
+                    - $HOME/terminus
+                    - $HOME/.terminus
+
     deploy_to_pantheon:
         <<: *defaults
         steps:
             - checkout
+
+            - restore_cache:
+                keys:
+                    - composer-cache
+                    - terminus-install
+
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
                 at: /tmp
@@ -127,10 +182,27 @@ jobs:
             - run:
                 name: set secrets on Pantheon
                 command: terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
+
+            - save_cache:
+                key: composer-cache
+                paths:
+                    - $HOME/.composer/cache
+            
+            - save_cache:
+                key: terminus-install
+                paths:
+                    - $HOME/terminus
+                    - $HOME/.terminus
+
     behat_test:
         <<: *defaults
         steps:
             - checkout
+
+            - restore_cache:
+                keys:
+                    - composer-cache
+                    - terminus-install
 
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
@@ -151,6 +223,17 @@ jobs:
             - run:
                 name: run Behat tests
                 command: ./.circleci/behat-test.sh
+
+            - save_cache:
+                key: composer-cache
+                paths:
+                    - $HOME/.composer/cache
+            
+            - save_cache:
+                key: terminus-install
+                paths:
+                    - $HOME/terminus
+                    - $HOME/.terminus
 
     # @todo: anything to do once everything is complete?
     completion:
