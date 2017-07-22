@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "24aec91375c496af0b9049ac113432f3",
+    "content-hash": "55370cdef72a5862cf2cdd3564bcab9d",
     "packages": [
         {
             "name": "composer/installers",
@@ -1342,16 +1342,16 @@
         },
         {
             "name": "pantheon-systems/quicksilver-pushback",
-            "version": "dev-issue-4-missing-secrets-file",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pantheon-systems/quicksilver-pushback.git",
-                "reference": "56818267ef3131ed83bbb6bab73a7e871e607677"
+                "reference": "32c65effd6802bdf829f1c68fb75ade2bd5894a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pantheon-systems/quicksilver-pushback/zipball/56818267ef3131ed83bbb6bab73a7e871e607677",
-                "reference": "56818267ef3131ed83bbb6bab73a7e871e607677",
+                "url": "https://api.github.com/repos/pantheon-systems/quicksilver-pushback/zipball/32c65effd6802bdf829f1c68fb75ade2bd5894a0",
+                "reference": "32c65effd6802bdf829f1c68fb75ade2bd5894a0",
                 "shasum": ""
             },
             "require": {
@@ -1363,7 +1363,7 @@
                 "MIT"
             ],
             "description": "Push commits made via the Pantheon dashboard back to original GitHub repository.",
-            "time": "2017-07-22T11:27:44+00:00"
+            "time": "2017-07-21T17:10:28+00:00"
         },
         {
             "name": "paulgibbs/behat-wordpress-extension",
@@ -2657,8 +2657,7 @@
     "minimum-stability": "alpha",
     "stability-flags": {
         "roave/security-advisories": 20,
-        "paulgibbs/behat-wordpress-extension": 20,
-        "pantheon-systems/quicksilver-pushback": 20
+        "paulgibbs/behat-wordpress-extension": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
