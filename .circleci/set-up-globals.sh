@@ -27,6 +27,9 @@ else
 	composer install
 	cd -
 fi
+
+export PATH="${PATH}:${HOME}/terminus/bin"
+
 terminus --version
 
 # Install Terminus plugins
