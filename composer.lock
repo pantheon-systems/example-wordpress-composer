@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "55370cdef72a5862cf2cdd3564bcab9d",
+    "content-hash": "a1aa82727d69800830297ea454ff6809",
     "packages": [
         {
             "name": "composer/installers",
@@ -258,44 +258,6 @@
                 "wordpress wp bcrypt password"
             ],
             "time": "2016-03-01T16:27:06+00:00"
-        },
-        {
-            "name": "rvtraveller/qs-composer-installer",
-            "version": "1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rvtraveller/qs-composer-installer.git",
-                "reference": "20d6f4397e4b77599646767ad030092a60f5f92a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rvtraveller/qs-composer-installer/zipball/20d6f4397e4b77599646767ad030092a60f5f92a",
-                "reference": "20d6f4397e4b77599646767ad030092a60f5f92a",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "~1.0",
-                "composer/installers": "~1.0"
-            },
-            "require-dev": {
-                "composer/composer": "~1.0@dev"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "rvtraveller\\QuicksilverComposerInstaller\\QuicksilverComposerInstallerPlugin"
-            },
-            "autoload": {
-                "psr-4": {
-                    "rvtraveller\\QuicksilverComposerInstaller\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Install Quicksilver modules for Pantheon into custom locations.",
-            "homepage": "https://github.com/rvtraveller/qs-composer-installer",
-            "time": "2017-01-27T20:40:31+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -1339,31 +1301,6 @@
                 "service proxies"
             ],
             "time": "2017-05-04T11:12:50+00:00"
-        },
-        {
-            "name": "pantheon-systems/quicksilver-pushback",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/pantheon-systems/quicksilver-pushback.git",
-                "reference": "32c65effd6802bdf829f1c68fb75ade2bd5894a0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/pantheon-systems/quicksilver-pushback/zipball/32c65effd6802bdf829f1c68fb75ade2bd5894a0",
-                "reference": "32c65effd6802bdf829f1c68fb75ade2bd5894a0",
-                "shasum": ""
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "quicksilver-script",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Push commits made via the Pantheon dashboard back to original GitHub repository.",
-            "time": "2017-07-21T17:10:28+00:00"
         },
         {
             "name": "paulgibbs/behat-wordpress-extension",
@@ -2654,10 +2591,10 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "alpha",
+    "minimum-stability": "dev",
     "stability-flags": {
-        "roave/security-advisories": 20,
-        "paulgibbs/behat-wordpress-extension": 20
+        "paulgibbs/behat-wordpress-extension": 20,
+        "roave/security-advisories": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
