@@ -12,7 +12,21 @@ apt-get -y install git unzip jq
 composer global require -n "hirak/prestissimo:^0.3"
 
 # Install Terminus
-/usr/bin/env COMPOSER_BIN_DIR=$HOME/bin composer --working-dir=$HOME require pantheon-systems/terminus "^1"
+if [ ! -d "$HOME/terminus" ]
+then
+	# Clone terminus if it doesn't exist
+	echo -e "Installing Terminus...\n"
+	git clone --branch master git://github.com/pantheon-systems/terminus.git ~/terminus
+	cd "$HOME/terminus"
+	composer install
+	cd -
+else
+	# Otherwise make sure terminus is up to date
+	cd "$HOME/terminus"
+	git pull
+	composer install
+	cd -
+fi
 terminus --version
 
 # Install Terminus plugins
