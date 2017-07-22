@@ -16,7 +16,7 @@ if [ ! -d $HOME/terminus ]
 then
 	# Clone terminus if it doesn't exist
 	echo -e "Installing Terminus...\n"
-	git clone --branch master git://github.com/pantheon-systems/terminus.git ~/terminus
+	git clone --branch master git://github.com/pantheon-systems/terminus.git $HOME/terminus
 	cd $HOME/terminus
 	composer install
 	cd -
@@ -28,12 +28,7 @@ else
 	cd -
 fi
 
-if [ ! -f $BASH_ENV ]
-then
-	touch $BASH_ENV
-fi
-
-echo 'export PATH="${PATH}:${HOME}/terminus/bin"' >> $BASH_ENV
+export PATH="${PATH}:${HOME}/terminus/bin"
 
 terminus --version
 
