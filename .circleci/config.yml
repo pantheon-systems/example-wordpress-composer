@@ -70,6 +70,7 @@ jobs:
             - run:
                 name: dependencies
                 command: ./.circleci/set-up-globals.sh
+
             - run:
                 name: check for WordPress coding standards
                 command: ./.circleci/code-sniff.sh
@@ -94,6 +95,7 @@ jobs:
             - run:
                 name: dependencies
                 command: ./.circleci/set-up-globals.sh
+
             - run:
                 name: run unit tests
                 command: ./.circleci/unit-test.sh
@@ -117,9 +119,11 @@ jobs:
             - run:
                 name: dependencies
                 command: ./.circleci/set-up-globals.sh
+
             - run:
                 name: deploy to Pantheon
                 command: ./.circleci/deploy-to-pantheon.sh
+
             - run:
                 name: set secrets on Pantheon
                 command: terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
@@ -143,6 +147,7 @@ jobs:
             - run:
                 name: dependencies
                 command: ./.circleci/set-up-globals.sh
+
             - run:
                 name: run Behat tests
                 command: ./.circleci/behat-test.sh
