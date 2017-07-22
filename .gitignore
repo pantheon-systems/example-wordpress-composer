@@ -28,6 +28,7 @@ web/wp
 !web/private/
 web/private/*
 !web/private/scripts/
+!.circleci
 
 # Add directories containing build assets below.
 # Keep all additions above the "cut" line.

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Bail if required environment varaibles are missing
 if [ -z "$TERMINUS_SITE" ] || [ -z "$TERMINUS_ENV" ]
 then
   echo 'No test site specified. Set TERMINUS_SITE and TERMINUS_ENV.'
@@ -15,6 +16,7 @@ echo
 # Exit immediately on errors, and echo commands as they are executed.
 set -ex
 
+# Set Behat variables from environment variables
 export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/wp","users":{"admin":{"username":"'$ADMIN_USERNAME'","password":"'$ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$TERMINUS_SITE'.'$TERMINUS_ENV' --"}}}}'
 export RELOCATED_WP_ADMIN=TRUE
 
@@ -23,4 +25,8 @@ terminus -n env:wake $TERMINUS_SITE.$TERMINUS_ENV
 # Ping wp-cli to start ssh with the app server
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- cli version
 
-cd tests && ../vendor/bin/behat --config=behat-pantheon.yml --strict "$@"
+# Run the Behat tests
+cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --strict "$@"
+
+# Change back into previous directory
+cd -
