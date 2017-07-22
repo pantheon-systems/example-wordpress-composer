@@ -55,7 +55,7 @@ jobs:
                 command: mv ./vendor ./workspace/vendor
             
             - run:
-                name: move web to web
+                name: move web to workspace
                 command: mv ./web ./workspace/web
                 
 
@@ -70,11 +70,11 @@ jobs:
     code_sniff:
         <<: *defaults
         steps:
-            - checkout
-
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
                 at: /tmp/workspace
+
+            - checkout
 
             - run:
                 name: copy vendor
