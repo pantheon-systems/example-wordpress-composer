@@ -33,9 +33,12 @@ export PATH="${PATH}:${HOME}/terminus/bin"
 terminus --version
 
 # Install Terminus plugins
-mkdir -p ~/.terminus/plugins
-composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:$BUILD_TOOLS_VERSION
-composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
+if [ ! -d $HOME/.terminus/plugins ]
+then
+	mkdir -p $HOME/.terminus/plugins
+	composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:$BUILD_TOOLS_VERSION
+	composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
+fi
 
 # Commands below this line would not be transferable to a docker container
 
