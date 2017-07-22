@@ -3,4 +3,4 @@
 set -ex
 
 # Run unit tests
-./vendor/bin/phpunit
+./vendor/bin/phpunit tests/unit
