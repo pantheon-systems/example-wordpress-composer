@@ -8,7 +8,7 @@ BUILD_DIR=$(pwd)
 ./vendor/bin/phpcs --config-set installed_paths $BUILD_DIR/vendor/wp-coding-standards/wpcs
 
 # Run code sniff
-./vendor/bin/phpcs
+./vendor/bin/phpcs ./web
 
 # Error if tests fail
 if [ "$?" != 0 ]

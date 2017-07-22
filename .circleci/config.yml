@@ -68,14 +68,6 @@ jobs:
                 command: cp -r /tmp/vendor .
 
             - run:
-                name: test vendor copy
-                command: ls -l ./vendor
-            
-            - run:
-                name: copy web
-                command: cp -r /tmp/web .
-
-            - run:
                 name: dependencies
                 command: ./.circleci/set-up-globals.sh
             - run:
@@ -94,10 +86,6 @@ jobs:
             - run:
                 name: copy vendor
                 command: cp -r /tmp/vendor .
-            
-            - run:
-                name: test vendor copy
-                command: ls -l ./vendor
             
             - run:
                 name: copy web
@@ -147,11 +135,6 @@ jobs:
             - run:
                 name: copy vendor
                 command: cp -r /tmp/vendor .
-
-                        
-            - run:
-                name: test vendor copy
-                command: ls -l ./vendor
             
             - run:
                 name: copy web
