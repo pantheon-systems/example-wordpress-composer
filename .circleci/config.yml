@@ -94,6 +94,10 @@ jobs:
     behat_test:
         <<: *defaults
         steps:
+            - attach_workspace:
+                # Must be absolute path or relative path from working_directory
+                at: /tmp/workspace
+
             - checkout
 
             - run:
@@ -114,6 +118,10 @@ jobs:
     unit_test:
         <<: *defaults
         steps:
+            - attach_workspace:
+                # Must be absolute path or relative path from working_directory
+                at: /tmp/workspace
+
             - checkout
 
             - run:
@@ -134,6 +142,10 @@ jobs:
     deploy_to_pantheon:
         <<: *defaults
         steps:
+            - attach_workspace:
+                # Must be absolute path or relative path from working_directory
+                at: /tmp/workspace
+
             - checkout
 
             - run:
