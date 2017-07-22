@@ -46,22 +46,9 @@ jobs:
                 name: build assets
                 command: ./.circleci/build-assets.sh
 
-            - run:
-                name: create workspace directory
-                command: mkdir -p workspace
-            
-            - run:
-                name: move vendor to workspace
-                command: mv ./vendor ./workspace/vendor
-            
-            - run:
-                name: move web to workspace
-                command: mv ./web ./workspace/web
-                
-
             - persist_to_workspace:
                 # Must be relative path from working_directory
-                root: workspace
+                root: .
                 # Must be relative path from root
                 paths:
                     - vendor
@@ -74,11 +61,11 @@ jobs:
             
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
-                at: /tmp/workspace
+                at: /tmp
 
             - run:
                 name: copy vendor
-                command: cp -r /tmp/workspace/vendor .
+                command: cp -r /tmp/vendor .
 
             - run:
                 name: test vendor copy
@@ -86,7 +73,7 @@ jobs:
             
             - run:
                 name: copy web
-                command: cp -r /tmp/workspace/web .
+                command: cp -r /tmp/web .
 
             - run:
                 name: dependencies
@@ -102,11 +89,11 @@ jobs:
 
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
-                at: /tmp/workspace
+                at: /tmp
 
             - run:
                 name: copy vendor
-                command: cp -r /tmp/workspace/vendor .
+                command: cp -r /tmp/vendor .
             
             - run:
                 name: test vendor copy
@@ -114,7 +101,7 @@ jobs:
             
             - run:
                 name: copy web
-                command: cp -r /tmp/workspace/web .
+                command: cp -r /tmp/web .
 
             - run:
                 name: dependencies
@@ -129,15 +116,15 @@ jobs:
             - checkout
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
-                at: /tmp/workspace
+                at: /tmp
 
             - run:
                 name: copy vendor
-                command: cp -r /tmp/workspace/vendor .
+                command: cp -r /tmp/vendor .
             
             - run:
                 name: copy web
-                command: cp -r /tmp/workspace/web .
+                command: cp -r /tmp/web .
 
             - run:
                 name: dependencies
@@ -155,11 +142,11 @@ jobs:
 
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
-                at: /tmp/workspace
+                at: /tmp
 
             - run:
                 name: copy vendor
-                command: cp -r /tmp/workspace/vendor .
+                command: cp -r /tmp/vendor .
 
                         
             - run:
@@ -168,7 +155,7 @@ jobs:
             
             - run:
                 name: copy web
-                command: cp -r /tmp/workspace/web .
+                command: cp -r /tmp/web .
             
             - run:
                 name: dependencies

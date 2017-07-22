@@ -62,7 +62,7 @@
     "prepare-for-pantheon": "WordPressProject\\composer\\ScriptHandler::prepareForPantheon",
     "build-assets": [
       "@prepare-for-pantheon",
-      "composer install --no-ansi --no-dev --no-interaction --optimize-autoloader --no-progress"
+      "composer install --no-ansi --no-interaction --optimize-autoloader --no-progress"
     ],
     "cleanup": [
       "./scripts/composer/cleanup-composer"
