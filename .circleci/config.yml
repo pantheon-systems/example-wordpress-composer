@@ -70,15 +70,19 @@ jobs:
     code_sniff:
         <<: *defaults
         steps:
+            - checkout
+            
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
                 at: /tmp/workspace
 
-            - checkout
-
             - run:
                 name: copy vendor
                 command: cp -r /tmp/workspace/vendor .
+
+            - run:
+                name: test vendor copy
+                command: ls -l ./vendor
             
             - run:
                 name: copy web
@@ -91,42 +95,22 @@ jobs:
                 name: check for WordPress coding standards
                 command: ./.circleci/code-sniff.sh
 
-    behat_test:
-        <<: *defaults
-        steps:
-            - attach_workspace:
-                # Must be absolute path or relative path from working_directory
-                at: /tmp/workspace
-
-            - checkout
-
-            - run:
-                name: copy vendor
-                command: cp -r /tmp/workspace/vendor .
-            
-            - run:
-                name: copy web
-                command: cp -r /tmp/workspace/web .
-            
-            - run:
-                name: dependencies
-                command: ./.circleci/set-up-globals.sh
-            - run:
-                name: run Behat tests
-                command: ./.circleci/behat-test.sh
-
     unit_test:
         <<: *defaults
         steps:
+            - checkout
+
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
                 at: /tmp/workspace
 
-            - checkout
-
             - run:
                 name: copy vendor
                 command: cp -r /tmp/workspace/vendor .
+            
+            - run:
+                name: test vendor copy
+                command: ls -l ./vendor
             
             - run:
                 name: copy web
@@ -142,11 +126,10 @@ jobs:
     deploy_to_pantheon:
         <<: *defaults
         steps:
+            - checkout
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
                 at: /tmp/workspace
-
-            - checkout
 
             - run:
                 name: copy vendor
@@ -165,6 +148,34 @@ jobs:
             - run:
                 name: set secrets on Pantheon
                 command: terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
+    behat_test:
+        <<: *defaults
+        steps:
+            - checkout
+
+            - attach_workspace:
+                # Must be absolute path or relative path from working_directory
+                at: /tmp/workspace
+
+            - run:
+                name: copy vendor
+                command: cp -r /tmp/workspace/vendor .
+
+                        
+            - run:
+                name: test vendor copy
+                command: ls -l ./vendor
+            
+            - run:
+                name: copy web
+                command: cp -r /tmp/workspace/web .
+            
+            - run:
+                name: dependencies
+                command: ./.circleci/set-up-globals.sh
+            - run:
+                name: run Behat tests
+                command: ./.circleci/behat-test.sh
 
     # @todo: anything to do once everything is complete?
     completion:
