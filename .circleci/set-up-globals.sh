@@ -28,7 +28,7 @@ else
 	cd -
 fi
 
-export PATH="${PATH}:${HOME}/terminus/bin"
+echo 'export PATH="${PATH}:${HOME}/terminus/bin"' >> $BASH_ENV
 
 terminus --version
 
