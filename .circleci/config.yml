@@ -38,12 +38,13 @@ jobs:
     build:
         <<: *defaults
         steps:
+            - checkout
             - run:
                 name: dependencies
-                command: ./set-up-globals.sh
+                command: ./.circleci/set-up-globals.sh
             - run:
                 name: build assets
-                command: ./build-assets.sh
+                command: ./.circleci/build-assets.sh
 
     code_sniff:
         <<: *defaults
@@ -51,10 +52,10 @@ jobs:
             - checkout
             - run:
                 name: dependencies
-                command: ./set-up-globals.sh
+                command: ./.circleci/set-up-globals.sh
             - run:
                 name: check for WordPress coding standards
-                command: ./code-sniff.sh
+                command: ./.circleci/code-sniff.sh
 
     behat_test:
         <<: *defaults
@@ -62,10 +63,10 @@ jobs:
             - checkout
             - run:
                 name: dependencies
-                command: ./set-up-globals.sh
+                command: ./.circleci/set-up-globals.sh
             - run:
                 name: run Behat tests
-                command: ./behat-test.sh
+                command: ./.circleci/behat-test.sh
 
     unit_test:
         <<: *defaults
@@ -73,10 +74,10 @@ jobs:
             - checkout
             - run:
                 name: dependencies
-                command: ./set-up-globals.sh
+                command: ./.circleci/set-up-globals.sh
             - run:
                 name: run unit tests
-                command: ./unit-test.sh
+                command: ./.circleci/unit-test.sh
 
     deploy_to_pantheon:
         <<: *defaults
@@ -84,10 +85,10 @@ jobs:
             - checkout
             - run:
                 name: dependencies
-                command: ./set-up-globals.sh
+                command: ./.circleci/set-up-globals.sh
             - run:
                 name: deploy to Pantheon
-                command: ./deploy-to-pantheon.sh
+                command: ./.circleci/deploy-to-pantheon.sh
             - run:
                 name: set secrets on Pantheon
                 command: terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
