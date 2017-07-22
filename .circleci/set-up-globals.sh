@@ -8,6 +8,9 @@ apt-get update
 # Install needed apt packages
 apt-get -y install git unzip jq
 
+# Enable Composer parallel downloads
+composer global require -n "hirak/prestissimo:^0.3"
+
 # Install Terminus
 /usr/bin/env COMPOSER_BIN_DIR=$HOME/bin composer --working-dir=$HOME require pantheon-systems/terminus "^1"
 terminus --version
@@ -19,8 +22,10 @@ composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-secr
 
 # Commands below this line would not be transferable to a docker container
 
-# Update path
-export PATH="$PATH:~/bin:tests/scripts"
+# Add a Git token for Composer
+if [ -n "$GITHUB_TOKEN" ] ; then
+  composer config --global github-oauth.github.com $GITHUB_TOKEN
+fi
 
 # Bail on errors
 set +ex
