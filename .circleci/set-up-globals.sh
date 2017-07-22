@@ -28,7 +28,7 @@ else
 	cd -
 fi
 
-if [ !-f "$BASH_ENV" ]
+if [ ! -f $BASH_ENV ]
 then
 	touch $BASH_ENV
 fi
