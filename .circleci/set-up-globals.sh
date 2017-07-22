@@ -12,21 +12,26 @@ apt-get -y install git unzip jq
 composer global require -n "hirak/prestissimo:^0.3"
 
 # Install Terminus
-if [ ! -d "$HOME/terminus" ]
+if [ ! -d $HOME/terminus ]
 then
 	# Clone terminus if it doesn't exist
 	echo -e "Installing Terminus...\n"
 	git clone --branch master git://github.com/pantheon-systems/terminus.git ~/terminus
-	cd "$HOME/terminus"
+	cd $HOME/terminus
 	composer install
 	cd -
 else
 	# Otherwise make sure terminus is up to date
-	cd "$HOME/terminus"
+	cd $HOME/terminus
 	git pull
 	composer install
 	cd -
 fi
+
+if [ !-f "$BASH_ENV" ]
+then
+	touch $BASH_ENV
+else
 
 echo 'export PATH="${PATH}:${HOME}/terminus/bin"' >> $BASH_ENV
 
