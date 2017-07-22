@@ -7,6 +7,11 @@ BUILD_DIR=$(pwd)
 # Add WordPress coding standards path to code sniffer
 ./vendor/bin/phpcs --config-set installed_paths $BUILD_DIR/vendor/wp-coding-standards/wpcs
 
+if [ ! -d ./web/wp-content ]
+then
+	mkdir ./web/wp-content
+fi
+
 # Run code sniff
 ./vendor/bin/phpcs ./web/wp-content
 
