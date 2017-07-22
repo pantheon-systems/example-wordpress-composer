@@ -27,7 +27,7 @@ defaults: &defaults
     DEFAULT_ENV: $(echo ${PR_ENV:-$CIRCLE_ENV} | tr '[:upper:]' '[:lower:]' | sed 's/[^0-9a-z-]//g' | cut -c -11 | sed 's/-$//')
     TERMINUS_ENV: ${TERMINUS_ENV:-$DEFAULT_ENV}
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
-    PATH: $PATH:~/bin:tests/scripts
+    #PATH: $PATH:~/bin:tests/scripts
     ADMIN_USERNAME: admin
     BUILD_TOOLS_VERSION: ^1
     TERM: dumb

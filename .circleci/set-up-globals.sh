@@ -2,6 +2,9 @@
 
 set -ex
 
+# Update path
+export PATH="$PATH:~/bin:tests/scripts"
+
 # The section would be transferable to a DOCKERFILE
 apt-get update
 
