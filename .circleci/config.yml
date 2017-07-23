@@ -8,7 +8,7 @@ defaults: &defaults
     # In addition to the environment variables defined in this file, also
     # add the following variables in the Circle CI UI.
     #
-    # See: https://circleci.com/docs/1.0/environment-variables/
+    # See: https://circleci.com/docs/2.0/environment-variables/
     #
     # TERMINUS_SITE:  Name of the Pantheon site to run tests on, e.g. my_site
     # TERMINUS_TOKEN: The Pantheon machine token
@@ -19,19 +19,28 @@ defaults: &defaults
     # ADMIN_PASSWORD: The admin password to use when installing.
     # ADMIN_EMAIL:    The email address to give the admin when installing.
     #=========================================================================
-    - TZ: "/usr/share/zoneinfo/America/Los_Angeles"
+    TZ: "/usr/share/zoneinfo/America/Los_Angeles"
 
     # The variables below usually do not need to be modified.
-    - BRANCH: $(echo $CIRCLE_BRANCH | grep -v '^\(master\|[0-9]\+.x\)$')
-    - PR_ENV: ${BRANCH:+pr-$BRANCH}
-    - CIRCLE_ENV: ci-$CIRCLE_BUILD_NUM
-    - DEFAULT_ENV: $(echo ${PR_ENV:-$CIRCLE_ENV} | tr '[:upper:]' '[:lower:]' | sed 's/[^0-9a-z-]//g' | cut -c -11 | sed 's/-$//')
-    - TERMINUS_ENV: ${TERMINUS_ENV:-$DEFAULT_ENV}
-    - NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
-    - PATH: ${PATH}:${HOME}/terminus/bin:${HOME}/bin
-    - ADMIN_USERNAME: admin
-    - BUILD_TOOLS_VERSION: ^1
-    - TERM: dumb
+    
+    #======================================================================================================================================
+    # Circle CI 2.0 does not yet expand environment variables so they have to be manually EXPORTed
+    # Once environment variables can be expanded the variables below can be uncommented and the EXPORTs in set-up-globals.sh can be removed
+    # See: https://discuss.circleci.com/t/unclear-how-to-work-with-user-variables-circleci-provided-env-variables/12810/11
+    # See: https://discuss.circleci.com/t/environment-variable-expansion-in-working-directory/11322
+    # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
+    #======================================================================================================================================
+    #BRANCH: $(echo $CIRCLE_BRANCH | grep -v '^\(master\|[0-9]\+.x\)$')
+    #PR_ENV: ${BRANCH:+pr-$BRANCH}
+    #CIRCLE_ENV: ci-$CIRCLE_BUILD_NUM
+    #DEFAULT_ENV: $(echo ${PR_ENV:-$CIRCLE_ENV} | tr '[:upper:]' '[:lower:]' | sed 's/[^0-9a-z-]//g' | cut -c -11 | sed 's/-$//')
+    #TERMINUS_ENV: ${TERMINUS_ENV:-$DEFAULT_ENV}
+    #PATH: ${PATH}:${HOME}/terminus/bin:${HOME}/bin
+    
+    NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
+    ADMIN_USERNAME: admin
+    BUILD_TOOLS_VERSION: ^1
+    TERM: dumb
 
 version: 2
 jobs:
