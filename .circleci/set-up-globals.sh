@@ -2,11 +2,19 @@
 
 set -ex
 
+#==================================================
 # The section would be transferable to a DOCKERFILE
+#==================================================
+
+# Update current apt packages
 apt-get update
 
 # Install needed apt packages
 apt-get -y install git unzip jq
+
+#=========================================================================
+# Commands below this line would not be transferable to a docker container
+#=========================================================================
 
 # Enable Composer parallel downloads
 composer global require -n "hirak/prestissimo:^0.3"
@@ -36,14 +44,22 @@ source $BASH_ENV
 terminus --version
 
 # Install Terminus plugins
-if [ ! -d $HOME/.terminus/plugins ]
+# Stash the time Terminus plugins were last updated
+CURRENT_TIMESTAMP=$(date +%s)
+if [ ! -f $HOME/.terminus/plugins/last-updated.txt ]
 then
-	mkdir -p $HOME/.terminus/plugins
-	composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:$BUILD_TOOLS_VERSION
-	composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
+	echo $CURRENT_TIMESTAMP > $HOME/.terminus/plugins/last-updated.txt
 fi
 
-# Commands below this line would not be transferable to a docker container
+TERMINUS_PLUGINS_UPDATED=$(cat $HOME/.terminus/plugins/last-updated.txt)
+# Update Terminus plugins if they are more than 24 hours old
+# Otherwise cached version will be used
+if [ "$CURRRENT_TIMESTAMP - $TERMINUS_PLUGINS_UPDATED" -gt "86400" ]
+then
+	mkdir -p $HOME/.terminus/plugins
+	composer create-project -n -d $HOME/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:$BUILD_TOOLS_VERSION
+	composer create-project -n -d $HOME/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
+fi
 
 # Add a Git token for Composer
 if [ -n "$GITHUB_TOKEN" ] ; then
