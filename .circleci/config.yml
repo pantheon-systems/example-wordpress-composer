@@ -189,10 +189,6 @@ jobs:
                 name: deploy to Pantheon
                 command: ./.circleci/deploy-to-pantheon.sh
 
-            - run:
-                name: set secrets on Pantheon
-                command: terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
-
             - save_cache:
                 key: composer-cache
                 paths:

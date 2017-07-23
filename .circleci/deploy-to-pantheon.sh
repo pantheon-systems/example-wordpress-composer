@@ -19,7 +19,8 @@ TERMINUS_DOES_MULTIDEV_EXIST()
 
 if [[ $CIRCLE_BRANCH == "master" ]]
 then
-    terminus build:env:push -n "$TERMINUS_SITE.dev" --yes
+    terminus build:env:push -n "$TERMINUS_SITE.$TERMINUS_ENV" --yes
+    terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
 else
     # Only continue outside of master when building a pull request
     if [[ -n ${CIRCLE_PULL_REQUEST+x} ]]
@@ -34,6 +35,7 @@ else
             # Otherwise push code to the existing multidev
             terminus build:env:push -n $TERMINUS_SITE.$TERMINUS_ENV
         fi
+        terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
     else
         echo -e "CircleCI will only deploy to Pantheon for master or pull requests.\n"
     fi
