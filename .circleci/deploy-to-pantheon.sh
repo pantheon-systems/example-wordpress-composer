@@ -40,4 +40,4 @@ else
 fi
 
 # Cleanup old multidevs
-terminus build:env:delete:pr -n "$TERMINUS_SITE" --preserve-prs --delete-branch --yes
+terminus build:env:delete:pr -n "$TERMINUS_SITE" --delete-branch --yes
