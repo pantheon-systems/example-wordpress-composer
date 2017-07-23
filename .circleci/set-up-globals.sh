@@ -30,7 +30,8 @@ fi
 
 #export PATH="${PATH}:${HOME}/terminus/bin:${HOME}/bin"
 
-echo 'export PATH=$PATH:$HOME/bin:$HOME/terminus/bin' >> $BASH_ENV 
+echo 'export PATH=$PATH:$HOME/bin:$HOME/terminus/bin' >> $BASH_ENV
+source $BASH_ENV 
 
 terminus --version
 
