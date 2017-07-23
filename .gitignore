@@ -28,6 +28,7 @@ web/wp
 !web/private/
 web/private/*
 !web/private/scripts/
+web/private/scripts/quicksilver
 !.circleci
 
 # Add directories containing build assets below.

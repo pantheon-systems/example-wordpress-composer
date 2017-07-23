@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3db1f65fe1702feb77f2bb7b757ab2ce",
+    "content-hash": "f12203e529f10e9eb6f579a384395aa9",
     "packages": [
         {
             "name": "composer/installers",
@@ -258,6 +258,44 @@
                 "wordpress wp bcrypt password"
             ],
             "time": "2016-03-01T16:27:06+00:00"
+        },
+        {
+            "name": "rvtraveller/qs-composer-installer",
+            "version": "1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rvtraveller/qs-composer-installer.git",
+                "reference": "20d6f4397e4b77599646767ad030092a60f5f92a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rvtraveller/qs-composer-installer/zipball/20d6f4397e4b77599646767ad030092a60f5f92a",
+                "reference": "20d6f4397e4b77599646767ad030092a60f5f92a",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "~1.0",
+                "composer/installers": "~1.0"
+            },
+            "require-dev": {
+                "composer/composer": "~1.0@dev"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "rvtraveller\\QuicksilverComposerInstaller\\QuicksilverComposerInstallerPlugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "rvtraveller\\QuicksilverComposerInstaller\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Install Quicksilver modules for Pantheon into custom locations.",
+            "homepage": "https://github.com/rvtraveller/qs-composer-installer",
+            "time": "2017-01-27T20:40:31+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -1611,6 +1649,31 @@
             "time": "2017-05-04T11:12:50+00:00"
         },
         {
+            "name": "pantheon-systems/quicksilver-pushback",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pantheon-systems/quicksilver-pushback.git",
+                "reference": "32c65effd6802bdf829f1c68fb75ade2bd5894a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pantheon-systems/quicksilver-pushback/zipball/32c65effd6802bdf829f1c68fb75ade2bd5894a0",
+                "reference": "32c65effd6802bdf829f1c68fb75ade2bd5894a0",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "quicksilver-script",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Push commits made via the Pantheon dashboard back to original GitHub repository.",
+            "time": "2017-07-21T17:10:28+00:00"
+        },
+        {
             "name": "paulgibbs/behat-wordpress-extension",
             "version": "dev-master",
             "source": {
@@ -2704,21 +2767,21 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "2.0.1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "875bd7cdcb5f49e9bcea732538767937abbed51d"
+                "reference": "20f84f468cb67efee293246e6a09619b891f55f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/875bd7cdcb5f49e9bcea732538767937abbed51d",
-                "reference": "875bd7cdcb5f49e9bcea732538767937abbed51d",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/20f84f468cb67efee293246e6a09619b891f55f0",
+                "reference": "20f84f468cb67efee293246e6a09619b891f55f0",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.0",
-                "sebastian/diff": "^2.0",
+                "sebastian/diff": "^1.2",
                 "sebastian/exporter": "^3.0"
             },
             "require-dev": {
@@ -2764,32 +2827,32 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-07-11T16:29:53+00:00"
+            "time": "2017-03-03T06:26:08+00:00"
         },
         {
             "name": "sebastian/diff",
-            "version": "dev-master",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "ed724f5d860f9a4cf8eb8ba27ea45cac9541bb5b"
+                "reference": "7f066a26a962dbe58ddea9f72a4e82874a3975a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/ed724f5d860f9a4cf8eb8ba27ea45cac9541bb5b",
-                "reference": "ed724f5d860f9a4cf8eb8ba27ea45cac9541bb5b",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/7f066a26a962dbe58ddea9f72a4e82874a3975a4",
+                "reference": "7f066a26a962dbe58ddea9f72a4e82874a3975a4",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0"
+                "php": "^5.3.3 || ^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.2"
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -2816,7 +2879,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2017-07-13T02:44:20+00:00"
+            "time": "2017-05-22T07:24:03+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -4369,13 +4432,13 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "alpha",
     "stability-flags": {
-        "paulgibbs/behat-wordpress-extension": 20,
         "roave/security-advisories": 20,
+        "paulgibbs/behat-wordpress-extension": 20,
         "wp-coding-standards/wpcs": 20
     },
-    "prefer-stable": true,
+    "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": []

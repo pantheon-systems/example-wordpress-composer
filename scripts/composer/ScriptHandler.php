@@ -28,6 +28,7 @@ class ScriptHandler
       'wp-content/plugins',
       'wp-content/themes',
       'wp',
+      'private/scripts/quicksilver',
     ];
 
     // Required for unit testing
