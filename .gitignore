@@ -17,6 +17,7 @@ web/wp-content
 !web/wp-content/mu-plugins/
 web/wp-content/mu-plugins/*
 !web/wp-content/mu-plugins/custom
+!web/wp-content/mu-plugins/alter-wpcfm-config-path.php
 !web/wp-content/plugins/
 web/wp-content/plugins/*
 !web/wp-content/plugins/custom/
@@ -29,6 +30,7 @@ web/wp
 web/private/*
 !web/private/scripts/
 web/private/scripts/quicksilver
+!web/private/config/
 !.circleci
 
 # Add directories containing build assets below.
