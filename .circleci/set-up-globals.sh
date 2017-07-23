@@ -52,7 +52,7 @@ then
 	# Then use a pr- branch/multidev
 	PR_NUMBER=${CIRCLE_PULL_REQUEST##*/}
 	PR_BRANCH="pr-${PR_NUMBER}"
-	echo "export DEFAULT_ENV=$(pr-${PR_NUMBER})" >> $BASH_ENV
+	echo "export DEFAULT_ENV=pr-${PR_NUMBER}" >> $BASH_ENV
 else
 	# otherwise make the branch name multidev friendly
 	echo 'export DEFAULT_ENV=$(echo ${PR_ENV:-$CIRCLE_ENV} | tr '"'"'[:upper:]'"'"' '"'"'[:lower:]'"'"' | sed '"'"'s/[^0-9a-z-]//g'"'"' | cut -c -11 | sed '"'"'s/-$//'"'"')' >> $BASH_ENV
