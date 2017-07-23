@@ -43,24 +43,35 @@ source $BASH_ENV
 
 terminus --version
 
-# Install Terminus plugins
+#===============================
+# Start Install Terminus Plugins
+#===============================
+
+# Create Terminus plugins directory if needed
+if [ ! -d $HOME/.terminus/plugins ]
+then
+	mkdir -p $HOME/.terminus/plugins
+fi
+
 # Stash the time Terminus plugins were last updated
 CURRENT_TIMESTAMP=$(date +%s)
 if [ ! -f $HOME/.terminus/plugins/last-updated.txt ]
 then
-	touch $HOME/.terminus/plugins/last-updated.txt
 	echo $CURRENT_TIMESTAMP > $HOME/.terminus/plugins/last-updated.txt
 fi
 
 TERMINUS_PLUGINS_UPDATED=$(cat $HOME/.terminus/plugins/last-updated.txt)
 # Update Terminus plugins if they are more than 24 hours old
-# Otherwise cached version will be used
-if [ "$CURRRENT_TIMESTAMP - $TERMINUS_PLUGINS_UPDATED" -gt "86400" ]
+# Otherwise cached version will be used if they exist
+if [ "$CURRRENT_TIMESTAMP - $TERMINUS_PLUGINS_UPDATED" -gt "86400" || ! -d $HOME/.terminus/plugins pantheon-systems/terminus-build-tools-plugin ]
 then
-	mkdir -p $HOME/.terminus/plugins
 	composer create-project -n -d $HOME/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:$BUILD_TOOLS_VERSION
 	composer create-project -n -d $HOME/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
 fi
+
+#===============================
+# End Install Terminus Plugins
+#===============================
 
 # Add a Git token for Composer
 if [ -n "$GITHUB_TOKEN" ] ; then
