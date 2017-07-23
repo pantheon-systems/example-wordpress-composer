@@ -47,26 +47,33 @@ terminus --version
 # Start Install Terminus Plugins
 #===============================
 
-# Create Terminus plugins directory if needed
+INSTALL_TERMINUS_PLUGINS() {
+	composer create-project -n -d $HOME/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:$BUILD_TOOLS_VERSION
+	composer create-project -n -d $HOME/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
+}
+
+# Create Terminus plugins directory and install plugins if needed
 if [ ! -d $HOME/.terminus/plugins ]
 then
 	mkdir -p $HOME/.terminus/plugins
+	INSTALL_TERMINUS_PLUGINS
 fi
 
-# Stash the time Terminus plugins were last updated
+# Stash the current time
 CURRENT_TIMESTAMP=$(date +%s)
 if [ ! -f $HOME/.terminus/plugins/last-updated.txt ]
 then
 	echo $CURRENT_TIMESTAMP > $HOME/.terminus/plugins/last-updated.txt
 fi
 
+# Stash the time Terminus plugins were last updated
 TERMINUS_PLUGINS_UPDATED=$(cat $HOME/.terminus/plugins/last-updated.txt)
+
 # Update Terminus plugins if they are more than 24 hours old
 # Otherwise cached version will be used if they exist
-if [ "$CURRRENT_TIMESTAMP - $TERMINUS_PLUGINS_UPDATED" -gt "86400" || ! -d $HOME/.terminus/plugins pantheon-systems/terminus-build-tools-plugin ]
+if [ "$CURRRENT_TIMESTAMP - $TERMINUS_PLUGINS_UPDATED" -gt "86400" ]
 then
-	composer create-project -n -d $HOME/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:$BUILD_TOOLS_VERSION
-	composer create-project -n -d $HOME/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
+	INSTALL_TERMINUS_PLUGINS
 fi
 
 #===============================
