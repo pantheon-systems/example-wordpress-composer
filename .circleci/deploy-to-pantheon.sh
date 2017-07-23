@@ -27,15 +27,11 @@ else
         # Create a new multidev if needed
         if ! TERMINUS_DOES_MULTIDEV_EXIST ${TERMINUS_ENV}
         then
-            echo -e "Multidev for $TERMINUS_ENV does not exist\n"
-            exit 1
             # Wake dev so we can clone the database
             terminus env:wake -n "$TERMINUS_SITE.dev"
             terminus build:env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --clone-content --yes --notify="$NOTIFY"
         else
             # Otherwise push code to the existing multidev
-            echo -e "Multidev for $TERMINUS_ENV already exists\n"
-            exit 1
             terminus build-env:push-code -n $TERMINUS_SITE.$TERMINUS_ENV
         fi
     else
