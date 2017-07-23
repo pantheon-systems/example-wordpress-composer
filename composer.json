@@ -31,7 +31,6 @@
     "paulgibbs/behat-wordpress-extension": "dev-master",
     "behat/mink-goutte-driver": "^1.2",
     "behat/mink-selenium2-driver": "^1.3",
-    "roave/security-advisories": "dev-master",
     "squizlabs/php_codesniffer": "^2.9.0",
     "wp-coding-standards/wpcs": "dev-master",
     "phpunit/phpunit": "^6.1",
