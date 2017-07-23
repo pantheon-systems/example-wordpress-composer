@@ -3,7 +3,7 @@
 set -ex
 
 # Stash list of Pantheon multidev environments
-PANTHEON_MULTIDEV_LIST="$(terminus multidev:list ${PANTHEON_SITE_UUID} --format=list --field=Name)"
+PANTHEON_MULTIDEV_LIST="$(terminus multidev:list -n ${PANTHEON_SITE} --format=list --field=Name)"
 
 if [[ $CIRCLE_BRANCH == "master" ]]
 then
