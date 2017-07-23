@@ -245,14 +245,6 @@ jobs:
                     - $HOME/terminus
                     - $HOME/.terminus
 
-    # @todo: anything to do once everything is complete?
-    completion:
-        <<: *defaults
-        steps:
-            - run:
-                name: cleanup
-                command: echo "Congrats, all tests passed!"
-
 workflows:
   version: 2
   build_test:
@@ -275,9 +267,3 @@ workflows:
       - behat_test:
           requires:
             - deploy_to_pantheon
-      # Completion requires all tests to pass
-      - completion:
-          requires:
-            - code_sniff
-            - unit_test
-            - behat_test
