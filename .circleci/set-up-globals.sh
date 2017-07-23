@@ -9,9 +9,6 @@ set -ex
 # Update current apt packages
 apt-get update
 
-# Install needed apt packages
-apt-get -y install git unzip jq
-
 #=========================================================================
 # Commands below this line would not be transferable to a docker container
 #=========================================================================
