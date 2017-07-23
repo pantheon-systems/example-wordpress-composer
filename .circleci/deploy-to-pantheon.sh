@@ -2,9 +2,6 @@
 
 set -ex
 
-# Stash list of Pantheon multidev environments
-PANTHEON_MULTIDEV_LIST="$(terminus multidev:list -n ${PANTHEON_SITE} --format=list --field=Name)"
-
 if [[ $CIRCLE_BRANCH == "master" ]]
 then
     terminus build:env:merge -n "$TERMINUS_SITE.$TERMINUS_ENV" --yes
@@ -33,6 +30,9 @@ terminus build:env:delete:pr -n "$TERMINUS_SITE" --preserve-prs --delete-branch 
 
 terminusMultiDevExists()
 {
+    # Stash list of Pantheon multidev environments
+    PANTHEON_MULTIDEV_LIST="$(terminus multidev:list -n ${TERMINUS_SITE} --format=list --field=Name)"
+
     while read -r multiDev; do
         if [[ "${multiDev}" == "$1" ]]
         then
