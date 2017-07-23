@@ -48,6 +48,7 @@ terminus --version
 CURRENT_TIMESTAMP=$(date +%s)
 if [ ! -f $HOME/.terminus/plugins/last-updated.txt ]
 then
+	touch $HOME/.terminus/plugins/last-updated.txt
 	echo $CURRENT_TIMESTAMP > $HOME/.terminus/plugins/last-updated.txt
 fi
 
