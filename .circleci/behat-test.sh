@@ -45,6 +45,7 @@ export RELOCATED_WP_ADMIN=TRUE
 
 # Wake the multidev environment before running tests
 terminus -n env:wake $TERMINUS_SITE.$TERMINUS_ENV
+
 # Ping wp-cli to start ssh with the app server
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- cli version
 
@@ -54,8 +55,8 @@ cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --strict "$@"
 # Change back into previous directory
 cd -
 
-# Restore the backup from before testing
-terminus -n backup:restore $TERMINUS_SITE.$TERMINUS_ENV --yes
+# Restore the backup made before testing
+terminus -n backup:restore $TERMINUS_SITE.$TERMINUS_ENV --element=database --yes
 
 # Delete Pantheon admin user if needed
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
