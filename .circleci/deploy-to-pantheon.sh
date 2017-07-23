@@ -19,7 +19,7 @@ TERMINUS_DOES_MULTIDEV_EXIST()
 
 if [[ $CIRCLE_BRANCH == "master" ]]
 then
-    terminus build:env:merge -n "$TERMINUS_SITE.$TERMINUS_ENV" --yes
+    terminus build:env:push -n "$TERMINUS_SITE.dev" --yes
 else
     # Only continue outside of master when building a pull request
     if [[ -n ${CIRCLE_PULL_REQUEST+x} ]]
@@ -32,7 +32,7 @@ else
             terminus build:env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --clone-content --yes --notify="$NOTIFY"
         else
             # Otherwise push code to the existing multidev
-            terminus build-env:push-code -n $TERMINUS_SITE.$TERMINUS_ENV
+            terminus build:env:push -n $TERMINUS_SITE.$TERMINUS_ENV
         fi
     else
         echo -e "CircleCI will only deploy to Pantheon for master or pull requests.\n"
