@@ -4,8 +4,7 @@ defaults: &defaults
     - image: drupaldocker/php:7.1-cli
   working_directory: ~/example_wordpress_composer
   environment:
-    #BASH_ENV: ~/.bashrc
-    TZ: "/usr/share/zoneinfo/America/Los_Angeles"
+    #=========================================================================
     # In addition to the environment variables defined in this file, also
     # add the following variables in the Circle CI UI.
     #
@@ -19,18 +18,20 @@ defaults: &defaults
     # TEST_SITE_NAME: The name of the test site to provide when installing.
     # ADMIN_PASSWORD: The admin password to use when installing.
     # ADMIN_EMAIL:    The email address to give the admin when installing.
-    #
+    #=========================================================================
+    - TZ: "/usr/share/zoneinfo/America/Los_Angeles"
+
     # The variables below usually do not need to be modified.
-    BRANCH: $(echo $CIRCLE_BRANCH | grep -v '^\(master\|[0-9]\+.x\)$')
-    PR_ENV: ${BRANCH:+pr-$BRANCH}
-    CIRCLE_ENV: ci-$CIRCLE_BUILD_NUM
-    DEFAULT_ENV: $(echo ${PR_ENV:-$CIRCLE_ENV} | tr '[:upper:]' '[:lower:]' | sed 's/[^0-9a-z-]//g' | cut -c -11 | sed 's/-$//')
-    TERMINUS_ENV: ${TERMINUS_ENV:-$DEFAULT_ENV}
-    NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
-    #PATH: $PATH:~/bin:tests/scripts
-    ADMIN_USERNAME: admin
-    BUILD_TOOLS_VERSION: ^1
-    TERM: dumb
+    - BRANCH: $(echo $CIRCLE_BRANCH | grep -v '^\(master\|[0-9]\+.x\)$')
+    - PR_ENV: ${BRANCH:+pr-$BRANCH}
+    - CIRCLE_ENV: ci-$CIRCLE_BUILD_NUM
+    - DEFAULT_ENV: $(echo ${PR_ENV:-$CIRCLE_ENV} | tr '[:upper:]' '[:lower:]' | sed 's/[^0-9a-z-]//g' | cut -c -11 | sed 's/-$//')
+    - TERMINUS_ENV: ${TERMINUS_ENV:-$DEFAULT_ENV}
+    - NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
+    - PATH: ${PATH}:${HOME}/terminus/bin:${HOME}/bin
+    - ADMIN_USERNAME: admin
+    - BUILD_TOOLS_VERSION: ^1
+    - TERM: dumb
 
 version: 2
 jobs:
