@@ -55,7 +55,12 @@ then
 	echo "export DEFAULT_ENV=pr-${PR_NUMBER}" >> $BASH_ENV
 else
 	# otherwise make the branch name multidev friendly
-	echo 'export DEFAULT_ENV=$(echo ${PR_ENV:-$CIRCLE_ENV} | tr '"'"'[:upper:]'"'"' '"'"'[:lower:]'"'"' | sed '"'"'s/[^0-9a-z-]//g'"'"' | cut -c -11 | sed '"'"'s/-$//'"'"')' >> $BASH_ENV
+	if [[ $CIRCLE_BRANCH == "master" ]]
+	then
+		echo "export DEFAULT_ENV=dev" >> $BASH_ENV
+	else
+		echo 'export DEFAULT_ENV=$(echo ${PR_ENV:-$CIRCLE_ENV} | tr '"'"'[:upper:]'"'"' '"'"'[:lower:]'"'"' | sed '"'"'s/[^0-9a-z-]//g'"'"' | cut -c -11 | sed '"'"'s/-$//'"'"')' >> $BASH_ENV
+	fi
 fi
 echo 'export TERMINUS_ENV=${TERMINUS_ENV:-$DEFAULT_ENV}' >> $BASH_ENV
 source $BASH_ENV
