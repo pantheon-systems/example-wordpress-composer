@@ -11,7 +11,7 @@ else
     then
 
         # Create a new multidev if needed
-        if ! terminusMultiDevExists ${TERMINUS_ENV}
+        if ! TERMINUS_DOES_MULTIDEV_EXIST ${TERMINUS_ENV}
         then
             # Wake dev so we can clone the database
             terminus env:wake -n "$TERMINUS_SITE.dev"
@@ -28,7 +28,7 @@ fi
 # Cleanup old multidevs
 terminus build:env:delete:pr -n "$TERMINUS_SITE" --preserve-prs --delete-branch --yes
 
-terminusMultiDevExists()
+TERMINUS_DOES_MULTIDEV_EXIST()
 {
     # Stash list of Pantheon multidev environments
     PANTHEON_MULTIDEV_LIST="$(terminus multidev:list -n ${TERMINUS_SITE} --format=list --field=Name)"
