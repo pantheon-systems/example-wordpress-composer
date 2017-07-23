@@ -19,18 +19,18 @@ echo "::::::::::::::::::::::::::::::::::::::::::::::::"
 echo
 
 # Exit immediately on errors
-set -e
+set -ex
 
 # Create a backup before running Behat tests
-terminus backup:create $TERMINUS_SITE.$TERMINUS_ENV
+terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
 
 # Clear site cache
-terminus env:clear-cache $TERMINUS_SITE.$TERMINUS_ENV
+terminus -n env:clear-cache $TERMINUS_SITE.$TERMINUS_ENV
 
 # Setup the WordPress admin user
-terminus wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
 {
-  terminus wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$ADMIN_PASSWORD --role=administrator
+  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$ADMIN_PASSWORD --role=administrator
 } &> /dev/null
 
 # Set Behat variables from environment variables
@@ -49,7 +49,7 @@ cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --strict "$@"
 cd -
 
 # Restore the backup from before testing
-terminus backup:restore $TERMINUS_SITE.$TERMNUS_ENV --yes
+terminus -n backup:restore $TERMINUS_SITE.$TERMNUS_ENV --yes
 
 # Delete Pantheon admin user if needed
-terminus wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
