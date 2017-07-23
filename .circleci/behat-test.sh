@@ -27,6 +27,12 @@ terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
 # Clear site cache
 terminus -n env:clear-cache $TERMINUS_SITE.$TERMINUS_ENV
 
+# Stash current WordPress username
+export WORDPRESS_USER_NAME=$ADMIN_USERNAME
+
+# Use a generic Pantheon user for testing
+export ADMIN_USERNAME='pantheon-ci-testing'
+
 # Setup the WordPress admin user
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
 {
@@ -53,3 +59,6 @@ terminus -n backup:restore $TERMINUS_SITE.$TERMINUS_ENV --yes
 
 # Delete Pantheon admin user if needed
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
+
+# Reset WordPress user name
+export ADMIN_USERNAME=$WORDPRESS_USER_NAME
