@@ -49,7 +49,7 @@ cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --strict "$@"
 cd -
 
 # Restore the backup from before testing
-terminus -n backup:restore $TERMINUS_SITE.$TERMNUS_ENV --yes
+terminus -n backup:restore $TERMINUS_SITE.$TERIMNUS_ENV --yes
 
 # Delete Pantheon admin user if needed
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
