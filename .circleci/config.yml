@@ -39,7 +39,7 @@ defaults: &defaults
     
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     ADMIN_USERNAME: admin
-    BUILD_TOOLS_VERSION: dev-allow-pr-number
+    BUILD_TOOLS_VERSION: dev-master
     TERM: dumb
 
 version: 2
