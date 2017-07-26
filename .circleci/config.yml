@@ -70,7 +70,6 @@ jobs:
             - save_cache:
                 key: terminus-install
                 paths:
-                    - $HOME/terminus
                     - $HOME/.terminus
 
             - persist_to_workspace:
@@ -115,7 +114,6 @@ jobs:
             - save_cache:
                 key: terminus-install
                 paths:
-                    - $HOME/terminus
                     - $HOME/.terminus
 
     unit_test:
@@ -156,7 +154,6 @@ jobs:
             - save_cache:
                 key: terminus-install
                 paths:
-                    - $HOME/terminus
                     - $HOME/.terminus
 
     deploy_to_pantheon:
@@ -197,7 +194,6 @@ jobs:
             - save_cache:
                 key: terminus-install
                 paths:
-                    - $HOME/terminus
                     - $HOME/.terminus
 
     behat_test:
@@ -238,7 +234,6 @@ jobs:
             - save_cache:
                 key: terminus-install
                 paths:
-                    - $HOME/terminus
                     - $HOME/.terminus
 
 workflows:
