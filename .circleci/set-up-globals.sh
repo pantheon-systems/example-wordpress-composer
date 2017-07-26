@@ -17,7 +17,7 @@ apt-get update
 composer global require -n "hirak/prestissimo:^0.3"
 
 # Install Terminus
-composer global require pantheon-systems/terminus
+composer global require "pantheon-systems/terminus:^1"
 
 
 #=====================================================================================================================
@@ -59,7 +59,6 @@ terminus --version
 #===============================
 # Start Install Terminus Plugins
 #===============================
-
 INSTALL_TERMINUS_PLUGINS() {
 	composer create-project -n -d $HOME/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:$BUILD_TOOLS_VERSION
 	composer create-project -n -d $HOME/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
