@@ -17,21 +17,7 @@ apt-get update
 composer global require -n "hirak/prestissimo:^0.3"
 
 # Install Terminus
-if [ ! -d $HOME/terminus ]
-then
-	# Clone terminus if it doesn't exist
-	echo -e "Installing Terminus...\n"
-	git clone --branch master git://github.com/pantheon-systems/terminus.git $HOME/terminus
-	cd $HOME/terminus
-	composer install
-	cd -
-else
-	# Otherwise make sure terminus is up to date
-	cd $HOME/terminus
-	git pull
-	composer install
-	cd -
-fi
+composer global require pantheon-systems/terminus
 
 
 #=====================================================================================================================
@@ -42,7 +28,7 @@ fi
 # See: https://discuss.circleci.com/t/environment-variable-expansion-in-working-directory/11322
 # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
 #=====================================================================================================================
-echo 'export PATH=$PATH:$HOME/bin:$HOME/terminus/bin' >> $BASH_ENV
+echo 'export PATH=$PATH:$HOME/bin:$HOME/terminus/bin:$HOME/.composer/vendor/bin' >> $BASH_ENV
 echo 'export BRANCH=$(echo $CIRCLE_BRANCH | grep -v '"'"'^\(master\|[0-9]\+.x\)$'"'"')' >> $BASH_ENV
 echo 'export PR_ENV=${BRANCH:+pr-$BRANCH}' >> $BASH_ENV
 echo 'export CIRCLE_ENV=ci-$CIRCLE_BUILD_NUM' >> $BASH_ENV
