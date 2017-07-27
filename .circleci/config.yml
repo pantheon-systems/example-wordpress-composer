@@ -67,6 +67,7 @@ jobs:
                 key: terminus-install
                 paths:
                     - $HOME/.terminus
+                    - $HOME/terminus
 
             - persist_to_workspace:
                 # Must be relative path from working_directory
@@ -79,11 +80,6 @@ jobs:
         <<: *defaults
         steps:
             - checkout
-
-            - restore_cache:
-                keys:
-                    - composer-cache
-                    - terminus-install
 
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
@@ -100,16 +96,6 @@ jobs:
             - run:
                 name: run unit tests
                 command: composer -n unit-test
-
-            - save_cache:
-                key: composer-cache
-                paths:
-                    - $HOME/.composer/cache
-
-            - save_cache:
-                key: terminus-install
-                paths:
-                    - $HOME/.terminus
 
     build_and_deploy:
         <<: *defaults
@@ -137,11 +123,6 @@ jobs:
         <<: *defaults
         steps:
             - checkout
-
-            - restore_cache:
-                keys:
-                    - composer-cache
-                    - terminus-install
 
             - attach_workspace:
                 # Must be absolute path or relative path from working_directory
