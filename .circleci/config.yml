@@ -51,8 +51,8 @@ jobs:
                     - terminus-install
 
             - run:
-                name: composer token
-                command: composer config --global github-oauth.github.com $GITHUB_TOKEN
+                name: dependencies
+                command: ./.circleci/set-up-globals.sh
 
             - run:
                 name: install dev dependencies
@@ -91,10 +91,6 @@ jobs:
                 keys:
                     - composer-cache
                     - terminus-install
-
-            - run:
-                name: dependencies
-                command: ./.circleci/set-up-globals.sh
 
             - run:
                 name: build assets
