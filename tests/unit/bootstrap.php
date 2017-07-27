@@ -1,3 +1,3 @@
 <?php
 
-require dirname( dirname( dirname( __FILE__ ) ) ) . '/vendor/autoload.php';
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
