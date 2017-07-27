@@ -45,28 +45,32 @@ defaults: &defaults
 version: 2
 jobs:
     # @todo: common initialization, maybe
-    build:
+    code_sniff_unit_test:
         <<: *defaults
         steps:
             - checkout
-            - restore_cache:
-                keys:
-                    - composer-cache
-                    - terminus-install
 
             - run:
-                name: dependencies
-                command: ./.circleci/set-up-globals.sh
+                name: composer token
+                command: composer config --global github-oauth.github.com $GITHUB_TOKEN
 
             - run:
-                name: build assets
-                command: ./.circleci/build-assets.sh
+                name: install dev dependencies
+                command: composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
+
+            - run:
+                name: check for WordPress coding standards
+                command: composer -n code-sniff
+            
+            - run:
+                name: run unit tests
+                command: composer -n unit-test
 
             - save_cache:
                 key: composer-cache
                 paths:
                     - $HOME/.composer/cache
-            
+
             - save_cache:
                 key: terminus-install
                 paths:
@@ -80,43 +84,7 @@ jobs:
                     - vendor
                     - web
 
-    code_sniff:
-        <<: *defaults
-        steps:
-            - checkout
-
-            - restore_cache:
-                keys:
-                    - composer-cache
-                    - terminus-install
-            
-            - attach_workspace:
-                # Must be absolute path or relative path from working_directory
-                at: /tmp
-
-            - run:
-                name: copy vendor
-                command: cp -r /tmp/vendor .
-
-            - run:
-                name: dependencies
-                command: ./.circleci/set-up-globals.sh
-
-            - run:
-                name: check for WordPress coding standards
-                command: ./.circleci/code-sniff.sh
-
-            - save_cache:
-                key: composer-cache
-                paths:
-                    - $HOME/.composer/cache
-            
-            - save_cache:
-                key: terminus-install
-                paths:
-                    - $HOME/.terminus
-
-    unit_test:
+    build_and_deploy:
         <<: *defaults
         steps:
             - checkout
@@ -126,75 +94,17 @@ jobs:
                     - composer-cache
                     - terminus-install
 
-            - attach_workspace:
-                # Must be absolute path or relative path from working_directory
-                at: /tmp
-
-            - run:
-                name: copy vendor
-                command: cp -r /tmp/vendor .
-            
-            - run:
-                name: copy web
-                command: cp -r /tmp/web .
-
             - run:
                 name: dependencies
                 command: ./.circleci/set-up-globals.sh
 
             - run:
-                name: run unit tests
-                command: ./.circleci/unit-test.sh
-
-            - save_cache:
-                key: composer-cache
-                paths:
-                    - $HOME/.composer/cache
-            
-            - save_cache:
-                key: terminus-install
-                paths:
-                    - $HOME/.terminus
-
-    deploy_to_pantheon:
-        <<: *defaults
-        steps:
-            - checkout
-
-            - restore_cache:
-                keys:
-                    - composer-cache
-                    - terminus-install
-
-            - attach_workspace:
-                # Must be absolute path or relative path from working_directory
-                at: /tmp
-
-            - run:
-                name: copy vendor
-                command: cp -r /tmp/vendor .
-            
-            - run:
-                name: copy web
-                command: cp -r /tmp/web .
-
-            - run:
-                name: dependencies
-                command: ./.circleci/set-up-globals.sh
+                name: build assets
+                command: composer -n build-assets
 
             - run:
                 name: deploy to Pantheon
                 command: ./.circleci/deploy-to-pantheon.sh
-
-            - save_cache:
-                key: composer-cache
-                paths:
-                    - $HOME/.composer/cache
-            
-            - save_cache:
-                key: terminus-install
-                paths:
-                    - $HOME/.terminus
 
     behat_test:
         <<: *defaults
@@ -211,12 +121,8 @@ jobs:
                 at: /tmp
 
             - run:
-                name: copy vendor
-                command: cp -r /tmp/vendor .
-            
-            - run:
-                name: copy web
-                command: cp -r /tmp/web .
+                name: copy vendor/web
+                command: cp -r /tmp/vendor /tmp/web .
             
             - run:
                 name: dependencies
@@ -226,35 +132,15 @@ jobs:
                 name: run Behat tests
                 command: ./.circleci/behat-test.sh
 
-            - save_cache:
-                key: composer-cache
-                paths:
-                    - $HOME/.composer/cache
-            
-            - save_cache:
-                key: terminus-install
-                paths:
-                    - $HOME/.terminus
-
 workflows:
   version: 2
-  build_test:
+  build_and_test:
     jobs:
-      # Build the site first
-      - build
-      # Run code sniffing and unit testing
-      - code_sniff:
-          requires:
-            - build
-      - unit_test:
-          requires:
-            - build
-      # Deploy to Pantheon if initial tests pass
-      - deploy_to_pantheon:
-          requires:
-            - code_sniff
-            - unit_test
+      # Code sniff and unit text first
+      - code_sniff_unit_test
+      # Build and deploy, can run in paralled with code_sniff_unit_test
+      - build_and_deploy
       # Run Behat tests after deploy so they can be done on Pantheon
       - behat_test:
           requires:
-            - deploy_to_pantheon
+            - build_and_deploy

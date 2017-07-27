@@ -65,7 +65,7 @@
   "scripts": {
     "build-assets": [
       "@prepare-for-pantheon",
-      "composer install --no-ansi --no-interaction --optimize-autoloader --no-progress"
+      "composer install --no-dev --no-ansi --no-interaction --optimize-autoloader --no-progress"
     ],
     "prepare-for-pantheon": "WordPressProject\\composer\\ScriptHandler::prepareForPantheon",
     "cleanup": [
@@ -82,6 +82,13 @@
     "post-create-project-cmd": [
       "@cleanup",
       "WordPressProject\\composer\\ScriptHandler::createRequiredFiles"
+    ],
+    "code-sniff": [
+      "./vendor/bin/phpcs --config-set installed_paths ./vendor/wp-coding-standards/wpcs",
+      "./vendor/bin/phpcs ./web/wp-content"
+    ],
+    "unit-test": [
+      "./vendor/bin/phpunit tests/unit/*"
     ]
   }
 }
