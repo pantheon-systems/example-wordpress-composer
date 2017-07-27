@@ -93,6 +93,10 @@ jobs:
                     - terminus-install
 
             - run:
+                name: dependencies
+                command: ./.circleci/set-up-globals.sh
+
+            - run:
                 name: build assets
                 command: composer -n build-assets
 

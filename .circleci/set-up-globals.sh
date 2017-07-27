@@ -16,30 +16,8 @@ apt-get update
 # Enable Composer parallel downloads
 composer global require -n "hirak/prestissimo:^0.3"
 
-#=======================================
-# Start Install Terminus into ~/terminus
-#=======================================
-if [ ! -d "$HOME/terminus" ]
-then
-	# Clone terminus if it doesn't exist
-	echo -e "Installing Terminus...\n"
-	git clone --branch master git://github.com/pantheon-systems/terminus.git ~/terminus
-	cd "$HOME/terminus"
-	composer install
-	cd -
-else
-	# Otherwise make sure terminus is up to date
-	cd "$HOME/terminus"
-	git pull
-	composer install
-	cd -
-fi
-
-#=======================================
-# End Install Terminus into ~/terminus
-#=======================================
-
-
+# Install Terminus into ~/terminus
+/usr/bin/env COMPOSER_BIN_DIR=$HOME/bin composer --working-dir=$HOME require pantheon-systems/terminus "^1"
 
 #=====================================================================================================================
 # Start EXPORTing needed environment variables
