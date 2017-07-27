@@ -146,12 +146,12 @@ workflows:
     jobs:
       # Install dev dependencies
       - install_dev_dependencies
+      # Build and deploy, can run in paralled with code_sniff_unit_test
+      - build_and_deploy
       # Code sniff and unit text first
       - code_sniff_unit_test:
         requires:
             - install_dev_dependencies
-      # Build and deploy, can run in paralled with code_sniff_unit_test
-      - build_and_deploy
       # Run Behat tests after deploy so they can be done on Pantheon
       - behat_test:
           requires:
