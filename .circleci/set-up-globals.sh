@@ -28,16 +28,16 @@ composer global require -n "hirak/prestissimo:^0.3"
 # See: https://discuss.circleci.com/t/environment-variable-expansion-in-working-directory/11322
 # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
 #=====================================================================================================================
-PATH=$PATH:$HOME/bin:$HOME/terminus/bin:$HOME/.composer/vendor/bin
+export PATH=$PATH:$HOME/bin:$HOME/terminus/bin:$HOME/.composer/vendor/bin
 export BRANCH=$(echo $CIRCLE_BRANCH | grep -v '^\(master\|[0-9]\+.x\)$')
-PR_ENV=${BRANCH:+pr-$BRANCH}
+export PR_ENV=${BRANCH:+pr-$BRANCH}
 export CIRCLE_ENV=ci-$CIRCLE_BUILD_NUM
 # If we are on a pull request
 if [[ $CIRCLE_BRANCH != "master" && -n ${CIRCLE_PULL_REQUEST+x} ]]
 then
 	# Then use a pr- branch/multidev
-	PR_NUMBER=${CIRCLE_PULL_REQUEST##*/}
-	PR_BRANCH="pr-${PR_NUMBER}"
+	export PR_NUMBER=${CIRCLE_PULL_REQUEST##*/}
+	export PR_BRANCH="pr-${PR_NUMBER}"
 	export DEFAULT_ENV=pr-${PR_NUMBER}
 else
 	# otherwise make the branch name multidev friendly

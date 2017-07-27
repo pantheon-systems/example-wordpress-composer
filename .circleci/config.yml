@@ -59,6 +59,12 @@ jobs:
                 command: composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
 
             - run:
+                name: remove dependencies from web
+                command: |
+                    rm -rf ./web
+                    git checkout -- ./web
+
+            - run:
                 name: check for WordPress coding standards
                 command: composer -n code-sniff
             
@@ -75,14 +81,6 @@ jobs:
                 key: terminus-install
                 paths:
                     - $HOME/.terminus
-
-            - persist_to_workspace:
-                # Must be relative path from working_directory
-                root: .
-                # Must be relative path from root
-                paths:
-                    - vendor
-                    - web
 
     build_and_deploy:
         <<: *defaults
@@ -105,6 +103,14 @@ jobs:
             - run:
                 name: deploy to Pantheon
                 command: ./.circleci/deploy-to-pantheon.sh
+
+            - persist_to_workspace:
+                # Must be relative path from working_directory
+                root: .
+                # Must be relative path from root
+                paths:
+                    - vendor
+                    - web
 
     behat_test:
         <<: *defaults
