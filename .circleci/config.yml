@@ -30,12 +30,7 @@ defaults: &defaults
     # See: https://discuss.circleci.com/t/environment-variable-expansion-in-working-directory/11322
     # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
     #======================================================================================================================================
-    #BRANCH: $(echo $CIRCLE_BRANCH | grep -v '^\(master\|[0-9]\+.x\)$')
-    #PR_ENV: ${BRANCH:+pr-$BRANCH}
-    #CIRCLE_ENV: ci-$CIRCLE_BUILD_NUM
-    #DEFAULT_ENV: $(echo ${PR_ENV:-$CIRCLE_ENV} | tr '[:upper:]' '[:lower:]' | sed 's/[^0-9a-z-]//g' | cut -c -11 | sed 's/-$//')
-    #TERMINUS_ENV: ${TERMINUS_ENV:-$DEFAULT_ENV}
-    #PATH: ${PATH}:${HOME}/terminus/bin:${HOME}/bin
+    # See set-up-globals.sh for more environment variables
     
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     ADMIN_USERNAME: admin
@@ -49,6 +44,11 @@ jobs:
         <<: *defaults
         steps:
             - checkout
+
+            - restore_cache:
+                keys:
+                    - composer-cache
+                    - terminus-install
 
             - run:
                 name: composer token

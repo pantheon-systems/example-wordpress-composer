@@ -16,8 +16,8 @@ apt-get update
 # Enable Composer parallel downloads
 composer global require -n "hirak/prestissimo:^0.3"
 
-# Install Terminus
-composer global require "pantheon-systems/terminus:^1"
+# Install Terminus into ~/terminus
+/usr/bin/env COMPOSER_BIN_DIR=$HOME/bin composer --working-dir=$HOME require pantheon-systems/terminus "^1"
 
 
 #=====================================================================================================================
@@ -28,28 +28,28 @@ composer global require "pantheon-systems/terminus:^1"
 # See: https://discuss.circleci.com/t/environment-variable-expansion-in-working-directory/11322
 # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
 #=====================================================================================================================
-echo 'export PATH=$PATH:$HOME/bin:$HOME/terminus/bin:$HOME/.composer/vendor/bin' >> $BASH_ENV
-echo 'export BRANCH=$(echo $CIRCLE_BRANCH | grep -v '"'"'^\(master\|[0-9]\+.x\)$'"'"')' >> $BASH_ENV
-echo 'export PR_ENV=${BRANCH:+pr-$BRANCH}' >> $BASH_ENV
-echo 'export CIRCLE_ENV=ci-$CIRCLE_BUILD_NUM' >> $BASH_ENV
+PATH=$PATH:$HOME/bin:$HOME/terminus/bin:$HOME/.composer/vendor/bin
+export BRANCH=$(echo $CIRCLE_BRANCH | grep -v '^\(master\|[0-9]\+.x\)$')
+PR_ENV=${BRANCH:+pr-$BRANCH}
+export CIRCLE_ENV=ci-$CIRCLE_BUILD_NUM
 # If we are on a pull request
 if [[ $CIRCLE_BRANCH != "master" && -n ${CIRCLE_PULL_REQUEST+x} ]]
 then
 	# Then use a pr- branch/multidev
 	PR_NUMBER=${CIRCLE_PULL_REQUEST##*/}
 	PR_BRANCH="pr-${PR_NUMBER}"
-	echo "export DEFAULT_ENV=pr-${PR_NUMBER}" >> $BASH_ENV
+	export DEFAULT_ENV=pr-${PR_NUMBER}
 else
 	# otherwise make the branch name multidev friendly
 	if [[ $CIRCLE_BRANCH == "master" ]]
 	then
-		echo "export DEFAULT_ENV=dev" >> $BASH_ENV
+		export DEFAULT_ENV=dev
 	else
-		echo 'export DEFAULT_ENV=$(echo ${PR_ENV:-$CIRCLE_ENV} | tr '"'"'[:upper:]'"'"' '"'"'[:lower:]'"'"' | sed '"'"'s/[^0-9a-z-]//g'"'"' | cut -c -11 | sed '"'"'s/-$//'"'"')' >> $BASH_ENV
+		export DEFAULT_ENV=$(echo ${PR_ENV:-$CIRCLE_ENV} | tr '[:upper:]' '[:lower:]' | sed 's/[^0-9a-z-]//g' | cut -c -11 | sed 's/-$//')
 	fi
 fi
-echo 'export TERMINUS_ENV=${TERMINUS_ENV:-$DEFAULT_ENV}' >> $BASH_ENV
-source $BASH_ENV
+export TERMINUS_ENV=${TERMINUS_ENV:-$DEFAULT_ENV}
+
 #===========================================
 # End EXPORTing needed environment variables
 #===========================================
