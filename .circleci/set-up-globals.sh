@@ -16,8 +16,29 @@ apt-get update
 # Enable Composer parallel downloads
 composer global require -n "hirak/prestissimo:^0.3"
 
-# Install Terminus into ~/terminus
-/usr/bin/env COMPOSER_BIN_DIR=$HOME/bin composer --working-dir=$HOME require pantheon-systems/terminus "^1"
+#=======================================
+# Start Install Terminus into ~/terminus
+#=======================================
+if [ ! -d "$HOME/terminus" ]
+then
+	# Clone terminus if it doesn't exist
+	echo -e "Installing Terminus...\n"
+	git clone --branch master git://github.com/pantheon-systems/terminus.git ~/terminus
+	cd "$HOME/terminus"
+	composer install
+	cd -
+else
+	# Otherwise make sure terminus is up to date
+	cd "$HOME/terminus"
+	git pull
+	composer install
+	cd -
+fi
+
+#=======================================
+# End Install Terminus into ~/terminus
+#=======================================
+
 
 
 #=====================================================================================================================
@@ -54,8 +75,6 @@ export TERMINUS_ENV=${TERMINUS_ENV:-$DEFAULT_ENV}
 # End EXPORTing needed environment variables
 #===========================================
 
-terminus --version
-
 #===============================
 # Start Install Terminus Plugins
 #===============================
@@ -71,23 +90,6 @@ then
 	INSTALL_TERMINUS_PLUGINS
 fi
 
-# Stash the current time
-CURRENT_TIMESTAMP=$(date +%s)
-if [ ! -f $HOME/.terminus/plugins/last-updated.txt ]
-then
-	echo $CURRENT_TIMESTAMP > $HOME/.terminus/plugins/last-updated.txt
-fi
-
-# Stash the time Terminus plugins were last updated
-TERMINUS_PLUGINS_UPDATED=$(cat $HOME/.terminus/plugins/last-updated.txt)
-
-# Update Terminus plugins if they are more than 24 hours old
-# Otherwise cached version will be used if they exist
-if [ "$CURRRENT_TIMESTAMP - $TERMINUS_PLUGINS_UPDATED" -gt "86400" ]
-then
-	INSTALL_TERMINUS_PLUGINS
-fi
-
 #===============================
 # End Install Terminus Plugins
 #===============================
@@ -100,7 +102,10 @@ fi
 # Bail on errors
 set +ex
 
-# Authenticate with Terminis
+# Make sure Terminus is installed
+terminus --version
+
+# Authenticate with Terminus
 terminus auth:login -n --machine-token="$TERMINUS_TOKEN"
 
 # Disable host checking
