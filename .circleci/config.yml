@@ -128,6 +128,10 @@ jobs:
                 # Must be absolute path or relative path from working_directory
                 at: /tmp
 
+            - restore_cache:
+                keys:
+                    - terminus-install
+
             - run:
                 name: copy vendor/web
                 command: cp -r /tmp/vendor .
