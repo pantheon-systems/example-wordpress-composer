@@ -17,29 +17,21 @@ TERMINUS_DOES_MULTIDEV_EXIST()
     return 1;
 }
 
-if [[ $CIRCLE_BRANCH == "master" ]]
+if [[ (${CIRCLE_BRANCH} != "master" && -z ${CIRCLE_PULL_REQUEST+x}) || (${CIRCLE_BRANCH} == "master" && -n ${CIRCLE_PULL_REQUEST+x}) ]]
 then
-    terminus build:env:push -n "$TERMINUS_SITE.$TERMINUS_ENV" --yes
-    terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
-else
-    # Only continue outside of master when building a pull request
-    if [[ -n ${CIRCLE_PULL_REQUEST+x} ]]
-    then
-        # Create a new multidev if needed
-        if ! TERMINUS_DOES_MULTIDEV_EXIST ${TERMINUS_ENV}
-        then
-            # Wake dev so we can clone the database
-            terminus env:wake -n "$TERMINUS_SITE.dev"
-            terminus build:env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --clone-content --yes --notify="$NOTIFY"
-        else
-            # Otherwise push code to the existing multidev
-            terminus build:env:push -n $TERMINUS_SITE.$TERMINUS_ENV
-        fi
-        terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
-    else
-        echo -e "CircleCI will only deploy to Pantheon for master or pull requests.\n"
-    fi
+    echo -e "CircleCI will only deploy to Pantheon if on the master branch or creating a pull requests.\n"
+    exit 0;
 fi
+
+if [[ -n ${CIRCLE_PULL_REQUEST+x} && ! TERMINUS_DOES_MULTIDEV_EXIST ${TERMINUS_ENV} ]]
+then
+    terminus env:wake -n "$TERMINUS_SITE.dev"
+    terminus build:env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --clone-content --yes --notify="$NOTIFY"
+else
+    terminus build:env:push -n "$TERMINUS_SITE.$TERMINUS_ENV" --yes
+fi
+
+terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
 
 # Cleanup old multidevs
 terminus build:env:delete:pr -n "$TERMINUS_SITE" --yes
