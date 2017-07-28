@@ -64,8 +64,5 @@ cd -
 # Restore the backup made before testing
 terminus -n backup:restore $TERMINUS_SITE.$TERMINUS_ENV --element=database --yes
 
-# Delete Pantheon admin user if needed
-terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
-
 # Reset WordPress user name
 export ADMIN_USERNAME=$WORDPRESS_USER_NAME
