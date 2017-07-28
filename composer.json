@@ -20,7 +20,6 @@
     "vlucas/phpdotenv": "^2.4.0",
     "wpackagist-plugin/wp-native-php-sessions": "^0.6.0",
     "wpackagist-plugin/pantheon-advanced-page-cache": "^0.1.4",
-    "wpackagist-plugin/wp-cfm": "^1.4.5",
     "wpackagist-theme/twentyseventeen": "^1.1",
     "pantheon-systems/wordpress-composer": "^4.8",
     "roots/wp-password-bcrypt": "^1.0.0",
