@@ -133,7 +133,7 @@ jobs:
                     - terminus-install
 
             - run:
-                name: copy vendor/web
+                name: copy vendor
                 command: cp -r /tmp/vendor .
             
             - run:
