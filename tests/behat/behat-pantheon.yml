@@ -3,7 +3,7 @@ default:
   suites:
     default:
       paths:
-        - ./behat/
+        - ./
       contexts:
         - Behat\MinkExtension\Context\MinkContext
         - PaulGibbs\WordpressBehatExtension\Context\ContentContext
