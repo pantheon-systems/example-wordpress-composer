@@ -40,7 +40,7 @@ defaults: &defaults
 version: 2
 jobs:
     # @todo: common initialization, maybe
-    install_dev_dependencies:
+    build:
         <<: *defaults
         steps:
             - checkout
@@ -146,18 +146,18 @@ jobs:
 
 workflows:
   version: 2
-  build:
+  build_and_test:
     jobs:
       # Install dev dependencies
-      - install_dev_dependencies
+      - build
       # Build and deploy
       - build_and_deploy
       # Code sniff and unit text first
       - code_sniff_unit_test:
             requires:
-                - install_dev_dependencies
+                - build
       # Run Behat tests after deploy so they can be done on Pantheon
       - behat_test:
             requires:
-                - install_dev_dependencies
+                - build
                 - build_and_deploy
