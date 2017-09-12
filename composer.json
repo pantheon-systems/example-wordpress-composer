@@ -40,7 +40,10 @@
     "vendor-dir": "vendor",
     "preferred-install": "dist",
     "optimize-autoloader": true,
-    "sort-packages": true
+    "sort-packages": true,
+    "platform": {
+      "php": "7.0"
+    }
   },
   "extra": {
     "wordpress-install-dir": "web/wp",
