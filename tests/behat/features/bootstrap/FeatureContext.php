@@ -3,6 +3,8 @@
 
 use PaulGibbs\WordpressBehatExtension\Context\RawWordpressContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Behat\Hook\Scope\AfterFeatureScope;
+
 
 /**
  * Define application features from the specific context.
@@ -41,4 +43,12 @@ class FeatureContext extends RawWordpressContext {
         $this->minkContext->fillField('Website', "http://" . $time . "example.com");
         $this->minkContext->pressButton('Post Comment');
     }
+
+  /**
+   * @AfterFeature
+   */
+   static function afterFeature(AfterFeatureScope $scope) {
+       exec('terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- comment delete $(terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- comment list --format=ids) > /dev/null &');
+
+   }
 }
