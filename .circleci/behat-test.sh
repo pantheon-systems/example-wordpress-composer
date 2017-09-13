@@ -27,6 +27,8 @@ echo
 # Exit immediately on errors
 set -ex
 
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- plugin activate basic-auth
+
 # Create a backup before running Behat tests
 terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
 
