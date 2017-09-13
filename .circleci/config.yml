@@ -68,6 +68,11 @@ jobs:
                 paths:
                     - $HOME/.terminus
                     - $HOME/terminus
+            
+            - save_cache:
+                key: pantheon-env-vars-{{ .Revision }}
+                paths:
+                    - $HOME/.pantheon_env_variables
 
             - persist_to_workspace:
                 # Must be relative path from working_directory
@@ -106,6 +111,7 @@ jobs:
                 keys:
                     - composer-cache
                     - terminus-install
+                    - pantheon-env-vars-{{ .Revision }}
 
             - run:
                 name: dependencies
@@ -131,6 +137,7 @@ jobs:
             - restore_cache:
                 keys:
                     - terminus-install
+                    - pantheon-env-vars-{{ .Revision }}
 
             - run:
                 name: copy vendor
