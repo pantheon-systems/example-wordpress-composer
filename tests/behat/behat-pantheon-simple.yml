@@ -1,0 +1,37 @@
+# behat.yml
+default:
+  suites:
+    default:
+      paths:
+        - ./
+      contexts:
+        - FeatureContext
+        - Behat\MinkExtension\Context\MinkContext
+#        - PaulGibbs\WordpressBehatExtension\Context\ContentContext
+#        - PaulGibbs\WordpressBehatExtension\Context\DashboardContext
+#        - PaulGibbs\WordpressBehatExtension\Context\SiteContext
+#        - PaulGibbs\WordpressBehatExtension\Context\UserContext
+#        - PaulGibbs\WordpressBehatExtension\Context\WordpressContext
+#        - PaulGibbs\WordpressBehatExtension\Context\EditPostContext
+#        - PaulGibbs\WordpressBehatExtension\Context\WidgetContext
+
+  extensions:
+    Behat\MinkExtension:
+      # base_url set by ENV
+      browser_name: chrome
+      default_session: default
+      javascript_session: selenium2
+      sessions:
+        default:
+          goutte:
+            guzzle_parameters:
+              verify: false  # Allow self-signed SSL certificates
+        selenium2:
+          selenium2: ~
+
+# export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io"}}}'
+
+#    PaulGibbs\WordpressBehatExtension:
+#      # WordPress username/password and site_url set by ENV
+#      default_driver: blackbox
+#      path: web/wp
