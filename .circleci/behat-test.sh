@@ -27,8 +27,9 @@ echo
 # Exit immediately on errors
 set -ex
 
+# Activate basic-auth so that the demonstration Behat test can call
+# The REST API to delete comments in a cleanup step.
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- plugin activate basic-auth
-
 
 # Create a backup before running Behat tests
 terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
