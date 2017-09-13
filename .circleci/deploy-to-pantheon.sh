@@ -36,7 +36,7 @@ then
     terminus env:wake -n "$TERMINUS_SITE.dev"
     terminus build:env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --clone-content --yes --notify="$NOTIFY"
 else
-    terminus build:env:push -n "$TERMINUS_SITE.$TERMINUS_ENV" --yes
+    terminus build:env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --clone-content --yes
 fi
 
 terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
