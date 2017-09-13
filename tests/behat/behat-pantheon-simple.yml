@@ -17,7 +17,7 @@ default:
 
   extensions:
     Behat\MinkExtension:
-      # base_url set by ENV
+      base_url: http://pr-42-example-wordpress-composer.pantheonsite.io/
       browser_name: chrome
       default_session: default
       javascript_session: selenium2
@@ -33,5 +33,5 @@ default:
 
 #    PaulGibbs\WordpressBehatExtension:
 #      # WordPress username/password and site_url set by ENV
-#      default_driver: blackbox
+#      default_driver: wpcli
 #      path: web/wp
