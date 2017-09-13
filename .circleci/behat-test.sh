@@ -29,6 +29,7 @@ set -ex
 
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- plugin activate basic-auth
 
+
 # Create a backup before running Behat tests
 terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
 
@@ -62,7 +63,7 @@ cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --strict "$@"
 
 # Run just the simple command
 export BEHAT_PARAMS=''
-../vendor/bin/behat --config=behat/behat-pantheon-simple.yml  behat/features/comment.feature --strict "$@"
+../vendor/bin/behat --config=behat/behat-pantheon-simple.yml --strict "$@"
 
 # Change back into previous directory
 cd -
