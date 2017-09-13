@@ -55,6 +55,8 @@ terminus -n env:wake $TERMINUS_SITE.$TERMINUS_ENV
 # Ping wp-cli to start ssh with the app server
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- cli version
 
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- plugin activate basic-auth
+
 # Run the Behat tests
 cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --strict "$@"
 

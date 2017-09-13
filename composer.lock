@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "17a00b8294cb4bb3c5623dabbdb6060f",
+    "content-hash": "b262d90a46d75bd59da1a64e9ccf0d42",
     "packages": [
         {
             "name": "composer/installers",
@@ -351,6 +351,25 @@
             "time": "2016-09-01T10:05:43+00:00"
         },
         {
+            "name": "wp-api/basic-auth",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WP-API/Basic-Auth.git",
+                "reference": "e91114292718056a6ef00337e0f5957f49f16ff6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WP-API/Basic-Auth/zipball/e91114292718056a6ef00337e0f5957f49f16ff6",
+                "reference": "e91114292718056a6ef00337e0f5957f49f16ff6",
+                "shasum": ""
+            },
+            "type": "wordpress-plugin",
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Basic Authentication handler for the JSON API, used for development and debugging purposes",
+            "time": "2017-06-26 17:27:49"
+        },
+        {
             "name": "wpackagist-plugin/pantheon-advanced-page-cache",
             "version": "0.1.5",
             "source": {
@@ -361,7 +380,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/plugin/pantheon-advanced-page-cache.0.1.5.zip",
-                "reference": null,
+                "reference": "tags/0.1.5",
                 "shasum": null
             },
             "require": {
@@ -381,7 +400,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/plugin/wp-native-php-sessions.0.6.2.zip",
-                "reference": null,
+                "reference": "tags/0.6.2",
                 "shasum": null
             },
             "require": {
@@ -401,7 +420,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/theme/twentyseventeen.1.3.zip",
-                "reference": null,
+                "reference": "1.3",
                 "shasum": null
             },
             "require": {
@@ -1714,7 +1733,7 @@
                 "extension",
                 "wordpress"
             ],
-            "time": "2017-07-20T15:08:46+00:00"
+            "time": "2017-07-20 15:08:46"
         },
         {
             "name": "phar-io/manifest",
@@ -4416,8 +4435,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "alpha",
+    "minimum-stability": "dev",
     "stability-flags": {
+        "wp-api/basic-auth": 20,
         "roave/security-advisories": 20,
         "paulgibbs/behat-wordpress-extension": 20,
         "wp-coding-standards/wpcs": 20
