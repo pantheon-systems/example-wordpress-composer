@@ -59,6 +59,7 @@ terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- cli version
 cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --strict "$@"
 
 # Run just the simple command
+export BEHAT_PARAMS=''
 ../vendor/bin/behat --config=behat/behat-pantheon-simple.yml  behat/features/comment.feature --strict "$@"
 
 # Change back into previous directory
