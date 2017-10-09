@@ -21,14 +21,13 @@
     "wpackagist-plugin/wp-native-php-sessions": "^0.6.0",
     "wpackagist-plugin/pantheon-advanced-page-cache": "^0.1.4",
     "wpackagist-theme/twentyseventeen": "^1.1",
-    "pantheon-systems/quicksilver-pushback": "~1",
-    "pantheon-systems/wordpress-composer": "^4.8.1",
+    "pantheon-systems/wordpress-composer": "^4.8.2",
     "roots/wp-password-bcrypt": "^1.0.0",
     "rvtraveller/qs-composer-installer": "^1.1"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
-    "paulgibbs/behat-wordpress-extension": "dev-master",
+    "paulgibbs/behat-wordpress-extension": "0.8.0",
     "behat/mink-goutte-driver": "^1.2",
     "behat/mink-selenium2-driver": "^1.3",
     "squizlabs/php_codesniffer": "^2.9.0",
