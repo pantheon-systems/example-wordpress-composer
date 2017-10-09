@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "33d818ad9e57edd9413a35676083fbfb",
+    "content-hash": "6684d537549e69a211d50ff3b67c9cf0",
     "packages": [
         {
             "name": "composer/installers",
@@ -198,16 +198,16 @@
         },
         {
             "name": "pantheon-systems/wordpress-composer",
-            "version": "4.8.1",
+            "version": "4.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pantheon-systems/wordpress-composer.git",
-                "reference": "07e95e569ede4d7e734bb02fb93d96f8273a26ac"
+                "reference": "5f0725b3cdbeeb53fa49e1afcfc8237cbfba3355"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pantheon-systems/wordpress-composer/zipball/07e95e569ede4d7e734bb02fb93d96f8273a26ac",
-                "reference": "07e95e569ede4d7e734bb02fb93d96f8273a26ac",
+                "url": "https://api.github.com/repos/pantheon-systems/wordpress-composer/zipball/5f0725b3cdbeeb53fa49e1afcfc8237cbfba3355",
+                "reference": "5f0725b3cdbeeb53fa49e1afcfc8237cbfba3355",
                 "shasum": ""
             },
             "require": {
@@ -225,10 +225,10 @@
             ],
             "description": "WordPress for Pantheon with a composer.json file.",
             "support": {
-                "source": "https://github.com/pantheon-systems/wordpress-composer/tree/4.8.1",
+                "source": "https://github.com/pantheon-systems/wordpress-composer/tree/4.8.2",
                 "issues": "https://github.com/pantheon-systems/wordpress-composer/issues"
             },
-            "time": "2017-08-04T21:16:24+00:00"
+            "time": "2017-09-19T23:18:39+00:00"
         },
         {
             "name": "roots/wp-password-bcrypt",
@@ -386,7 +386,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/plugin/pantheon-advanced-page-cache.0.1.5.zip",
-                "reference": null,
+                "reference": "tags/0.1.5",
                 "shasum": null
             },
             "require": {
@@ -406,7 +406,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/plugin/wp-native-php-sessions.0.6.2.zip",
-                "reference": null,
+                "reference": "tags/0.6.2",
                 "shasum": null
             },
             "require": {
@@ -426,7 +426,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/theme/twentyseventeen.1.3.zip",
-                "reference": null,
+                "reference": "1.3",
                 "shasum": null
             },
             "require": {
@@ -480,16 +480,16 @@
         },
         {
             "name": "behat/behat",
-            "version": "v3.4.0",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Behat.git",
-                "reference": "7de1a2207735fe7e2c06373dea3fd64c27c367fc"
+                "reference": "cb51d4b0b11ea6d3897f3589a871a63a33632692"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Behat/zipball/7de1a2207735fe7e2c06373dea3fd64c27c367fc",
-                "reference": "7de1a2207735fe7e2c06373dea3fd64c27c367fc",
+                "url": "https://api.github.com/repos/Behat/Behat/zipball/cb51d4b0b11ea6d3897f3589a871a63a33632692",
+                "reference": "cb51d4b0b11ea6d3897f3589a871a63a33632692",
                 "shasum": ""
             },
             "require": {
@@ -559,7 +559,7 @@
                 "symfony",
                 "testing"
             ],
-            "time": "2017-09-10T11:21:07+00:00"
+            "time": "2017-09-18T11:10:28+00:00"
         },
         {
             "name": "behat/gherkin",
@@ -1656,16 +1656,16 @@
         },
         {
             "name": "paulgibbs/behat-wordpress-extension",
-            "version": "dev-master",
+            "version": "v0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paulgibbs/behat-wordpress-extension.git",
-                "reference": "78323153e15b8df396ba16c819cf1fb13616f310"
+                "reference": "04aaa4e2262f3678c4cf76829331b99051bf0ff9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paulgibbs/behat-wordpress-extension/zipball/78323153e15b8df396ba16c819cf1fb13616f310",
-                "reference": "78323153e15b8df396ba16c819cf1fb13616f310",
+                "url": "https://api.github.com/repos/paulgibbs/behat-wordpress-extension/zipball/04aaa4e2262f3678c4cf76829331b99051bf0ff9",
+                "reference": "04aaa4e2262f3678c4cf76829331b99051bf0ff9",
                 "shasum": ""
             },
             "require": {
@@ -1715,7 +1715,7 @@
                 "extension",
                 "wordpress"
             ],
-            "time": "2017-09-11T23:23:02+00:00"
+            "time": "2017-09-18T16:09:49+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -4421,7 +4421,6 @@
     "minimum-stability": "alpha",
     "stability-flags": {
         "roave/security-advisories": 20,
-        "paulgibbs/behat-wordpress-extension": 20,
         "wp-coding-standards/wpcs": 20
     },
     "prefer-stable": false,
