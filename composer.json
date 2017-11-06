@@ -17,13 +17,14 @@
   ],
   "require": {
     "composer/installers": "^1.3.0",
-    "vlucas/phpdotenv": "^2.4.0",
-    "wpackagist-plugin/wp-native-php-sessions": "^0.6.0",
-    "wpackagist-plugin/pantheon-advanced-page-cache": "^0.1.4",
-    "wpackagist-theme/twentyseventeen": "^1.1",
+    "pantheon-systems/quicksilver-pushback": "^1.0",
     "pantheon-systems/wordpress-composer": "^4.8.2",
     "roots/wp-password-bcrypt": "^1.0.0",
-    "rvtraveller/qs-composer-installer": "^1.1"
+    "rvtraveller/qs-composer-installer": "^1.1",
+    "vlucas/phpdotenv": "^2.4.0",
+    "wpackagist-plugin/pantheon-advanced-page-cache": "^0.1.4",
+    "wpackagist-plugin/wp-native-php-sessions": "^0.6.0",
+    "wpackagist-theme/twentyseventeen": "^1.1"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
@@ -33,8 +34,7 @@
     "squizlabs/php_codesniffer": "^2.9.0",
     "wp-coding-standards/wpcs": "dev-master",
     "phpunit/phpunit": "^6.1",
-    "brain/monkey": "^1.4",
-    "pantheon-systems/quicksilver-pushback": "~1"
+    "brain/monkey": "^1.4"
   },
   "config": {
     "vendor-dir": "vendor",
