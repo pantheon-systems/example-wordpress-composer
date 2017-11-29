@@ -35,7 +35,7 @@ export CIRCLE_TOKEN=[REDACTED]
 Once you have all of the prerequisites in place, you can create your copy of this repo with one command:
 
 ```
-terminus build:project:create pantheon-systems/example-wordpress-composer my-new-site --team="Agency Org Name" --stability=dev
+terminus build:project:create pantheon-systems/example-wordpress-composer my-new-site --team="Agency Org Name"
 ```
 
 The parameters shown here are:
