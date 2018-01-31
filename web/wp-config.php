@@ -35,8 +35,9 @@ define( 'DISALLOW_FILE_MODS', true );
 
 /**
  * Force SSL
+ * turning off - jd
  */
-define( 'FORCE_SSL_ADMIN', true );
+define( 'FORCE_SSL_ADMIN', false );
 
 /**
  * Limit post revisions
@@ -58,9 +59,12 @@ if ( ! isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ):
 	if ( isset( $_SERVER['HTTP_USER_AGENT_HTTPS'] ) && $_SERVER['HTTP_USER_AGENT_HTTPS'] == 'ON' ) {
 		$scheme = 'https';
 	}
-	$site_url = getenv( 'WP_HOME' ) !== false ? getenv( 'WP_HOME' ) : $scheme . '://' . $_SERVER['HTTP_HOST'] . '/';
-	define( 'WP_HOME', $site_url );
-	define( 'WP_SITEURL', $site_url . 'wp/' );
+
+	if ( isset($_SERVER['HTTP_HOST']) ) {
+		$site_url = getenv( 'WP_HOME' ) !== false ? getenv( 'WP_HOME' ) : $scheme . '://' . $_SERVER['HTTP_HOST'] . '/';
+		define( 'WP_HOME', $site_url );
+		define( 'WP_SITEURL', $site_url . 'wp/' );
+	}
 
 	/**
 	 * Set Database Details
@@ -74,6 +78,8 @@ if ( ! isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ):
 	 * Set debug modes
 	 */
 	define( 'WP_DEBUG', getenv( 'WP_DEBUG' ) === 'true' ? true : false );
+	define( 'WP_DEBUG_LOG', getenv( 'WP_DEBUG_LOG' ) === 'true' ? true : false );
+	define( 'WP_DEBUG_DISPLAY', getenv( 'WP_DEBUG_DISPLAY' ) === 'true' ? true : false );
 	define( 'IS_LOCAL', getenv( 'IS_LOCAL' ) !== false ? true : false );
 
 	/**#@+
@@ -174,7 +180,9 @@ endif;
 * Define wp-content directory outside of WordPress core directory
 */
 define( 'WP_CONTENT_DIR', dirname( __FILE__ ) . '/wp-content' );
-define( 'WP_CONTENT_URL', WP_HOME . '/wp-content' );
+if ( defined('WP_HOME') ) {
+	define( 'WP_CONTENT_URL', WP_HOME . '/wp-content' );
+}
 
 /**
  * WordPress Database Table prefix.
