@@ -62,6 +62,20 @@ Even within the `/web` directory you may notice that other directories and files
 
 If you are just browsing this repository on GitHub, you may not see some of the directories mentioned above like `wp-admin`. That is because WordPress core and its plugins are installed via Composer and ignored in the `.gitignore` file. Specific plugins are added to the project via `composer.json` and `composer.lock` keeps track of the exact version of each plugin (or other dependency). Generic Composer dependencies (not WordPress plugins or themes) are downloaded to the `/vendor` folder. Use the `require` section for any dependencies you wish to push to Pantheon, even those that might only be used on non-Live environments. Dependencies added in `require-dev` such as `php_codesniffer` or `phpunit` will not be pushed to Pantheon by the CI scripts.
 
+#### `.env`
+
+For local development, copy the `.env.example` file to `.env` and set the variables equal to your local development configuration.
+```
+DB_NAME=[String - Database Name]
+DB_USER=[String - Database User]
+DB_HOST=[String - Database Host Location]
+DB_PASSWORD=[String - Database User Password]
+WP_DEBUG=[Boolean - Initiate WP DEBUG]
+WP_DEBUG_DISPLAY=[Boolean - Display Wordpress and PHP errors on page]
+WP_DEBUG_LOG=[Boolean - Log to a file at web/wp-content/debug.log]
+IS_LOCAL=[Boolean - Whether or not this is a local install]
+```
+
 ## Behat tests
 
 So that CircleCI will have some test to run, this repository includes a configuration of [WordHat](https://wordhat.info/), A WordPress Behat extension. You can add your own `.feature` files within `/tests/behat/features`. [A fuller guide on WordPress testing with Behat is forthcoming.](https://github.com/pantheon-systems/documentation/issues/2469)
