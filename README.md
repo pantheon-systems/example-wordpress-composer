@@ -75,7 +75,7 @@ To get started using Lando to develop locally complete these one-time steps. Ple
 * Run `lando start` to start Lando.
     - Save the local site URL. It should be similar to `https://<PROJECT_NAME>.lndo.site`.
 * Run `lando terminus auth:login --machine-token=<TOKEN>` to authenticate Terminus inside of Lando.
-* Run `composer install --no-ansi --no-interaction --optimize-autoloader --no-progress` to download dependencies
+* Run `lando composer install --no-ansi --no-interaction --optimize-autoloader --no-progress` to download dependencies
 * Run `lando pull --code=none` to download the media files and database from Pantheon.
 * Visit the local site URL saved from above.
 
