@@ -65,3 +65,21 @@ If you are just browsing this repository on GitHub, you may not see some of the 
 ## Behat tests
 
 So that CircleCI will have some test to run, this repository includes a configuration of [WordHat](https://wordhat.info/), A WordPress Behat extension. You can add your own `.feature` files within `/tests/behat/features`. [A fuller guide on WordPress testing with Behat is forthcoming.](https://github.com/pantheon-systems/documentation/issues/2469)
+
+## Working locally with Lando
+To get started using Lando to develop locally complete these one-time steps. Please note than Lando is an independent product and is not supported by Pantheon. For further assistance please refer to the [Lando documentation](https://docs.devwithlando.io/).
+
+* [Install Lando](https://docs.devwithlando.io/installation/installing.html), if not already installed.
+* Clone this repository locally.
+* Run `lando init` and follow the prompts, choosing the Pantheon recipe followed by entering a valid machine token and selecting the Pantheon site created by [the Terminus build tools plugin].(https://github.com/pantheon-systems/terminus-build-tools-plugin).
+* Run `lando start` to start Lando.
+    - Save the local site URL. It should be similar to `https://<PROJECT_NAME>.lndo.site`.
+* Run `lando composer install --no-ansi --no-interaction --optimize-autoloader --no-progress` to download dependencies
+* Run `lando pull --code=none` to download the media files and database from Pantheon.
+* Visit the local site URL saved from above.
+
+You should now be able to edit your site locally. The steps above do not need to be completed on subsequent starts. You can stop Lando with `lando stop` and start it again with `lando start`.
+
+**Warning:** do NOT push/pull code between Lando and Pantheon directly. All code should be pushed to GitHub and deployed to Pantheon through a continuous integration service, such as CircleCI.
+
+Composer, Terminus and wp-cli commands should be run in Lando rather than on the host machine. This is done by prefixing the desired command with `lando`. For example, after a change to `composer.json` run `lando composer update` rather than `composer update`.
