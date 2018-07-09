@@ -85,8 +85,8 @@
       "WordPressProject\\composer\\ScriptHandler::createRequiredFiles"
     ],
     "code-sniff": [
-      "./vendor/bin/phpcs --config-set installed_paths ./vendor/wp-coding-standards/wpcs",
-      "./vendor/bin/phpcs ./web/wp-content"
+      "./vendor/bin/phpcs --config-set installed_paths ~/example-wordpress-composer/vendor/wp-coding-standards/wpcs",
+      "./vendor/bin/phpcs --standard=WordPress ./web/wp-content"
     ],
     "unit-test": [
       "./vendor/bin/phpunit tests/unit/*"
