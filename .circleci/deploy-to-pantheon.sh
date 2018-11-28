@@ -3,7 +3,7 @@
 set -ex
 
 TERMINUS_DOES_MULTIDEV_EXIST()
-{    
+{
     # Return 1 if on master since dev always exists
     if [[ ${CIRCLE_BRANCH} == "master" ]]
     then
@@ -39,7 +39,10 @@ else
     terminus build:env:push -n "$TERMINUS_SITE.$TERMINUS_ENV" --yes
 fi
 
+set +ex
+echo 'terminus secrets:set'
 terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --file='github-secrets.json' --clear --skip-if-empty
+set -ex
 
 # Cleanup old multidevs
 terminus build:env:delete:pr -n "$TERMINUS_SITE" --yes
