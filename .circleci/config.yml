@@ -1,7 +1,7 @@
 # https://circleci.com/docs/2.0/workflows/#using-workspaces-to-share-data-among-jobs
 defaults: &defaults
   docker:
-    - image: drupaldocker/php:7.1-cli
+    - image: drupaldocker/php:7.2-cli
   working_directory: ~/example_wordpress_composer
   environment:
     #=========================================================================
@@ -121,6 +121,8 @@ jobs:
 
     behat_test:
         <<: *defaults
+        docker:
+            - image: ataylorme/docker-php-advanced-wordpress-on-pantheon:headless-chrome
         steps:
             - checkout
 

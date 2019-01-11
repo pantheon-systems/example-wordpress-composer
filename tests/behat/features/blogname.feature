@@ -4,7 +4,7 @@ Feature: Change blogname and blogdescription (no-js)
   So that I have control over my site
 
   Background:
-    Given I am logged in as an admin
+    Given I am logged in as an administrator
     Given I am on the dashboard
 
 
