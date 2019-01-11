@@ -5,6 +5,7 @@ Feature: Login as an administrator (no-js)
 
   Scenario: Confirm access to create users
     Given I am logged in as an administrator
-    When I am on the dashboard
-    And I go to menu item "Users > Add New"
-    Then I should see "Add New User"
+    And I am on the dashboard
+    And I go to the "Users" menu
+    When I click on the "Add New" link in the header
+    Then I should be on the "Add New User" screen
