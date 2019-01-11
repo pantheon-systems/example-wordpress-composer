@@ -121,6 +121,8 @@ jobs:
 
     behat_test:
         <<: *defaults
+        docker:
+            - image: ataylorme/docker-php-advanced-wordpress-on-pantheon:headless-chrome
         steps:
             - checkout
 
