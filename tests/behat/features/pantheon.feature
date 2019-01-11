@@ -1,7 +1,7 @@
 Feature: Perform Pantheon-specific actions
 
   Background:
-    Given I log in as an admin
+    Given I log in as an administrator
 
   Scenario: Change the cache TTL
     When I go to "/wp-admin/options-general.php?page=pantheon-cache"
