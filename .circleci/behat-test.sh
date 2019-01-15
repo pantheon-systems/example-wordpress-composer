@@ -39,6 +39,9 @@ export WORDPRESS_USER_NAME=$ADMIN_USERNAME
 # Use a generic Pantheon user for testing
 export ADMIN_USERNAME='pantheon-ci-testing'
 
+# Update WordPress database
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
+
 # Setup the WordPress admin user
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
 {
