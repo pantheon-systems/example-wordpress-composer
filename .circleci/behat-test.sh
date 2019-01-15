@@ -58,10 +58,6 @@ terminus -n env:wake $TERMINUS_SITE.$TERMINUS_ENV
 # Ping wp-cli to start ssh with the app server
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- cli version
 
-# Start headless Chrome
-echo "\n Starting Chrome in headless mode ..."
-    google-chrome-unstable --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
-
 # Run the Behat tests
 cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --strict "$@"
 

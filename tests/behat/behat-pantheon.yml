@@ -19,15 +19,17 @@ default:
     Behat\MinkExtension:
       # base_url set by ENV
       browser_name: chrome
+      default_session: default
+      javascript_session: selenium2
       sessions:
         default:
-          chrome:
-            api_url: "http://localhost:9222"
-            validate_certificate: false
+          goutte:
+            guzzle_parameters:
+              verify: false  # Allow self-signed SSL certificates
+        selenium2:
+          selenium2: ~
 
     PaulGibbs\WordpressBehatExtension:
       # WordPress username/password and site_url set by ENV
       default_driver: wpcli
       path: web/wp
-    
-    DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
