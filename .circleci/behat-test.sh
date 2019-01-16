@@ -24,7 +24,7 @@ echo "Behat test site: $TERMINUS_SITE.$TERMINUS_ENV"
 echo "::::::::::::::::::::::::::::::::::::::::::::::::"
 echo
 
-# Exit immediately on errors
+# Verbose output
 set -x
 
 # Create a backup before running Behat tests
@@ -69,8 +69,11 @@ terminus -n env:wake $TERMINUS_SITE.$TERMINUS_ENV
 # Ping wp-cli to start ssh with the app server
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- cli version
 
+# Exit on errors
+set -ex
+
 # Run the Behat tests
-cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --expand --strict "$@"
+cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --strict "$@"
 
 # Change back into previous directory
 cd -
