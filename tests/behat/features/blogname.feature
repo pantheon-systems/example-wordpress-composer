@@ -13,7 +13,7 @@ Feature: Change blogname and blogdescription
     And I press "submit"
     And I should see "Settings saved."
     And I am on the homepage
-    Then I should see "Awesome WordHat Test Site" in the "h1 a" element
+    Then I should see "Awesome WordHat Test Site" in the ".site-title > a" element
 
   Scenario: Saving blogdescription
     Given I go to the "Settings > General" menu
