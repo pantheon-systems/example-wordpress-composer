@@ -38,6 +38,7 @@ export WORDPRESS_USER_NAME=$ADMIN_USERNAME
 
 # Use a generic Pantheon user for testing
 export ADMIN_USERNAME='pantheon-ci-testing'
+export ADMIN_PASSWORD='password'
 
 # Update WordPress database
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
@@ -45,7 +46,7 @@ terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
 # Setup the WordPress admin user
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
 {
-  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$ADMIN_PASSWORD --role=administrator
+  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-reply@getpantheon.com --user_pass='$ADMIN_PASSWORD' --role=administrator
   export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/wp","users":{"admin":{"username":"'$ADMIN_USERNAME'","password":"'$ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$TERMINUS_SITE'.'$TERMINUS_ENV' --"}}}}'
 } &> /dev/null
 

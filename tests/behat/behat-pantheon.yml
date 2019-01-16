@@ -32,4 +32,10 @@ default:
     PaulGibbs\WordpressBehatExtension:
       # WordPress username/password and site_url set by ENV
       default_driver: wpcli
+      users:
+        -
+          roles:
+            - administrator
+          username: pantheon-ci-testing
+          password: password
       path: web/wp
