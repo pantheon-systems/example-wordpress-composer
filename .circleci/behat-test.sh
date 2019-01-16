@@ -27,18 +27,6 @@ echo
 # Verbose output
 set -x
 
-# Check if an admin user with our desired username exists
-ADMIN_USER_EXISTS=$(terminus -n wp ${TERMINUS_SITE}.${TERMINUS_ENV} -- user list --login=${ADMIN_USERNAME} --format=count)
-
-# If so, delete the existing admin user
-if [[ "$ADMIN_USER_EXISTS" == "1" ]]
-then
-  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
-fi
-
-# Create a backup before running Behat tests
-terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
-
 # Clear site cache
 terminus -n env:clear-cache $TERMINUS_SITE.$TERMINUS_ENV
 
@@ -48,6 +36,15 @@ export WORDPRESS_USER_NAME=$ADMIN_USERNAME
 # Use a generic Pantheon user for testing
 export ADMIN_USERNAME='pantheon-ci-testing'
 
+# Check if an admin user with our desired username exists
+ADMIN_USER_EXISTS=$(terminus -n wp ${TERMINUS_SITE}.${TERMINUS_ENV} -- user list --login=${ADMIN_USERNAME} --format=count)
+
+# If so, delete the existing admin user
+if [[ "$ADMIN_USER_EXISTS" == "1" ]]
+then
+  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
+fi
+
 # Update WordPress database
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
 
@@ -56,6 +53,9 @@ terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-re
 
 # Confirm the admin user exists
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user list --login=$ADMIN_USERNAME
+
+# Create a backup before running Behat tests
+terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
 
 # Dynamically set Behat configuration parameters
 export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/wp","users":{"admin":{"username":"'$ADMIN_USERNAME'","password":"'$ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$TERMINUS_SITE'.'$TERMINUS_ENV' --"}}}}'
