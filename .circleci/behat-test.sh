@@ -44,13 +44,15 @@ export ADMIN_PASSWORD='password'
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
 
 # Check if an admin user with our desired username exists
-ADMIN_USER_EXISTS=$(terminus -n wp ${TERMINUS_SITE}.${TERMINUS_ENV} -- user list --login=${ADMIN_USERNAME} --format=count)
+WORDPRESS_ADMIN_USER_LIST="$(terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user list --field=user_login --role=administrator)"
 
-# If so, delete the existing admin user
-if [[ "$ADMIN_USER_EXISTS" == "1" ]]
-then
-  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
-fi
+while read -r USER; do
+    if [[ "${USER}" == "$ADMIN_USERNAME" ]]; then
+        # If so, delete the existing admin user
+        terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
+    fi
+done <<< "$WORDPRESS_ADMIN_USER_LIST"
+
 {
   # Create the desired admin user
   terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-reply@getpantheon.com --user_pass='$ADMIN_PASSWORD' --role=administrator
