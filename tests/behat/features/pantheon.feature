@@ -30,6 +30,6 @@ Feature: Perform Pantheon-specific actions
 
   Scenario: Verify the Pantheon MU plugin is present
     When I go to "/wp/wp-admin/plugins.php?plugin_status=mustuse"
-    Then I should see text matching "|Files in the [^wp-content]+wp-content/mu-plugins directory are executed automatically.|" in the ".tablenav"
+    Then I should see text matching "/Files in the [^wp-content]+wp-content\/mu-plugins directory are executed automatically./"
     And I should see "Pantheon" in the "#the-list" element
     And I should see "Building on Pantheon's and WordPress's strengths, together." in the "#the-list" element
