@@ -72,11 +72,12 @@ terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- cli version
 # Verbose mode and exit on errors
 set -ex
 
-# Run the Behat tests
-cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --strict "$@"
+# Start headless Chrome
+echo "\n Starting Chrome in headless mode ..."
+google-chrome-unstable --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
 
-# Change back into previous directory
-cd -
+# Run the Behat tests
+./vendor/bin/behat --config=tests/behat/behat-pantheon.yml --strict "$@"
 
 # Restore the backup made before testing
 terminus -n backup:restore $TERMINUS_SITE.$TERMINUS_ENV --element=database --yes
