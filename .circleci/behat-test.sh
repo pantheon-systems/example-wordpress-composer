@@ -46,8 +46,7 @@ fi
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
 
 # Create the desired admin user
-ADMIN_USER_WPCLI=$(terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$ADMIN_PASSWORD --role=administrator)
-echo $ADMIN_USER_WPCLI
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$ADMIN_PASSWORD --role=administrator --porcelain
 
 # Confirm the admin user exists
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user list --login=$ADMIN_USERNAME
