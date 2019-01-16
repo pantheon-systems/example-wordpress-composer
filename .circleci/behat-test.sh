@@ -24,9 +24,6 @@ echo "Behat test site: $TERMINUS_SITE.$TERMINUS_ENV"
 echo "::::::::::::::::::::::::::::::::::::::::::::::::"
 echo
 
-# Verbose output
-set -x
-
 # Clear site cache
 terminus -n env:clear-cache $TERMINUS_SITE.$TERMINUS_ENV
 
