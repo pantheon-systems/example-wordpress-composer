@@ -12,8 +12,6 @@ default:
         - PaulGibbs\WordpressBehatExtension\Context\WordpressContext
         - PaulGibbs\WordpressBehatExtension\Context\EditPostContext
         - PaulGibbs\WordpressBehatExtension\Context\WidgetContext
-        - PantheonSystems\WordHatHelpers\Contexts\FeatureContext
-        - PantheonSystems\WordHatHelpers\Contexts\GiveContext
 
   extensions:
     Behat\MinkExtension:
