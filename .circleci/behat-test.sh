@@ -70,7 +70,7 @@ terminus -n env:wake $TERMINUS_SITE.$TERMINUS_ENV
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- cli version
 
 # Run the Behat tests
-cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --strict "$@"
+cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --expand --strict "$@"
 
 # Change back into previous directory
 cd -
