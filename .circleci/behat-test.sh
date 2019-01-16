@@ -25,7 +25,7 @@ echo "::::::::::::::::::::::::::::::::::::::::::::::::"
 echo
 
 # Exit immediately on errors
-set -ex
+set -x
 
 # Create a backup before running Behat tests
 terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
@@ -44,14 +44,13 @@ export ADMIN_PASSWORD='password'
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
 
 # Check if an admin user with our desired username exists
-WORDPRESS_ADMIN_USER_LIST="$(terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user list --field=user_login --role=administrator)"
+ADMIN_USER_EXISTS=$(terminus -n wp ${TERMINUS_SITE}.${TERMINUS_ENV} -- user list --login=${ADMIN_USERNAME} --format=count)
 
-while read -r USER; do
-    if [[ "${USER}" == "$ADMIN_USERNAME" ]]; then
-        # If so, delete the existing admin user
-        terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
-    fi
-done <<< "$WORDPRESS_ADMIN_USER_LIST"
+# If so, delete the existing admin user
+if [[ "$ADMIN_USER_EXISTS" == "1" ]]
+then
+  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
+fi
 
 {
   # Create the desired admin user
