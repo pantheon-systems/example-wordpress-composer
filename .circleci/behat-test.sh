@@ -43,10 +43,19 @@ export ADMIN_PASSWORD='password'
 # Update WordPress database
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
 
-# Setup the WordPress admin user
-terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
+# Check if an admin user with our desired username exists
+ADMIN_USER_EXISTS=$(terminus -n wp ${TERMINUS_SITE}.${TERMINUS_ENV} -- user list --login=${ADMIN_USERNAME} --format=count)
+
+# If so, delete the existing admin user
+if [[ "$ADMIN_USER_EXISTS" == "1" ]]
+then
+  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
+fi
 {
+  # Create the desired admin user
   terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-reply@getpantheon.com --user_pass='$ADMIN_PASSWORD' --role=administrator
+
+  # Dynamically set Behat configuration parameters
   export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/wp","users":{"admin":{"username":"'$ADMIN_USERNAME'","password":"'$ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$TERMINUS_SITE'.'$TERMINUS_ENV' --"}}}}'
 } &> /dev/null
 
