@@ -6,18 +6,25 @@ set -ex
 # The section would be transferable to a DOCKERFILE
 #==================================================
 
-# Update current apt packages
-apt-get update
+# Don't install Terminus plugins in the Behat job
+# They are already in the Docker container
+if [ $CIRCLE_JOB != "behat_test" ]
+then
 
-#=========================================================================
-# Commands below this line would not be transferable to a docker container
-#=========================================================================
+	# Update current apt packages
+	apt-get update
 
-# Enable Composer parallel downloads
-composer global require -n "hirak/prestissimo:^0.3"
+	#=========================================================================
+	# Commands below this line would not be transferable to a docker container
+	#=========================================================================
 
-# Install Terminus into ~/terminus
-/usr/bin/env COMPOSER_BIN_DIR=$HOME/bin composer --working-dir=$HOME require pantheon-systems/terminus "^1"
+	# Enable Composer parallel downloads
+	composer global require -n "hirak/prestissimo:^0.3"
+
+	# Install Terminus into ~/terminus
+	/usr/bin/env COMPOSER_BIN_DIR=$HOME/bin composer --working-dir=$HOME require pantheon-systems/terminus "^1"
+
+fi
 
 #=====================================================================================================================
 # Start EXPORTing needed environment variables
@@ -62,11 +69,18 @@ INSTALL_TERMINUS_PLUGINS() {
 	composer create-project -n -d $HOME/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
 }
 
-# Create Terminus plugins directory and install plugins if needed
-if [ ! -d $HOME/.terminus/plugins ]
+# Don't install Terminus plugins in the Behat job
+# They are already in the Docker container
+if [ $CIRCLE_JOB != "behat_test" ]
 then
-	mkdir -p $HOME/.terminus/plugins
-	INSTALL_TERMINUS_PLUGINS
+
+	# Create Terminus plugins directory and install plugins if needed
+	if [ ! -d $HOME/.terminus/plugins ]
+	then
+		mkdir -p $HOME/.terminus/plugins
+		INSTALL_TERMINUS_PLUGINS
+	fi
+
 fi
 
 #===============================
