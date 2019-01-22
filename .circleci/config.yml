@@ -122,7 +122,7 @@ jobs:
     behat_test:
         <<: *defaults
         docker:
-            - image: pantheon-public/build-tools-ci:headless-chrome
+            - image: quay.io/pantheon-public/build-tools-ci:headless-chrome
         steps:
             - checkout
 
