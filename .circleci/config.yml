@@ -47,7 +47,7 @@ jobs:
 
             - restore_cache:
                 keys:
-                    - composer-cache
+                    - composer-cache-{{ checksum "composer.lock" }}
                     - terminus-install
 
             - run:
@@ -59,7 +59,7 @@ jobs:
                 command: composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
 
             - save_cache:
-                key: composer-cache
+                key: composer-cache-{{ checksum "composer.lock" }}
                 paths:
                     - $HOME/.composer/cache
 
