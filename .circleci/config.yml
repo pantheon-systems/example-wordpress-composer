@@ -146,6 +146,11 @@ jobs:
                 name: run Behat tests
                 command: ./.circleci/behat-test.sh
 
+            - run:
+                name: run Behat cleanup
+                command: ./.circleci/behat-test-cleanup.sh
+                when: always
+
 workflows:
   version: 2
   build_and_test:

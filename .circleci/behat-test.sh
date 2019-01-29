@@ -76,8 +76,5 @@ google-chrome-unstable --disable-gpu --headless --remote-debugging-address=0.0.0
 # Run the Behat tests
 ./vendor/bin/behat --config=tests/behat/behat-pantheon.yml --strict "$@"
 
-# Restore the backup made before testing
-terminus -n backup:restore $TERMINUS_SITE.$TERMINUS_ENV --element=database --yes
-
 # Reset WordPress user name
 export ADMIN_USERNAME=$WORDPRESS_USER_NAME
