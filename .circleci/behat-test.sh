@@ -24,12 +24,6 @@ echo "Behat test site: $TERMINUS_SITE.$TERMINUS_ENV"
 echo "::::::::::::::::::::::::::::::::::::::::::::::::"
 echo
 
-# Exit immediately on errors
-set -ex
-
-# Create a backup before running Behat tests
-terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
-
 # Clear site cache
 terminus -n env:clear-cache $TERMINUS_SITE.$TERMINUS_ENV
 
@@ -39,14 +33,31 @@ export WORDPRESS_USER_NAME=$ADMIN_USERNAME
 # Use a generic Pantheon user for testing
 export ADMIN_USERNAME='pantheon-ci-testing'
 
-# Setup the WordPress admin user
-terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
-{
-  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$ADMIN_PASSWORD --role=administrator
-} &> /dev/null
+# Check if an admin user with our desired username exists
+ADMIN_USER_EXISTS=$(terminus -n wp ${TERMINUS_SITE}.${TERMINUS_ENV} -- user list --login=${ADMIN_USERNAME} --format=count)
+
+# If so, delete the existing admin user
+if [[ "$ADMIN_USER_EXISTS" == "1" ]]
+then
+  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
+fi
+
+# Update WordPress database
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
+
+# Create a backup before running Behat tests
+terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
+
+# Create the desired admin user
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$ADMIN_PASSWORD --role=administrator --porcelain
+
+# Confirm the admin user exists
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user list --login=$ADMIN_USERNAME
+
+# Dynamically set Behat configuration parameters
+export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/wp","users":{"admin":{"username":"'$ADMIN_USERNAME'","password":"'$ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$TERMINUS_SITE'.'$TERMINUS_ENV' --"}}}}'
 
 # Set Behat variables from environment variables
-export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/wp","users":{"admin":{"username":"'$ADMIN_USERNAME'","password":"'$ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$TERMINUS_SITE'.'$TERMINUS_ENV' --"}}}}'
 export RELOCATED_WP_ADMIN=TRUE
 
 # Wake the multidev environment before running tests
@@ -55,14 +66,15 @@ terminus -n env:wake $TERMINUS_SITE.$TERMINUS_ENV
 # Ping wp-cli to start ssh with the app server
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- cli version
 
+# Verbose mode and exit on errors
+set -ex
+
+# Start headless Chrome
+echo "\n Starting Chrome in headless mode ..."
+google-chrome-unstable --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
+
 # Run the Behat tests
-cd tests && ../vendor/bin/behat --config=behat/behat-pantheon.yml --strict "$@"
-
-# Change back into previous directory
-cd -
-
-# Restore the backup made before testing
-terminus -n backup:restore $TERMINUS_SITE.$TERMINUS_ENV --element=database --yes
+./vendor/bin/behat --config=tests/behat/behat-pantheon.yml --strict "$@"
 
 # Reset WordPress user name
 export ADMIN_USERNAME=$WORDPRESS_USER_NAME

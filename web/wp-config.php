@@ -18,7 +18,7 @@ require_once( $rootPath . '/vendor/autoload.php' );
  * Fetch .env
  */
 if ( ! isset( $_ENV['PANTHEON_ENVIRONMENT'] ) && file_exists( $rootPath . '/.env' ) ) {
-	$dotenv = new Dotenv\Dotenv( $rootPath );
+	$dotenv = Dotenv\Dotenv::create($rootPath);
 	$dotenv->load();
 	$dotenv->required( array(
 		'DB_NAME',

@@ -2,23 +2,6 @@
 
 set -ex
 
-#==================================================
-# The section would be transferable to a DOCKERFILE
-#==================================================
-
-# Update current apt packages
-apt-get update
-
-#=========================================================================
-# Commands below this line would not be transferable to a docker container
-#=========================================================================
-
-# Enable Composer parallel downloads
-composer global require -n "hirak/prestissimo:^0.3"
-
-# Install Terminus into ~/terminus
-/usr/bin/env COMPOSER_BIN_DIR=$HOME/bin composer --working-dir=$HOME require pantheon-systems/terminus "^1"
-
 #=====================================================================================================================
 # Start EXPORTing needed environment variables
 # Circle CI 2.0 does not yet expand environment variables so they have to be manually EXPORTed
@@ -53,25 +36,6 @@ source $BASH_ENV
 #===========================================
 # End EXPORTing needed environment variables
 #===========================================
-
-#===============================
-# Start Install Terminus Plugins
-#===============================
-INSTALL_TERMINUS_PLUGINS() {
-	composer create-project -n -d $HOME/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:$BUILD_TOOLS_VERSION
-	composer create-project -n -d $HOME/.terminus/plugins pantheon-systems/terminus-secrets-plugin:^1
-}
-
-# Create Terminus plugins directory and install plugins if needed
-if [ ! -d $HOME/.terminus/plugins ]
-then
-	mkdir -p $HOME/.terminus/plugins
-	INSTALL_TERMINUS_PLUGINS
-fi
-
-#===============================
-# End Install Terminus Plugins
-#===============================
 
 # Add a Git token for Composer
 if [ -n "$GITHUB_TOKEN" ] ; then

@@ -1,7 +1,7 @@
 # https://circleci.com/docs/2.0/workflows/#using-workspaces-to-share-data-among-jobs
 defaults: &defaults
   docker:
-    - image: drupaldocker/php:7.1-cli
+    - image: quay.io/pantheon-public/build-tools-ci:3.x
   working_directory: ~/example_wordpress_composer
   environment:
     #=========================================================================
@@ -42,17 +42,17 @@ jobs:
     # @todo: common initialization, maybe
     build:
         <<: *defaults
+        # override the default image with drupaldocker/php as this job
+        # doesn't need Pantheon specific items such as Terminus that are
+        # in the quay.io/pantheon-public/build-tools-ci image
+        docker:
+            - image: drupaldocker/php:7.2-cli
         steps:
             - checkout
 
             - restore_cache:
                 keys:
                     - composer-cache
-                    - terminus-install
-
-            - run:
-                name: dependencies
-                command: ./.circleci/set-up-globals.sh
 
             - run:
                 name: install dev dependencies
@@ -63,12 +63,6 @@ jobs:
                 paths:
                     - $HOME/.composer/cache
 
-            - save_cache:
-                key: terminus-install
-                paths:
-                    - $HOME/.terminus
-                    - $HOME/terminus
-
             - persist_to_workspace:
                 # Must be relative path from working_directory
                 root: .
@@ -78,6 +72,11 @@ jobs:
 
     code_sniff_unit_test:
         <<: *defaults
+        # override the default image with drupaldocker/php as this job
+        # doesn't need Pantheon specific items such as Terminus that are
+        # in the quay.io/pantheon-public/build-tools-ci image
+        docker:
+            - image: drupaldocker/php:7.2-cli
         steps:
             - checkout
 
@@ -143,6 +142,11 @@ jobs:
             - run:
                 name: run Behat tests
                 command: ./.circleci/behat-test.sh
+
+            - run:
+                name: run Behat cleanup
+                command: ./.circleci/behat-test-cleanup.sh
+                when: always
 
 workflows:
   version: 2
