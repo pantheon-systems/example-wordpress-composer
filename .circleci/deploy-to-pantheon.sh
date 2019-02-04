@@ -45,4 +45,4 @@ terminus secrets:set -n "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --f
 set -ex
 
 # Cleanup old multidevs
-terminus build:env:delete:pr -n "$TERMINUS_SITE" --yes
+# terminus build:env:delete:pr -n "$TERMINUS_SITE" --yes
