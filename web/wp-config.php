@@ -60,7 +60,7 @@ if ( ! isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ):
 	}
 	$site_url = getenv( 'WP_HOME' ) !== false ? getenv( 'WP_HOME' ) : $scheme . '://' . $_SERVER['HTTP_HOST'] . '/';
 	define( 'WP_HOME', $site_url );
-	define( 'WP_SITEURL', $site_url . '/wp' );
+	define( 'WP_SITEURL', $site_url . 'wp/' );
 
 	/**
 	 * Set Database Details
