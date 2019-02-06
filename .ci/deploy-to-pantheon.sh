@@ -23,13 +23,6 @@ TERMINUS_DOES_MULTIDEV_EXIST()
     return 1;
 }
 
-
-if [[ ${CURRENT_BRANCH} != "master" && -z ${CI_PR_URL} ]];
-then
-    echo -e "CI will only deploy to Pantheon if on the master branch or creating a pull requests.\n"
-    exit 0;
-fi
-
 if ! TERMINUS_DOES_MULTIDEV_EXIST ${TERMINUS_ENV}
 then
     terminus env:wake -n "$TERMINUS_SITE.dev"
