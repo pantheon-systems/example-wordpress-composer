@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [[ (${CIRCLE_BRANCH} != "master" && -z ${CIRCLE_PULL_REQUEST+x}) || (${CIRCLE_BRANCH} == "master" && -n ${CIRCLE_PULL_REQUEST+x}) ]];
+if [[ (${CURRENT_BRANCH} != "master" && -z ${CI_PR_URL+x}) || (${CURRENT_BRANCH} == "master" && -n ${CI_PR_URL+x}) ]];
 then
-    echo -e "CircleCI will only run Behat tests on Pantheon if on the master branch or creating a pull requests.\n"
+    echo -e "CI will only run Behat tests on Pantheon if on the master branch or creating a pull requests.\n"
     exit 0;
 fi
 
