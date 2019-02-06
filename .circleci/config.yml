@@ -108,7 +108,7 @@ jobs:
 
             - run:
                 name: dependencies
-                command: ./.circleci/set-up-globals.sh
+                command: ./.ci/set-up-globals.sh
 
             - run:
                 name: build assets
@@ -116,7 +116,7 @@ jobs:
 
             - run:
                 name: deploy to Pantheon
-                command: ./.circleci/deploy-to-pantheon.sh
+                command: ./.ci/deploy-to-pantheon.sh
 
     behat_test:
         <<: *defaults
@@ -137,15 +137,15 @@ jobs:
             
             - run:
                 name: dependencies
-                command: ./.circleci/set-up-globals.sh
+                command: ./.ci/set-up-globals.sh
 
             - run:
                 name: run Behat tests
-                command: ./.circleci/behat-test.sh
+                command: ./.ci/behat-test.sh
 
             - run:
                 name: run Behat cleanup
-                command: ./.circleci/behat-test-cleanup.sh
+                command: ./.ci/behat-test-cleanup.sh
                 when: always
 
 workflows:
