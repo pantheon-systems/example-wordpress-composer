@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [[ (${CURRENT_BRANCH} != "master" && -z ${CI_PR_URL+x}) || (${CURRENT_BRANCH} == "master" && -n ${CI_PR_URL+x}) ]];
+if [[ ${CURRENT_BRANCH} != "master" && -z ${CI_PR_URL} ]];
 then
-    echo -e "CI will only run Behat tests on Pantheon if on the master branch or creating a pull requests.\n"
-    exit 0;
+  echo -e "CI will only deploy to Pantheon if on the master branch or creating a pull requests.\n"
+  exit 0;
 fi
 
 # Bail if required environment varaibles are missing
