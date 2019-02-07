@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [[ ${CURRENT_BRANCH} != "master" && -z ${CI_PR_URL} ]];
+then
+  echo -e "CI will only deploy to Pantheon if on the master branch or creating a pull requests.\n"
+  exit 0;
+fi
+
 set -ex
 
 TERMINUS_DOES_MULTIDEV_EXIST()

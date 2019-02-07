@@ -104,7 +104,6 @@ jobs:
             - restore_cache:
                 keys:
                     - composer-cache
-                    - terminus-install
 
             - run:
                 name: dependencies
