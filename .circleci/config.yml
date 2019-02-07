@@ -107,7 +107,7 @@ jobs:
 
             - run:
                 name: dependencies
-                command: ./.ci/set-up-globals.sh
+                command: ./.circleci/set-up-globals.sh
 
             - run:
                 name: build assets
@@ -136,7 +136,7 @@ jobs:
             
             - run:
                 name: dependencies
-                command: ./.ci/set-up-globals.sh
+                command: ./.circleci/set-up-globals.sh
 
             - run:
                 name: run Behat tests

@@ -11,34 +11,15 @@ set -ex
 # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
 #=====================================================================================================================
 
-# GitLab
-if [ -n "$GITLAB_CI" ]
-then
-	# Set CI variables
-	$BASH_ENV=$HOME/.bashrc
-	echo 'export BRANCH=$(echo $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME | grep -v '"'"'^\(master\|[0-9]\+.x\)$'"'"')' >> $BASH_ENV
-	echo 'export CI_ENV=ci-$CI_JOB_ID' >> $BASH_ENV
-	echo 'export CURRENT_BRANCH=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME' >> $BASH_ENV
-	echo 'export CI_PR_URL=$CI_MERGE_REQUEST_ID' >> $BASH_ENV
+# Set CI variables
+echo 'export BRANCH=$(echo $CIRCLE_BRANCH | grep -v '"'"'^\(master\|[0-9]\+.x\)$'"'"')' >> $BASH_ENV
+echo 'export CI_ENV=ci-$CIRCLE_BUILD_NUM' >> $BASH_ENV
+echo 'export CURRENT_BRANCH=$CIRCLE_BRANCH' >> $BASH_ENV
+echo 'export CI_PR_URL=$CIRCLE_PULL_REQUEST' >> $BASH_ENV
 
-	# Configure git credentials
-	git config --global user.email "$GITLAB_USER_EMAIL"
-  	git config --global user.name "Gitlab CI"
-fi
-
-# CircleCI
-if [ -n "$CIRCLECI" ]
-then
-	# Set CI variables
-	echo 'export BRANCH=$(echo $CIRCLE_BRANCH | grep -v '"'"'^\(master\|[0-9]\+.x\)$'"'"')' >> $BASH_ENV
-	echo 'export CI_ENV=ci-$CIRCLE_BUILD_NUM' >> $BASH_ENV
-	echo 'export CURRENT_BRANCH=$CIRCLE_BRANCH' >> $BASH_ENV
-	echo 'export CI_PR_URL=$CIRCLE_PULL_REQUEST' >> $BASH_ENV
-
-	# Configure git credentials
-	git config --global user.email "$GIT_EMAIL"
-	git config --global user.name "CircleCI"
-fi
+# Configure git credentials
+git config --global user.email "$GIT_EMAIL"
+git config --global user.name "CircleCI"
 
 source $BASH_ENV
 
