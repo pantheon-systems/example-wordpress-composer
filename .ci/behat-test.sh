@@ -35,7 +35,7 @@ terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
 terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
 
 # Create the desired admin user
-terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-reply@getpantheon.com --user_pass=$ADMIN_PASSWORD --role=administrator
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-reply+ci@getpantheon.com --user_pass=$ADMIN_PASSWORD --role=administrator
 
 # Confirm the admin user exists
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user list --login=$ADMIN_USERNAME
