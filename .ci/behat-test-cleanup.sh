@@ -13,3 +13,6 @@ echo
 
 # Restore the backup made before testing
 terminus -n backup:restore $TERMINUS_SITE.$TERMINUS_ENV --element=database --yes
+
+# Clear site cache
+terminus -n env:clear-cache $TERMINUS_SITE.$TERMINUS_ENV

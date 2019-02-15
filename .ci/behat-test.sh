@@ -14,9 +14,9 @@ then
 fi
 
 # Bail if no admin username/password are set
-if [ -z "$ADMIN_USERNAME" ] || [ -z "$ADMIN_PASSWORD" ]
+if [ -z "$BEHAT_ADMIN_USERNAME" ] || [ -z "$BEHAT_ADMIN_PASSWORD" ]
 then
-  echo "No WordPress credentials specified. Set ADMIN_USERNAME and ADMIN_PASSWORD."
+  echo "No WordPress credentials specified. Set BEHAT_ADMIN_USERNAME and BEHAT_ADMIN_PASSWORD."
   exit 1
 fi
 
@@ -25,8 +25,14 @@ echo "Behat test site: $TERMINUS_SITE.$TERMINUS_ENV"
 echo "::::::::::::::::::::::::::::::::::::::::::::::::"
 echo
 
-# Delete the admin user if exists
-terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $ADMIN_USERNAME --yes
+# Check if an admin user with our desired username exists
+BEHAT_ADMIN_USER_EXISTS=$(terminus -n wp ${TERMINUS_SITE}.${TERMINUS_ENV} -- user list --login=${BEHAT_ADMIN_USERNAME} --format=count)
+
+# If so, delete the existing admin user
+if [[ "$BEHAT_ADMIN_USER_EXISTS" == "1" ]]
+then
+  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $BEHAT_ADMIN_USERNAME --yes
+fi
 
 # Update WordPress database
 terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
@@ -35,16 +41,16 @@ terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
 terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
 
 # Create the desired admin user
-terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $ADMIN_USERNAME no-reply+ci@getpantheon.com --user_pass=$ADMIN_PASSWORD --role=administrator
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $BEHAT_ADMIN_USERNAME $BEHAT_ADMIN_EMAIL --user_pass=$BEHAT_ADMIN_PASSWORD --role=administrator
 
 # Confirm the admin user exists
-terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user list --login=$ADMIN_USERNAME
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user list --login=$BEHAT_ADMIN_USERNAME
 
 # Clear site cache
 terminus -n env:clear-cache $TERMINUS_SITE.$TERMINUS_ENV
 
 # Dynamically set Behat configuration parameters
-export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/wp","users":{"admin":{"username":"'$ADMIN_USERNAME'","password":"'$ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$TERMINUS_SITE'.'$TERMINUS_ENV' --"}}}}'
+export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/wp","users":{"admin":{"username":"'$BEHAT_ADMIN_USERNAME'","password":"'$BEHAT_ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$TERMINUS_SITE'.'$TERMINUS_ENV' --"}}}}'
 
 # Set Behat variables from environment variables
 export RELOCATED_WP_ADMIN=TRUE

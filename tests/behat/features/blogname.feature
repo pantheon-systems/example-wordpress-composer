@@ -5,20 +5,17 @@ Feature: Change blogname and blogdescription
 
   Background:
     Given I am logged in as an administrator
+
+  Scenario: Saving blogname and blogdescription
     Given I am on the dashboard
-
-  Scenario: Saving blogname
     Given I go to the "Settings > General" menu
-    When I fill in "blogname" with "Awesome WordHat Test Site"
+    When I fill in "blogname" with "Awesome GitLab WordHat Test Site"
+    And I fill in "blogdescription" with "GitLab + Composer + Pantheon = Win!"
     And I press "submit"
-    And I should see "Settings saved."
-    And I am on the homepage
-    Then I should see "Awesome WordHat Test Site" in the ".site-title > a" element
+    Then I should see "Settings saved."
 
-  Scenario: Saving blogdescription
-    Given I go to the "Settings > General" menu
-    When I fill in "blogdescription" with "GitHub + Composer + CircleCi + Pantheon = Win!"
-    And I press "submit"
-    And I should see "Settings saved."
-    And I am on the homepage
-    Then I should see "GitHub + Composer + CircleCi + Pantheon = Win!" in the ".site-description" element
+  Scenario: Verifying blogname and blogdescription
+    Given I am on the homepage
+    And the cache is cleared
+    Then I should see "Awesome GitLab WordHat Test Site" in the ".site-title > a" element
+    And I should see "GitLab + Composer + Pantheon = Win!" in the ".site-description" element

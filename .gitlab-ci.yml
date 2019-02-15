@@ -1,8 +1,10 @@
+# Build tools Dockerfile v3
 image: quay.io/pantheon-public/build-tools-ci:3.x
 
 # Default Variables
 variables:
-  ADMIN_USERNAME: pantheon-ci-testing
+  BEHAT_ADMIN_USERNAME: pantheon-ci-testing-$CI_JOB_ID
+  BEHAT_ADMIN_EMAIL: no-reply+ci-$CI_JOB_ID@getpantheon.com
   CI_PR_URL: $CI_MERGE_REQUEST_IID
   CURRENT_BRANCH: $CI_COMMIT_REF_NAME
   CGR_BASE_DIR: /composer/.global
@@ -28,6 +30,7 @@ before_script:
   - export PATH=$PATH:$HOME/bin:$HOME/terminus/bin
   - export PR_ENV=${CI_MERGE_REQUEST_IID:+pr-$CI_MERGE_REQUEST_IID}
   - export TERMINUS_ENV=${PR_ENV:-dev}
+  - export BEHAT_ADMIN_PASSWORD=$(openssl rand -base64 24)
   - terminus auth:login --machine-token="$TERMINUS_TOKEN"
   - git config --global user.email "$GITLAB_USER_EMAIL"
   - git config --global user.name "Gitlab CI"

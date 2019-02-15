@@ -16,6 +16,10 @@ echo 'export BRANCH=$(echo $CIRCLE_BRANCH | grep -v '"'"'^\(master\|[0-9]\+.x\)$
 echo 'export CI_ENV=ci-$CIRCLE_BUILD_NUM' >> $BASH_ENV
 echo 'export CURRENT_BRANCH=$CIRCLE_BRANCH' >> $BASH_ENV
 echo 'export CI_PR_URL=$CIRCLE_PULL_REQUEST' >> $BASH_ENV
+echo 'export BEHAT_ADMIN_PASSWORD=$(openssl rand -base64 24)' >> $BASH_ENV
+echo 'export BEHAT_ADMIN_USERNAME=pantheon-ci-testing-$CIRCLE_BUILD_NUM' >> $BASH_ENV
+echo 'export BEHAT_ADMIN_EMAIL=no-reply+ci-$CIRCLE_BUILD_NUM@getpantheon.com' >> $BASH_ENV
+
 
 # Configure git credentials
 git config --global user.email "$GIT_EMAIL"
