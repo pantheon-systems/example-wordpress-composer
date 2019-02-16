@@ -69,4 +69,4 @@ echo "\n Starting Chrome in headless mode ..."
 google-chrome-unstable --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
 
 # Run the Behat tests
-./vendor/bin/behat --config=tests/behat/behat-pantheon.yml --strict
+./vendor/bin/behat --config=tests/behat/behat-pantheon.yml --strict --colors
