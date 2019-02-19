@@ -104,7 +104,6 @@ jobs:
             - restore_cache:
                 keys:
                     - composer-cache
-                    - terminus-install
 
             - run:
                 name: dependencies
@@ -116,7 +115,7 @@ jobs:
 
             - run:
                 name: deploy to Pantheon
-                command: ./.circleci/deploy-to-pantheon.sh
+                command: ./.ci/deploy-to-pantheon.sh
 
     behat_test:
         <<: *defaults
@@ -141,11 +140,11 @@ jobs:
 
             - run:
                 name: run Behat tests
-                command: ./.circleci/behat-test.sh
+                command: ./.ci/behat-test.sh --tags=~no_auth
 
             - run:
                 name: run Behat cleanup
-                command: ./.circleci/behat-test-cleanup.sh
+                command: ./.ci/behat-test-cleanup.sh
                 when: always
 
 workflows:
