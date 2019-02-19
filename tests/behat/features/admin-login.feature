@@ -8,5 +8,5 @@ Background:
     Given I am on the dashboard
 
   Scenario: Confirm access to create users
-    Given I go to the "Users > Add New" menu
+    When I go to the "Users > Add New" menu
     Then I should see "Add New User"
