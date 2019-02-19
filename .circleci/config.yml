@@ -140,7 +140,7 @@ jobs:
 
             - run:
                 name: run Behat tests
-                command: ./.ci/behat-test.sh
+                command: ./.ci/behat-test.sh --tags=~no_auth
 
             - run:
                 name: run Behat cleanup
