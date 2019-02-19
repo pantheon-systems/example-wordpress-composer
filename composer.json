@@ -21,14 +21,16 @@
     "roots/wp-password-bcrypt": "^1.0.0",
     "rvtraveller/qs-composer-installer": "^1.1",
     "vlucas/phpdotenv": "^3.1.0",
+    "wpackagist-plugin/lh-hsts": "^1.24",
     "wpackagist-plugin/pantheon-advanced-page-cache": "^0.3.0",
     "wpackagist-plugin/wp-native-php-sessions": "^0.6.9",
     "wpackagist-theme/twentynineteen": "^1.2"
   },
   "require-dev": {
     "behat/mink-goutte-driver": "^1.2.1",
-    "dmore/behat-chrome-extension": "^1.2",
     "brain/monkey": "^2.2.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+    "dmore/behat-chrome-extension": "^1.2",
     "paulgibbs/behat-wordpress-extension": "^3.1.0",
     "phpunit/phpunit": "^7.5.1",
     "roave/security-advisories": "dev-master",
@@ -85,7 +87,6 @@
       "WordPressProject\\composer\\ScriptHandler::createRequiredFiles"
     ],
     "code-sniff": [
-      "./vendor/bin/phpcs --config-set installed_paths ~/example_wordpress_composer/vendor/wp-coding-standards/wpcs",
       "./vendor/bin/phpcs --standard=WordPress ./web/wp-content"
     ],
     "unit-test": [
