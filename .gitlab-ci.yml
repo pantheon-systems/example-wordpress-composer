@@ -76,7 +76,7 @@ test:behat:
   stage: test
   script:
     - composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
-    - ./.ci/behat-test.sh
+    - ./.ci/behat-test.sh --tags=no_auth
   only:
     - merge_requests
     - master
