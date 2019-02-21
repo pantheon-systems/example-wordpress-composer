@@ -12,7 +12,7 @@ Feature: Visibility of the latest posts
     And there are posts:
       | post_title      | post_content                     | post_status | post_author |
       | Author article  | The content of my author article | publish     | test_author |
-    And I am an anonymous user
+    And the Pantheon cache has been cleared
     When I am on the homepage
-    And the cache is cleared
-    Then I should see "Author article"
+    Then I should not be logged in
+    And I should see "Author article"

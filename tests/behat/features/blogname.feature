@@ -5,8 +5,9 @@ Feature: Change blogname and blogdescription
   So that I have control over my site
 
   Scenario: Saving blogname and blogdescription
-    Given I am logged in as an administrator
+    Given I am a WordPress admin
     Given I am on the dashboard
+    Then I should be logged in
     When I go to the "Settings > General" menu
     And I fill in "blogname" with "Awesome WordHat Test Site"
     And I fill in "blogdescription" with "Composer + CI + Pantheon = Win!"
@@ -15,7 +16,8 @@ Feature: Change blogname and blogdescription
 
   Scenario: Verifying blogname and blogdescription
     Given I am on the homepage
-    Given I am an anonymous user
-    When the cache is cleared
-    Then I should see "Awesome WordHat Test Site" in the ".site-title > a" element
+    And the Pantheon cache has been cleared
+    Then I should be on the homepage
+    And I should not be logged in
+    And I should see "Awesome WordHat Test Site" in the ".site-title > a" element
     And I should see "Composer + CI + Pantheon = Win!" in the ".site-description" element
