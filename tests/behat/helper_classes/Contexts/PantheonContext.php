@@ -116,7 +116,7 @@ class PantheonContext extends RawWordpressContext
             $user_login_field->setValue($username);
             $page->fillField('user_login', $username);
             $session->executeScript(
-                "jQuery('#user_login').val('$username');"
+                "document.getElementById('user_login').value='$username'"
             );
 
             // Verify the username is filled in correctly
@@ -130,7 +130,7 @@ class PantheonContext extends RawWordpressContext
             $user_pass_field->setValue($password);
             $page->fillField('user_pass', $password);
             $session->executeScript(
-                "jQuery('#user_pass').val('$password');"
+                "document.getElementById('user_pass').value='$password'"
             );
 
 
