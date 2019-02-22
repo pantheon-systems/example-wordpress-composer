@@ -46,7 +46,7 @@ The parameters shown here are:
 
 #### PHP Version
 
-You will need PHP 7.0 or higher locally to run the `build:project:create` command as some of the dependencies in this project require it. Both `composer.json` and `pantheon.yml` are currently set to use PHP 7.0.
+You will need PHP 7.2 or higher locally to run the `build:project:create` command as some of the dependencies in this project require it. Both `composer.json` and `pantheon.yml` are currently set to use PHP 7.2.
 
 ## Important files and directories
 
