@@ -1,4 +1,3 @@
-@no_auth @db
 Feature: Visibility of the latest posts
   In order to have confidence that published articles show up
   As a content author
@@ -13,14 +12,12 @@ Background:
       | Author article  | The content of my author article | publish     | test_author |
     And the Pantheon cache has been cleared
 
-  Scenario: Verify new post on the homepage
+  Scenario: Verify new post on the front-end and in the admin
     Given I am an anonymous user
     When I am on the homepage
     Then I should not be logged in
     And I should see "Author article"
-
-  Scenario: Verify new post in the dashboard
-    Given I am logged in as an administrator
-    Given I am on the dashboard
-    When I go to the "Posts" menu
-    And I should see "Author article"
+    When I am logged in as an administrator
+    And I am on the dashboard
+    And I go to the "Posts" menu
+    Then I should see "Author article"
