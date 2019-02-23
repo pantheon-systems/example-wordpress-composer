@@ -5,7 +5,7 @@ Feature: Change blogname and blogdescription
   So that I have control over my site
 
   Scenario: Saving blogname and blogdescription
-    Given I am a WordPress admin
+    Given I am logged in as an administrator
     Given I am on the dashboard
     Then I should be logged in
     When I go to the "Settings > General" menu

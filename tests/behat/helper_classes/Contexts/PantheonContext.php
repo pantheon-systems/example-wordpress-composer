@@ -12,6 +12,7 @@ use PaulGibbs\WordpressBehatExtension\Context\UserContext;
 use PaulGibbs\WordpressBehatExtension\Context\EditPostContext;
 use PaulGibbs\WordpressBehatExtension\Context\Traits\ContentAwareContextTrait;
 use PaulGibbs\WordpressBehatExtension\Context\Traits\UserAwareContextTrait;
+use PaulGibbs\WordpressBehatExtension\PageObject\LoginPage;
 use Behat\Mink\Exception\ExpectationException;
 use RuntimeException;
 
@@ -24,6 +25,24 @@ class PantheonContext extends RawWordpressContext
     use UserAwareContextTrait;
 
     private $previous_url;
+
+    /**
+     * Login form page object.
+     *
+     * @var LoginPage
+     */
+    public $login_page;
+
+    /**
+     * Constructor.
+     *
+     * @param LoginPage $login_page The page object representing the login page.
+     */
+    public function __construct(LoginPage $login_page)
+    {
+        parent::__construct();
+        $this->login_page = $login_page;
+    }
 
     private function getAdminURL()
     {
@@ -38,128 +57,9 @@ class PantheonContext extends RawWordpressContext
     private function getPreviousURL()
     {
         if( null === $this->previous_url ) {
-            $this->previous_url = ( $this->userLoggedIn() ) ? $this->getAdminURL() : $this->getFrontendURL();
+            $this->previous_url = ( $this->loggedIn() ) ? $this->getAdminURL() : $this->getFrontendURL();
         };
         return $this->previous_url;
-    }
-
-    /**
-     * Log into WordPress as an admin
-     *
-     * Example: Given I am a WordPress admin
-     *
-     * @Given /^(?:I am|they are) a WordPress admin$/
-     *
-     * @throws \RuntimeException
-     * 
-     * @return void
-     */
-    public function loginAsWordPressAdmin()
-    {
-
-        // No admin user has been found yet
-        $found_user = null;
-
-        // Get the users list sent to WordHat
-        $users = $this->getWordpressParameter('users');
-
-        // Loop through the users
-        foreach ($users as $user) {
-            // Look for an admin
-            if ( in_array( 'administrator', $user['roles'], true ) ) {
-                $found_user = $user;
-                break;
-            }
-        }
-
-        // Error if no admin user was found
-        if ( null === $found_user ) {
-            throw new \RuntimeException("No admin user found. Make sure to supply users to WordHat in the Behat configuration");
-        }
-
-        // Stash the username and password
-        $username = $found_user['username'];
-        $password = $found_user['password'];
-
-        // $user_id = $this->getUserIdFromLogin( $username );
-        // wp_set_auth_cookie( $user_id, true, is_ssl() );
-
-        // Verify the session
-        $session = $this->verifySession();
-
-        // Stash the current URL to redirect back to
-        $this->setPreviousURL();
-
-        // Check if already logged in
-        if ( $this->userLoggedIn() ) {
-            $this->logOut();
-        }
-
-        // Go to the WordPress login URL
-        $this->visitPath( 'wp-login.php?redirect_to=' . urlencode( $this->getPreviousURL() ) );
-
-        // Store the current page object
-        $page = $session->getPage();
-
-        // Attempt to fill out the login form
-        try {
-            // Verify the login form exists
-            $login_form = $page->find('css', '#loginform');
-
-            if ( null === $login_form ) {
-                throw new \RuntimeException("No login form found at /wp-login.php");
-            }
-            
-            // Fill in username
-            $user_login_field = $page->find('css', '#user_login');
-            $user_login_field->focus();
-            $user_login_field->setValue($username);
-            $page->fillField('user_login', $username);
-            $session->executeScript(
-                "document.getElementById('user_login').value='$username'"
-            );
-
-            // Verify the username is filled in correctly
-            if( $user_login_field->getValue() !== $username ) {
-                throw new \RuntimeException("The admin username password could not be entered into the login form");
-            }
-            
-            // Fill in password
-            $user_pass_field = $page->find('css', '#user_pass');
-            $user_pass_field->focus();
-            $user_pass_field->setValue($password);
-            $page->fillField('user_pass', $password);
-            $session->executeScript(
-                "document.getElementById('user_pass').value='$password'"
-            );
-
-
-            // Verify the password is filled in correctly
-            if( $user_pass_field->getValue() !== $password ) {
-                throw new \RuntimeException("The admin password could not be entered into the login form");
-            }
-            
-            // Remember the login
-            $page->checkField('rememberme');
-
-            // Submit the form
-            $submit_button = $page->find('css', '#wp-submit');
-            $submit_button->focus();
-            $submit_button->click();
-
-            // Wait for the login form to disappear, giving up after 5 seconds.
-            $session->wait( 5000, "!document.getElementById('loginform')" );
-        } catch (DriverException $e) {
-            // This may fail if the user has not loaded any site yet.
-        }
-
-        // Error if the user isn't logged in
-        if ( ! $this->userLoggedIn() ) {
-            throw new ExpectationException(
-                "Failed to login as admin user $username.",
-                $this->getSession()->getDriver()
-            );
-        }
     }
 
     /**
@@ -173,7 +73,7 @@ class PantheonContext extends RawWordpressContext
      */
     public function iShouldNotBeLoggedIn()
     {
-        if( $this->userLoggedIn() ) {
+        if( $this->loggedIn() ) {
             throw new ExpectationException(
                 'A user is logged in. This should not have happened.',
                 $this->getSession()->getDriver()
@@ -192,7 +92,7 @@ class PantheonContext extends RawWordpressContext
      */
     public function iShouldBeLoggedIn()
     {
-        if( ! $this->userLoggedIn() ) {
+        if( ! $this->loggedIn() ) {
             throw new ExpectationException(
                 'A user is not logged in. This should not have happened.',
                 $this->getSession()->getDriver()
@@ -255,7 +155,7 @@ class PantheonContext extends RawWordpressContext
         $this->getElement('Toolbar')->logOut();
 
         // Error if the user is still logged in
-        if ( $this->userLoggedIn() ) {
+        if ( $this->loggedIn() ) {
             throw new ExpectationException(
                 "Failed to log out.",
                 $this->getSession()->getDriver()
@@ -269,45 +169,36 @@ class PantheonContext extends RawWordpressContext
 
     }
 
-    /**
-     * Is the user logged in?
-     *
-     * @return boolean
-     */
-    public function userLoggedIn(): bool
+    protected function getAdminUser()
     {
-        // Verify the session
-        $session = $this->verifySession();
+        $found_user = null;
+        $users      = $this->getWordpressParameter('users');
 
-        // Stash the current URL
-        $current_url = $session->getCurrentUrl();
-
-        // If we are on the dashboard then we must be logged in
-        if ( false !== stripos( $current_url, 'wp/wp-admin' ) ) {
-            return true;
-        }
-
-        // Stash the current page object
-        $page = $session->getPage();
-
-        // Look for a selector to determine if the user is logged in.
-        try {
-            $body_element = $page->find('css', 'body');
-            // If the page doesn't have a body element the user is not logged in
-            if( null === $body_element ) {
-                return false;
+        foreach ($users as $user) {
+            if (in_array('administrator', $user['roles'], true)) {
+                $found_user = $user;
+                break;
             }
-            $is_logged_in = (
-                $body_element->hasClass('logged-in') || 
-                $body_element->hasClass('wp-admin')
-            );
-            return $is_logged_in;
-        } catch (DriverException $e) {
-            // This may fail if the user has not loaded any site yet.
         }
 
-        // If there aren't any logged in body classes no user is logged in
-        return false;
+        if ($found_user === null) {
+            throw new RuntimeException("No admin users found.");
+        }
+
+        return $found_user;
+    }
+
+    /**
+     * Log into WordPress as an admin
+     *
+     * @throws \RuntimeException
+     * 
+     * @return void
+     */
+    protected function loginAsWordPressAdmin()
+    {
+        $found_user = $this->getAdminUser();
+        $this->logIn($found_user['username'], $found_user['password']);
     }
 
     /**
@@ -329,19 +220,23 @@ class PantheonContext extends RawWordpressContext
         
         // Get the current page from the session
         $page = $session->getPage();
+        
+        // Are we currently logged in?
+        $logged_in = $this->loggedIn();
+
+        // If logged in
+        if( $logged_in ) {
+            $clear_cache_link = $page->find('css', '#wp-admin-bar-clear-page-cache > a');
+            // Attempt to use the clear cache button in the toolbar
+            if( null !== $clear_cache_link ) {
+                // If the clear cache button was used, we are done here
+                $clear_cache_link->click();
+                return;
+            }
+        }
 
         // Stash the current URL to redirect back to
         $this->setPreviousURL();
-        
-        // Are we currently logged in?
-        $logged_in = $this->userLoggedIn();
-
-        if( $this->userLoggedIn() ) {
-            $clear_cache_link = $page->find('css', '#wp-admin-bar-clear-page-cache > a');
-            if( null !== $clear_cache_link ) {
-                $clear_cache_link->click();
-            }
-        }
 
         // Log in as an admin if not already logged in
         if (! $logged_in) {

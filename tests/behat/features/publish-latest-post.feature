@@ -20,7 +20,7 @@ Background:
     And I should see "Author article"
 
   Scenario: Verify new post in the dashboard
-    Given I am a WordPress admin
+    Given I am logged in as an administrator
     Given I am on the dashboard
     When I go to the "Posts" menu
     And I should see "Author article"
