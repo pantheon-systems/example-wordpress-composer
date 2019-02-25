@@ -4,7 +4,6 @@ Feature: Visibility of the home page
   As a site administrator
   I want to verify I can visit a valid home page on Pantheon
 
-  @db
   Scenario: Verify the homepage
     When I am on the homepage
     Then I should be on the homepage
