@@ -1,4 +1,3 @@
-@auth
 Feature: Login as an administrator
   As a maintainer of the site
   I want basic login behavior to work

@@ -1,4 +1,3 @@
-@auth
 Feature: Change blogname and blogdescription
   As a maintainer of the site
   I want to be able to change basic settings
@@ -7,15 +6,17 @@ Feature: Change blogname and blogdescription
   Scenario: Saving blogname and blogdescription
     Given I am logged in as an administrator
     Given I am on the dashboard
+    Then I should be logged in
     When I go to the "Settings > General" menu
-    And I fill in "blogname" with "Awesome WordHat Test Site"
-    And I fill in "blogdescription" with "Composer + CI + Pantheon = Win!"
+    And I fill in "blogname" with "Awesome WordHat Test Site!"
+    And I fill in "blogdescription" with "Composer + CI + Pantheon is a win!"
     And I press "submit"
     Then I should see "Settings saved."
 
   Scenario: Verifying blogname and blogdescription
     Given I am on the homepage
-    Given I am an anonymous user
-    When the cache is cleared
-    Then I should see "Awesome WordHat Test Site" in the ".site-title > a" element
-    And I should see "Composer + CI + Pantheon = Win!" in the ".site-description" element
+    And the Pantheon cache has been cleared
+    Then I should be on the homepage
+    And I should not be logged in
+    And I should see "Awesome WordHat Test Site!" in the ".site-title > a" element
+    And I should see "Composer + CI + Pantheon is a win!" in the ".site-description" element
