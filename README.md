@@ -69,7 +69,7 @@ So that CircleCI will have some test to run, this repository includes a configur
 ## Working locally with Lando
 To get started using Lando to develop locally complete these one-time steps. Please note than Lando is an independent product and is not supported by Pantheon. For further assistance please refer to the [Lando documentation](https://docs.devwithlando.io/).
 
-* [Install Lando](https://docs.devwithlando.io/installation/installing.html), if not already installed.
+* [Install Lando](https://docs.devwithlando.io/installation/system-requirements.html), if not already installed.
 * Clone this repository locally.
 * Run `lando init` and follow the prompts, choosing the Pantheon recipe followed by entering a valid machine token and selecting the Pantheon site created by [the Terminus build tools plugin].(https://github.com/pantheon-systems/terminus-build-tools-plugin).
 * Run `lando start` to start Lando.
