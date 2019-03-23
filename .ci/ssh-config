@@ -1,0 +1,3 @@
+Host *.drush.in
+    StrictHostKeyChecking no
+    LogLevel ERROR

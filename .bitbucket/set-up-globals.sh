@@ -22,7 +22,7 @@ echo 'export BEHAT_ADMIN_EMAIL=no-reply+ci-$BITBUCKET_BUILD_NUMBER@getpantheon.c
 
 
 # Configure git credentials
-git config --global user.email "$GIT_EMAIL"
+git config --global user.email "${GIT_EMAIL:-no-reply+ci-$BITBUCKET_BUILD_NUMBER@getpantheon.com}"
 git config --global user.name "BitbucketPipelinesCI"
 
 source $BASH_ENV
@@ -62,6 +62,11 @@ fi
 #===========================================
 # End EXPORTing needed environment variables
 #===========================================
+
+# Append our ssh config to the end of any existing config
+mkdir -p ~/.ssh
+touch ~/.ssh/config
+cat ./.ci/ssh-config >> ~/.ssh/config
 
 # Add a Git token for Composer
 # TODO: Is there any point in doing this for Bitbucket? Might we need $GITHUB_TOKEN for Composer even when running on Bitbucket?
