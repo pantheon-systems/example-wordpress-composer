@@ -1,14 +1,12 @@
-# Build tools Dockerfile v3
+# Build tools Dockerfile
 image: quay.io/pantheon-public/build-tools-ci:4.x
 
 # Default Variables
 variables:
-  BEHAT_ADMIN_USERNAME: pantheon-ci-testing-$CI_JOB_ID
-  BEHAT_ADMIN_EMAIL: no-reply+ci-$CI_JOB_ID@getpantheon.com
-  CI_PR_URL: $CI_MERGE_REQUEST_IID
-  CURRENT_BRANCH: $CI_COMMIT_REF_NAME
-  CGR_BASE_DIR: /composer/.global
-  CGR_BIN_DIR: /composer/vendor/bin
+  CI_BUILD_NUMBER: $CI_PIPELINE_IID
+  DEFAULT_SITE: $CI_PROJECT_NAME
+  PR_NUMBER: $CI_MERGE_REQUEST_IID
+  CI_BRANCH: $CI_COMMIT_REF_NAME
 
 # Cache libraries in between jobs
 cache:
@@ -24,70 +22,59 @@ stages:
 - cleanup
 
 before_script:
-  # See https://docs.gitlab.com/ee/ci/ssh_keys/README.html
-  - eval $(ssh-agent -s) && ssh-add <(echo "$SSH_PRIVATE_KEY")
-  - mkdir -p $HOME/.ssh && echo "StrictHostKeyChecking no" >> "$HOME/.ssh/config"
-  - export PATH=$PATH:$HOME/bin:$HOME/terminus/bin
-  - export PR_ENV=${CI_MERGE_REQUEST_IID:+pr-$CI_MERGE_REQUEST_IID}
-  - export TERMINUS_ENV=${PR_ENV:-dev}
-  - export BEHAT_ADMIN_PASSWORD=$(openssl rand -base64 24)
-  - terminus auth:login --machine-token="$TERMINUS_TOKEN"
-  - git config --global user.email "$GITLAB_USER_EMAIL"
-  - git config --global user.name "Gitlab CI"
+- export PATH="$PATH:$CI_PROJECT_DIR/.ci/scripts"
+- export BASH_ENV="$HOME/.envvarsrc"
+- /build-tools-ci/scripts/set-environment
+- source $BASH_ENV
+# See https://docs.gitlab.com/ee/ci/ssh_keys/README.html
+- eval $(ssh-agent -s) && ssh-add <(echo "$SSH_PRIVATE_KEY")
+- terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
 
-deploy:multidev:
+deploy:
   stage: build
   environment:
-    name: review/pr-$CI_MERGE_REQUEST_IID
-    url: https://pr-$CI_MERGE_REQUEST_IID-$TERMINUS_SITE.pantheonsite.io/
+    name: deploy/$TERMINUS_ENV
+    url: https://$TERMINUS_ENV-$TERMINUS_SITE.pantheonsite.io/
   script:
-    - terminus build:env:delete:pr -n "$TERMINUS_SITE" --yes
-    - composer build-assets
-    - terminus env:wake -n "$TERMINUS_SITE.dev"
-    - terminus build-env:create -n "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes
-  only: 
-    - merge_requests
-
-deploy:dev:
-  stage: build
-  environment:
-    name: dev
-    url: https://dev-$TERMINUS_SITE.pantheonsite.io/
-  script:
-    - composer build-assets
-    - terminus build-env:push-code $TERMINUS_SITE.dev
-    - terminus build:env:delete:pr -n "$TERMINUS_SITE" --yes
+  - echo "Target site.env is $TERMINUS_SITE.$TERMINUS_ENV"
+  - 01-prepare
+  - composer -n build-assets
+  - 02-init-site-under-test-clone-existing
   only:
-    - master
+  - merge_requests
+  - master
 
 test:code_sniff_unit_test:
   stage: test
   script:
-    - composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
-    - rm -rf web
-    - git checkout web
-    - composer -n code-sniff
-    - composer -n unit-test
+  - composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
+  - rm -rf web
+  - git checkout -- web
+  - composer -n lint
+  - composer -n code-sniff
+  - composer -n unit-test
   only:
-    - merge_requests
-    - master
+  - merge_requests
+  - master
 
 test:behat:
   stage: test
   script:
-    - composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
-    - ./.ci/behat-test.sh
+  - composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
+  - 03-test
+  - 04-post-test
   only:
-    - merge_requests
-    - master
+  - merge_requests
+  - master
 
 test:behat:cleanup:
   stage: cleanup
   when: always
   script:
-    - ./.ci/behat-test-cleanup.sh
+  - 05-merge-master
+  - 09-cleanup-fixtures
   only:
-    - merge_requests
-    - master
+  - merge_requests
+  - master
   dependencies:
-    - test:behat
+  - test:behat

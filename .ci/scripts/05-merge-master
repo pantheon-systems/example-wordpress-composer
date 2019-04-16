@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -eo pipefail
+
+#
+# This script handles all operations that must be done when a
+# pull request is merged back into the master branch.
+#
+if [[ $CI_BRANCH != "master" ]] ; then
+  exit 0
+fi
+
+# Merge the multidev for the PR into the dev environment
+terminus -n build:env:merge "$TERMINUS_SITE.$TERMINUS_ENV" --yes
+
+# Run update-db on the dev environment
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
+
+# Clear the site environment's cache
+terminus -n env:clear-cache "$TERMINUS_SITE.$TERMINUS_ENV"
+
+# Delete old multidev environments associated with a PR that has been
+# merged or closed.
+terminus -n build:env:delete:pr "$TERMINUS_SITE" --yes

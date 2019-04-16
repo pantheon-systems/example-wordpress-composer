@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -eo pipefail
+
+#
+# This script starts up the test process.
+#
+# - Environment settings (e.g. git config) are initialized
+# - Terminus plugins are installed
+# - Any needed code updates are done
+#
+echo "Begin build for $TERMINUS_ENV. Pantheon test environment is $TERMINUS_SITE.$TERMINUS_ENV"
+
+# Report installed version of Terminus
+terminus --version
+
+# Delete leftover CI environments
+terminus -n build:env:delete:ci "$TERMINUS_SITE" --keep=2 --yes
