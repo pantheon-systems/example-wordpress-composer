@@ -85,6 +85,14 @@ jobs:
                     - $HOME/.composer/cache
 
             - run:
+                name: delete web
+                command: rm -rf web
+
+            - run:
+                name: reset web
+                command: git checkout -- web
+
+            - run:
                 name: lint php code for syntax errors
                 command: composer -n lint
 
