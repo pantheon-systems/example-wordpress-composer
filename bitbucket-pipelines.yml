@@ -25,3 +25,5 @@ pipelines:
           - source ~/.bashrc && ./.ci/scripts/04-post-test
           - source ~/.bashrc && ./.ci/scripts/05-merge-master
           - source ~/.bashrc && ./.ci/scripts/09-cleanup-fixtures
+        after-script:
+          - source ~/.bashrc && ./.ci/scripts/behat-cleanup
