@@ -73,6 +73,7 @@ test:behat:cleanup:
   script:
   - 05-merge-master
   - 09-cleanup-fixtures
+  - behat-cleanup
   only:
   - merge_requests
   - master
