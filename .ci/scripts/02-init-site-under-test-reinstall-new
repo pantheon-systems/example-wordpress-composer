@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -eo pipefail
+
+#
+# This script prepares the site-under-test by re-installing a new site.
+#
+# Use EITHER this script OR the clone-existing script; do not run both.
+#
+
+# Create a new multidev site to test on
+terminus -n build:env:create "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes
+
+# Re-run the site installation process
+terminus -n build:env:install "$TERMINUS_SITE.$TERMINUS_ENV" --site-name="$TEST_SITE_NAME" --account-mail="$ADMIN_EMAIL" --account-pass="$ADMIN_PASSWORD"
