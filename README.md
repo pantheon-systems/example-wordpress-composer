@@ -1,9 +1,9 @@
-# WordSesh GitHub, CircleCI, Pantheon Example
+# WordSesh GitHub, CircleCI, and Pantheon Example
 
-This repository is a start state for a Composer-based WordPress workflow with Pantheon. It has been set up with the [Terminus Build Tools Plugin](https://github.com/pantheon-systems/terminus-build-tools-plugin) and gives you:
+This repository is an example start state for a Composer-based WordPress workflow with Pantheon. It has been set up with the [Terminus Build Tools Plugin](https://github.com/pantheon-systems/terminus-build-tools-plugin) and gives you:
 
-* GitHub repo
-* Free Pantheon sandbox site
+* A GitHub repository
+* A free Pantheon sandbox site
 * A CircleCI configuration to run tests and push from the source repo (GitHub) to Pantheon.
 
 ## About This Example Project
