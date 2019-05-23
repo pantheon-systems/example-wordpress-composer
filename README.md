@@ -1,52 +1,31 @@
-# Example WordPress Composer
+# WordSesh GitHub, CircleCI, Pantheon Example
 
-[![CircleCI](https://circleci.com/gh/pantheon-systems/example-wordpress-composer.svg?style=svg)](https://circleci.com/gh/pantheon-systems/example-wordpress-composer)
-
-This repository is a start state for a Composer-based WordPress workflow with Pantheon. It is meant to be copied by the the [Terminus Build Tools Plugin](https://github.com/pantheon-systems/terminus-build-tools-plugin) which will set up for you a brand new
+This repository is a start state for a Composer-based WordPress workflow with Pantheon. It has been set up with the [Terminus Build Tools Plugin](https://github.com/pantheon-systems/terminus-build-tools-plugin) and gives you:
 
 * GitHub repo
 * Free Pantheon sandbox site
 * A CircleCI configuration to run tests and push from the source repo (GitHub) to Pantheon.
 
-For more background information on this style of workflow, see the [Pantheon documentation](https://pantheon.io/docs/guides/github-pull-requests/).
+## About This Example Project
+This is an advanced workflow example that includes:
 
+* WordPress core and third-party plugins/themes installed with [Composer](https://getcomposer.org/)
+* Continuous integration with [CircleCI](https://circleci.com/docs/2.0/)
+* Code sniffing with [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer)
+* [PHP Unit](https://phpunit.readthedocs.io/en/8.1/) testing
+* [Behat](http://behat.org/en/latest/) testing with [WordHat](https://wordhat.info/)
 
-## Installation
+You might not be familiar with all of these tools and that's okay! Pantheon's developer relations team would love to help. They hold [office hours each week](https://pantheon.io/developers/office-hours), which you can join.
 
-#### Prerequisites
+Another thing to note is that with the CircleCI continuous integration process you should not edit code directly on Pantheon. Rather, you should edit code through this GitHub repository. CircleCI will then build the site and deploy it to Pantheon for you.
 
-Before running the `terminus build:project:create` command, make sure you have all of the prerequisites:
+For more background information on this style of workflow, see the [Pantheon documentation on a GitHub PR workflow](https://pantheon.io/docs/guides/github-pull-requests/).
 
-* [A Pantheon account](https://dashboard.pantheon.io/register)
-* [Terminus, the Pantheon command line tool](https://pantheon.io/docs/terminus/install/)
-* [The Terminus Build Tools Plugin](https://github.com/pantheon-systems/terminus-build-tools-plugin)
-* An account with GitHub and an authentication token capable of creating new repos.
-* An account with CircleCI and an authentication token.
+Tip: if you haven't used Pantheon before, or just want to know more about the tools powering this example, [the essential developer tools guide](https://pantheon.io/docs/guides/edt/) is a great resource.
 
-You may find it easier to export the GitHub and CircleCI tokens as variables on your command line where the Build Tools Plugin can detect them automatically:
+WordPress will already be installed on your Pantheon site. You will receive an email with the username and password to login.
 
-```
-export GITHUB_TOKEN=[REDACTED]
-export CIRCLE_TOKEN=[REDACTED]
-```
-
-#### One command setup:
-
-Once you have all of the prerequisites in place, you can create your copy of this repo with one command:
-
-```
-terminus build:project:create pantheon-systems/example-wordpress-composer my-new-site --team="Agency Org Name"
-```
-
-The parameters shown here are:
-
-* The name of the source repo, `pantheon-systems/example-wordpress-composer`. If you are interest in other source repos like Drupal 8, see the [Terminus Build Tools Plugin](https://github.com/pantheon-systems/terminus-build-tools-plugin).
-* The machine name to be used by both the soon-to-be-created Pantheon site and GitHub repo. Change `my-new-site` to something meaningful for you.
-* The `--team` flag is optional and refers to a Pantheon organization. Pantheon organizations are often web development agencies or Universities. Setting this parameter causes the newly created site to go within the given organization. Run the Terminus command `terminus org:list` to see the organizations you are a member of. There might not be any.
-
-#### PHP Version
-
-You will need PHP 7.2 or higher locally to run the `build:project:create` command as some of the dependencies in this project require it. Both `composer.json` and `pantheon.yml` are currently set to use PHP 7.2.
+We hope this demo site can help you learn how Pantheon and Continuous Integration work well together. If you have any questions drop by [Pantheon office hours](https://pantheon.io/developers/office-hours) for some help. Happy hacking!
 
 ## Important files and directories
 
