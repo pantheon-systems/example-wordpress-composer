@@ -50,7 +50,7 @@ To get started using Lando to develop locally complete these one-time steps. Ple
 
 * [Install Lando](https://docs.devwithlando.io/installation/system-requirements.html), if not already installed.
 * Clone this repository locally.
-* Run `lando init` and follow the prompts, choosing the Pantheon recipe followed by entering a valid machine token and selecting the Pantheon site created by [the Terminus build tools plugin].(https://github.com/pantheon-systems/terminus-build-tools-plugin).
+* Run `lando init` and follow the prompts, choosing the Pantheon recipe followed by entering a valid machine token and selecting the Pantheon site created by [the Terminus build tools plugin](https://github.com/pantheon-systems/terminus-build-tools-plugin).
 * Run `lando start` to start Lando.
     - Save the local site URL. It should be similar to `https://<PROJECT_NAME>.lndo.site`.
 * Run `lando composer install --no-ansi --no-interaction --optimize-autoloader --no-progress` to download dependencies
