@@ -1784,16 +1784,16 @@
         },
         {
             "name": "ocramius/proxy-manager",
-            "version": "2.1.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Ocramius/ProxyManager.git",
-                "reference": "d9e5a00ca2d87b7e0f1bff36b897e02afd7d5435"
+                "reference": "e18ac876b2e4819c76349de8f78ccc8ef1554cd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/d9e5a00ca2d87b7e0f1bff36b897e02afd7d5435",
-                "reference": "d9e5a00ca2d87b7e0f1bff36b897e02afd7d5435",
+                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/e18ac876b2e4819c76349de8f78ccc8ef1554cd7",
+                "reference": "e18ac876b2e4819c76349de8f78ccc8ef1554cd7",
                 "shasum": ""
             },
             "require": {
@@ -1805,7 +1805,9 @@
                 "couscous/couscous": "^1.5.2",
                 "ext-phar": "*",
                 "humbug/humbug": "dev-master@DEV",
+                "nikic/php-parser": "^3.0.4",
                 "phpbench/phpbench": "^0.12.2",
+                "phpstan/phpstan": "^0.6.4",
                 "phpunit/phpunit": "^5.6.4",
                 "phpunit/phpunit-mock-objects": "^3.4.1",
                 "squizlabs/php_codesniffer": "^2.7.0"
@@ -1847,43 +1849,46 @@
                 "proxy pattern",
                 "service proxies"
             ],
-            "time": "2016-11-30T15:45:00+00:00"
+            "time": "2017-05-04T11:12:50+00:00"
         },
         {
             "name": "paulgibbs/behat-wordpress-extension",
-            "version": "v3.1.2",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paulgibbs/behat-wordpress-extension.git",
-                "reference": "53f289794bdfc99d386965a8c92f542cb3a4bf3d"
+                "reference": "5d131f26a718d27be6d4351ecd336bb161cf7eff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paulgibbs/behat-wordpress-extension/zipball/53f289794bdfc99d386965a8c92f542cb3a4bf3d",
-                "reference": "53f289794bdfc99d386965a8c92f542cb3a4bf3d",
+                "url": "https://api.github.com/repos/paulgibbs/behat-wordpress-extension/zipball/5d131f26a718d27be6d4351ecd336bb161cf7eff",
+                "reference": "5d131f26a718d27be6d4351ecd336bb161cf7eff",
                 "shasum": ""
             },
             "require": {
                 "behat/behat": "~3.1",
                 "behat/mink-extension": "~2.3",
-                "ocramius/proxy-manager": "2.1",
-                "php": "~7.1",
+                "ocramius/proxy-manager": "~2.1.0",
+                "php": ">=7.1 <7.4",
                 "sensiolabs/behat-page-object-extension": "~2.1"
             },
             "require-dev": {
                 "behat/mink-goutte-driver": "^1.2",
                 "behat/mink-selenium2-driver": "^1.3",
-                "joomla-projects/selenium-server-standalone": "~3.5",
-                "phing/phing": "~2.16",
+                "genesis/behat-fail-aid": "^2.0",
                 "phpstan/phpstan": "~0.9",
                 "squizlabs/php_codesniffer": "~3.0",
-                "wp-cli/wp-cli": "~1.5"
+                "wp-cli/wp-cli-bundle": "~2.1"
             },
             "suggest": {
                 "behat/mink-goutte-driver": "Headless Mink driver",
-                "behat/mink-selenium2-driver": "JS-enabled Mink driver (requires Selenium2)"
+                "behat/mink-selenium2-driver": "JS-enabled Mink driver (requires Selenium2)",
+                "genesis/behat-fail-aid": "Get more out of your test suite by getting it to work with you when tests fail."
             },
             "type": "behat-extension",
+            "extra": {
+                "wordpress-install-dir": "tests/app/www"
+            },
             "autoload": {
                 "psr-4": {
                     "PaulGibbs\\WordpressBehatExtension\\": "src"
@@ -1900,19 +1905,18 @@
                 {
                     "name": "Paul Gibbs",
                     "email": "djpaul@gmail.com",
-                    "homepage": "http://byotos.com"
+                    "homepage": "https://byotos.com"
                 }
             ],
-            "description": "WordHat is a Behat extension, integrating Behat, Mink, and WordPress. It provides WordPress-specific functionality for common testing scenarios specific to WordPress sites.",
+            "description": "WordHat is a Behat extension for WordPress. It provides WordPress-specific functionality for common testing scenarios specific to WordPress sites.",
             "homepage": "https://wordhat.info",
             "keywords": [
                 "BDD",
                 "Behat",
-                "Mink",
                 "extension",
                 "wordpress"
             ],
-            "time": "2019-04-02T09:26:42+00:00"
+            "time": "2019-06-05T10:43:23+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -3485,33 +3489,33 @@
         },
         {
             "name": "sensiolabs/behat-page-object-extension",
-            "version": "v2.1.0",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/BehatPageObjectExtension.git",
-                "reference": "bd2a34221ba65ea8c86d8e693992d718de03dbae"
+                "reference": "a05dda9dc38bfb3c789a936fd003b351a9a396be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/BehatPageObjectExtension/zipball/bd2a34221ba65ea8c86d8e693992d718de03dbae",
-                "reference": "bd2a34221ba65ea8c86d8e693992d718de03dbae",
+                "url": "https://api.github.com/repos/sensiolabs/BehatPageObjectExtension/zipball/a05dda9dc38bfb3c789a936fd003b351a9a396be",
+                "reference": "a05dda9dc38bfb3c789a936fd003b351a9a396be",
                 "shasum": ""
             },
             "require": {
-                "behat/behat": "^3.0.6",
-                "behat/mink": "^1.6",
-                "behat/mink-extension": "^2.0",
-                "ocramius/proxy-manager": "^1.0||^2.0",
-                "php": ">=5.3.0"
+                "behat/behat": "^3.3",
+                "behat/mink": "^1.7",
+                "behat/mink-extension": "^2.2",
+                "ocramius/proxy-manager": "^2.1.1",
+                "php": ">=7.1.3,<7.4"
             },
             "require-dev": {
-                "behat/mink-goutte-driver": "^1.0",
-                "bossa/phpspec2-expect": "^1.0.3||^2.0",
-                "fabpot/goutte": "^1.0.4||^2.0||^3.0",
-                "phpspec/phpspec": "^2.5||^3.0",
-                "symfony/filesystem": "^2.8||^3.0",
-                "symfony/process": "^2.8||^3.0",
-                "symfony/yaml": "^2.8||^3.0"
+                "behat/mink-goutte-driver": "^1.2",
+                "bossa/phpspec2-expect": "^3.1",
+                "fabpot/goutte": "^3.2",
+                "phpspec/phpspec": "^5.1",
+                "symfony/filesystem": "^4.2",
+                "symfony/process": "^4.2",
+                "symfony/yaml": "^4.2"
             },
             "suggest": {
                 "bossa/phpspec2-expect": "Allows to use PHPSpec2 matchers in Behat context files"
@@ -3519,11 +3523,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
+                "psr-4": {
                     "SensioLabs\\Behat\\PageObjectExtension\\": "src/"
                 }
             },
@@ -3548,7 +3552,7 @@
                 "Behat",
                 "page"
             ],
-            "time": "2017-05-22T14:16:06+00:00"
+            "time": "2019-04-17T08:36:40+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
