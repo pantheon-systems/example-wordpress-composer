@@ -139,10 +139,6 @@ jobs:
                 command: composer install
 
             - run:
-                name: verify Chrome installation
-                command: google-chrome --version
-
-            - run:
                 name: run functional tests with Behat
                 command: ./.ci/scripts/03-test
 
