@@ -32,7 +32,7 @@ set -ex
 
 # Start headless Chrome
 echo "\n Starting Chrome in headless mode ..."
-google-chrome-unstable --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
+google-chrome --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
 
 SELF_DIRNAME="`dirname -- "$0"`"
 $SELF_DIRNAME/run-behat
