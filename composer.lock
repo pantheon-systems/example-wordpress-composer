@@ -498,9 +498,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/lh-hsts.zip?timestamp=1558146276",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/lh-hsts.zip?timestamp=1558146276"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -518,9 +516,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/pantheon-advanced-page-cache.0.3.0.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/pantheon-advanced-page-cache.0.3.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -538,9 +534,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-native-php-sessions.0.6.9.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/wp-native-php-sessions.0.6.9.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -558,9 +552,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/theme/twentynineteen.1.4.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/theme/twentynineteen.1.4.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
