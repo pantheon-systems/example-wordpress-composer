@@ -3,7 +3,7 @@ var fs = require('fs');
 // Stash the directory where the script was started from
 var rootPath = process.cwd();
 // Get the contents of the backstop.json template
-var fileContents = require(rootPath + '/.ci/backstop.default.json');
+var fileContents = require(rootPath + '/.ci/test/visual-regression/backstop.default.json');
 
 // Relative URLs don't start with http
 function isRelativeURL(url) {
@@ -48,7 +48,7 @@ var newScenarios = fileContents.scenarios.map(function (scenario) {
 fileContents.scenarios = newScenarios;
 
 // Write the backstop.json file
-fs.writeFileSync(rootPath + '/.ci/backstop.json', JSON.stringify(fileContents, null, 2), function (err) {
+fs.writeFileSync(rootPath + '/.ci/test/visual-regression/backstop.json', JSON.stringify(fileContents, null, 2), function (err) {
   if (err) return console.log(err);
-  console.log(rootPath + '/.ci/backstop.json created successfully!');
+  console.log(rootPath + '/.ci/test/visual-regression/backstop.json created successfully!');
 });
