@@ -22,10 +22,6 @@ terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- cli version
 # Verbose mode and exit on errors
 set -ex
 
-# Start headless Chrome
-echo "\n Starting Chrome in headless mode ..."
-google-chrome --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
-
 # Check if an admin user with our desired username exists
 BEHAT_ADMIN_USER_EXISTS=$(terminus -n wp ${TERMINUS_SITE}.${TERMINUS_ENV} -- user list --login=${BEHAT_ADMIN_USERNAME} --format=count)
 
