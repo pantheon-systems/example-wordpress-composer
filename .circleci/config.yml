@@ -205,41 +205,41 @@ jobs:
 workflows:
   version: 2
   build_deploy_and_test:
-  jobs:
-    - configure_env_vars
-    - static_tests
-    # Create a multidev environment for branches
-    - create_multidev:
-      filters:
-        branches:
-          ignore:
-            - master
-    - build_php
-    - deploy_to_pantheon:
-        requires:
-          - create_multidev
-          - static_tests
-          - build_php
-    - visual_regression_test:
-        requires:
-          - configure_env_vars
-          - deploy_to_pantheon
-      filters:
-        branches:
-          ignore:
-            - master
-    - behat_test:
-        requires:
-          - deploy_to_pantheon
-          - visual_regression_test
+    jobs:
+      - configure_env_vars
+      - static_tests
+      # Create a multidev environment for branches
+      - create_multidev:
+        filters:
+          branches:
+            ignore:
+              - master
+      - build_php
+      - deploy_to_pantheon:
+          requires:
+            - create_multidev
+            - static_tests
+            - build_php
+      - visual_regression_test:
+          requires:
+            - configure_env_vars
+            - deploy_to_pantheon
+        filters:
+          branches:
+            ignore:
+              - master
+      - behat_test:
+          requires:
+            - deploy_to_pantheon
+            - visual_regression_test
 
   scheduled_update_check:
-  triggers:
-     - schedule:
-       cron: "0 0 * * *"
-       filters:
-       branches:
-        only:
-          - master
-  jobs:
-    - composer_lock_updater
+    triggers:
+       - schedule:
+           cron: "0 0 * * *"
+           filters:
+             branches:
+              only:
+                - master
+    jobs:
+      - composer_lock_updater
