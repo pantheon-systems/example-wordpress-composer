@@ -61,10 +61,16 @@ jobs:
 
   create_multidev:
     <<: *defaults
-  
+
     steps:
       - checkout
-  
+
+      - run:
+          # Set TERMINUS_ENV and related environment variables.
+          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/5.x/scripts/set-environment
+          name: setup-environment-vars
+          command: /build-tools-ci/scripts/set-environment
+
       - run:
           name: create multidev
           command: ./.ci/deploy/pantheon/create-multidev
@@ -81,6 +87,12 @@ jobs:
             - composer-cache-
 
       - run:
+          # Set TERMINUS_ENV and related environment variables.
+          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/5.x/scripts/set-environment
+          name: setup-environment-vars
+          command: /build-tools-ci/scripts/set-environment
+
+      - run:
           name: run static tests
           command: ./.ci/test/static/run
 
@@ -93,21 +105,27 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-  
+
       - restore_cache:
           keys:
             - composer-cache-{{ checksum "composer.lock" }}
             - composer-cache-
-  
+
+      - run:
+          # Set TERMINUS_ENV and related environment variables.
+          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/5.x/scripts/set-environment
+          name: setup-environment-vars
+          command: /build-tools-ci/scripts/set-environment
+
       - run:
           name: run PHP build step
           command: ./.ci/build/php
-  
+
       - save_cache:
           key: vendor-{{ checksum "composer.lock" }}
           paths:
             - $HOME/example_wordpress_composer/vendor
-  
+
       - persist_to_workspace:
           root: .
           paths:
@@ -118,21 +136,27 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-  
+
       # Attach the workspace
       - attach_workspace:
           at: /tmp
-  
+
+      - run:
+          # Set TERMINUS_ENV and related environment variables.
+          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/5.x/scripts/set-environment
+          name: setup-environment-vars
+          command: /build-tools-ci/scripts/set-environment
+
       # Rsync the built web directory
       - run:
           name: sync web
           command: rsync -az /tmp/web/ web
-  
+
       # Rsync the built vendor directory
       - run:
           name: sync vendor
           command: rsync -az /tmp/vendor/ vendor
-  
+
       # Deploy to Pantheon
       - run:
           name: deploy to Pantheon
@@ -142,25 +166,31 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-  
+
       - restore_cache:
           keys:
             - composer-cache-{{ checksum "composer.lock" }}
             - composer-cache-
-  
+
+      - run:
+          # Set TERMINUS_ENV and related environment variables.
+          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/5.x/scripts/set-environment
+          name: setup-environment-vars
+          command: /build-tools-ci/scripts/set-environment
+
       - run:
           name: prepare for Behat testing
           command: ./.ci/test/behat/initialize
-  
+
       - run:
           name: run acceptance tests with Behat
           command: ./.ci/test/behat/run
-  
+
       - run:
           name: clean up after Behat
           command: ./.ci/test/behat/cleanup
           when: always
-  
+
       - save_cache:
           key: composer-cache-{{ checksum "composer.lock" }}
           paths:
@@ -195,6 +225,8 @@ jobs:
       - checkout
 
       - run:
+          # Set TERMINUS_ENV and related environment variables.
+          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/5.x/scripts/set-environment
           name: setup-environment-vars
           command: /build-tools-ci/scripts/set-environment
 
