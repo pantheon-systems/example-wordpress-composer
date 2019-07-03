@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -eo pipefail
+
+#
+# This script prepares creates a new multidev environment on Pantheon.
+# It should be run from Git branches other than the primary (master) branch
+#
+
+# Set environment variables
+# See https://github.com/pantheon-systems/docker-build-tools-ci/blob/6.x/scripts/set-environment/.
+/build-tools-ci/scripts/set-environment
+
+# Authenticate with Terminus
+terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+
+# Create the multidev environment
+# The content and database are cloned from the live environment
+terminus -n multidev:create $TERMINUS_SITE.live $TERMINUS_ENV

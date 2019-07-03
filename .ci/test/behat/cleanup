@@ -1,15 +1,16 @@
 #!/bin/bash
 
-if [[ ${CI_BRANCH} != "master" && -z ${PR_NUMBER} ]];
-then
-  echo -e "CI will only deploy to Pantheon if on the master branch or creating a pull requests.\n"
-  exit 0;
-fi
+set -eo pipefail
 
-echo "::::::::::::::::::::::::::::::::::::::::::::::::"
-echo "Behat clean up on site: $TERMINUS_SITE.$TERMINUS_ENV"
-echo "::::::::::::::::::::::::::::::::::::::::::::::::"
-echo
+#
+# This script runs cleanup after Behat tests complete.
+#
+
+# Set environment varaibles
+/build-tools-ci/scripts/set-environment
+
+# Authenticate with Terminus
+terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
 
 # Restore the DB backup made before testing
 terminus -n backup:restore $TERMINUS_SITE.$TERMINUS_ENV --element=database --yes
