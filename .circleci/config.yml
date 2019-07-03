@@ -210,10 +210,10 @@ workflows:
       - static_tests
       # Create a multidev environment for branches
       - create_multidev:
-        filters:
-          branches:
-            ignore:
-              - master
+          filters:
+            branches:
+              ignore:
+                - master
       - build_php
       - deploy_to_pantheon:
           requires:
@@ -224,10 +224,10 @@ workflows:
           requires:
             - configure_env_vars
             - deploy_to_pantheon
-        filters:
-          branches:
-            ignore:
-              - master
+          filters:
+            branches:
+              ignore:
+                - master
       - behat_test:
           requires:
             - deploy_to_pantheon
