@@ -14,7 +14,7 @@ terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
 if [[ $CI_BRANCH != "master" ]]
 then
     # Create a new multidev environment (or push to an existing one)
-    terminus -n build:env:create "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes --clone-content
+    terminus -n build:env:create "$TERMINUS_SITE.dev" "$TERMINUS_ENV" --yes
 else
     # Push to the dev environment
     terminus -n build:env:push "$TERMINUS_SITE.dev" --yes
