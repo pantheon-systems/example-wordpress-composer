@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -eo pipefail
-
 #
 # This script runs visual regression tests using BackstopJS.
 # Tests are run if composer.lock has changed
