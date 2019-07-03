@@ -4,142 +4,74 @@ defaults: &defaults
     - image: quay.io/pantheon-public/build-tools-ci:6.x
   working_directory: ~/example_wordpress_composer
   environment:
-    #=========================================================================
-    # In addition to the environment variables defined in this file, also
-    # add the following variables in the Circle CI UI.
-    #
-    # See: https://circleci.com/docs/2.0/env-vars/
-    #
-    # TERMINUS_SITE:  Name of the Pantheon site to run tests on, e.g. my_site
-    # TERMINUS_TOKEN: The Pantheon machine token
-    # GITHUB_TOKEN:   The GitHub personal access token
-    # GIT_EMAIL:      The email address to use when making commits
-    #
-    # TEST_SITE_NAME: The name of the test site to provide when installing.
-    # ADMIN_PASSWORD: The admin password to use when installing.
-    # ADMIN_EMAIL:    The email address to give the admin when installing.
-    #=========================================================================
-    TZ: "/usr/share/zoneinfo/America/Los_Angeles"
+  #=========================================================================
+  # In addition to the environment variables defined in this file, also
+  # add the following variables in the Circle CI UI.
+  #
+  # See: https://circleci.com/docs/2.0/env-vars/
+  #
+  # TERMINUS_SITE:  Name of the Pantheon site to run tests on, e.g. my_site
+  # TERMINUS_TOKEN: The Pantheon machine token
+  # GITHUB_TOKEN:   The GitHub personal access token
+  # GIT_EMAIL:    The email address to use when making commits
+  #
+  # TEST_SITE_NAME: The name of the test site to provide when installing.
+  # ADMIN_PASSWORD: The admin password to use when installing.
+  # ADMIN_EMAIL:  The email address to give the admin when installing.
+  #=========================================================================
+  TZ: "/usr/share/zoneinfo/America/Los_Angeles"
 
-    # The variables below usually do not need to be modified.
+  # The variables below usually do not need to be modified.
 
-    #======================================================================================================================================
-    # Circle CI 2.0 does not yet expand environment variables so they have to be manually EXPORTed
-    # Once environment variables can be expanded the variables below can be uncommented and the EXPORTs in set-up-globals.sh can be removed
-    # See: https://discuss.circleci.com/t/unclear-how-to-work-with-user-variables-circleci-provided-env-variables/12810/11
-    # See: https://discuss.circleci.com/t/environment-variable-expansion-in-working-directory/11322
-    # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
-    #======================================================================================================================================
+  #======================================================================================================================================
+  # Circle CI 2.0 does not yet expand environment variables so they have to be manually EXPORTed
+  # Once environment variables can be expanded the variables below can be uncommented and the EXPORTs in set-up-globals.sh can be removed
+  # See: https://discuss.circleci.com/t/unclear-how-to-work-with-user-variables-circleci-provided-env-variables/12810/11
+  # See: https://discuss.circleci.com/t/environment-variable-expansion-in-working-directory/11322
+  # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
+  #======================================================================================================================================
 
-    NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
-    ADMIN_USERNAME: admin
-    TERM: dumb
+  NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
+  ADMIN_USERNAME: admin
+  TERM: dumb
 
 version: 2
 jobs:
-    configure_env_vars:
-        <<: *defaults
-
-        steps:
-            - checkout
-
-            - run:
-                # Set TERMINUS_ENV and related environment variables.
-                # https://github.com/pantheon-systems/docker-build-tools-ci/blob/5.x/scripts/set-environment
-                name: setup-environment-vars
-                command: /build-tools-ci/scripts/set-environment
-
-            - run:
-                name: clone-bash-env
-                command: cp $BASH_ENV bash_env.txt
-
-            # https://circleci.com/docs/2.0/workflows/#using-workspaces-to-share-data-among-jobs
-            - persist_to_workspace:
-                root: .
-                paths:
-                    - bash_env.txt
-
-    create_multidev:
+  configure_env_vars:
     <<: *defaults
 
     steps:
       - checkout
 
       - run:
-          name: create multidev
-          command: ./.ci/deploy/pantheon/create-multidev
-
-    static_tests:
-        <<: *defaults
-
-        steps:
-            - checkout
-
-            - restore_cache:
-                keys:
-                    - composer-cache-{{ checksum "composer.lock" }}
-                    - composer-cache-
-
-            - run:
-                name: run static tests
-                command: ./.ci/test/static/run
-
-            - save_cache:
-                key: composer-cache-{{ checksum "composer.lock" }}
-                paths:
-                    - $HOME/.composer/cache
-
-    build_php:
-    <<: *defaults
-    steps:
-      - checkout
-
-      - restore_cache:
-          keys:
-            - composer-cache-{{ checksum "composer.lock" }}
-            - composer-cache-
+          # Set TERMINUS_ENV and related environment variables.
+          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/5.x/scripts/set-environment
+          name: setup-environment-vars
+          command: /build-tools-ci/scripts/set-environment
 
       - run:
-            name: run PHP build step
-            command: ./.ci/build/php
+          name: clone-bash-env
+          command: cp $BASH_ENV bash_env.txt
 
-      - save_cache:
-          key: vendor-{{ checksum "composer.lock" }}
-          paths:
-            - $HOME/example_wordpress_composer/vendor
-
+      # https://circleci.com/docs/2.0/workflows/#using-workspaces-to-share-data-among-jobs
       - persist_to_workspace:
           root: .
           paths:
-            - web
-            - vendor
+            - bash_env.txt
 
-    deploy_to_pantheon:
+  create_multidev:
+  <<: *defaults
+
+  steps:
+    - checkout
+
+    - run:
+        name: create multidev
+        command: ./.ci/deploy/pantheon/create-multidev
+
+  static_tests:
     <<: *defaults
-    steps:
-      - checkout
 
-      # Attach the workspace
-      - attach_workspace:
-          at: /tmp
-
-      # Rsync the built web directory
-      - run:
-          name: sync web
-          command: rsync -az /tmp/web/ web
-
-      # Rsync the built vendor directory
-      - run:
-          name: sync vendor
-          command: rsync -az /tmp/vendor/ vendor
-
-      # Deploy to Pantheon
-      - run:
-          name: deploy to Pantheon
-          command: ./.ci/deploy/pantheon/dev-multidev
-
-    behat_test:
-    <<: *defaults
     steps:
       - checkout
 
@@ -149,97 +81,165 @@ jobs:
             - composer-cache-
 
       - run:
-          name: prepare for Behat testing
-          command: ./.ci/test/behat/initialize
-
-      - run:
-          name: run acceptance tests with Behat
-          command: ./.ci/test/behat/run
-
-      - run:
-          name: clean up after Behat
-          command: ./.ci/test/behat/cleanup
-          when: always
+          name: run static tests
+          command: ./.ci/test/static/run
 
       - save_cache:
-            key: composer-cache-{{ checksum "composer.lock" }}
-            paths:
-                - $HOME/.composer/cache
+          key: composer-cache-{{ checksum "composer.lock" }}
+          paths:
+            - $HOME/.composer/cache
 
-    visual_regression_test:
-        <<: *defaults
-        docker:
-            - image: backstopjs/backstopjs:4.1.9
-        steps:
-            - checkout
+  build_php:
+  <<: *defaults
+  steps:
+    - checkout
 
-            - attach_workspace:
-                at: /tmp/workspace
+    - restore_cache:
+        keys:
+          - composer-cache-{{ checksum "composer.lock" }}
+          - composer-cache-
 
-            - run: cp /tmp/workspace/bash_env.txt $BASH_ENV
-            - run: echo "export CI_BUILD_URL='${CIRCLE_BUILD_URL}'" >> $BASH_ENV
-            - run: echo "export CI_NODE_INDEX='${CIRCLE_NODE_INDEX}'" >> $BASH_ENV
-            - run: source $BASH_ENV
+    - run:
+        name: run PHP build step
+        command: ./.ci/build/php
 
-            - run:
-                name: visual regression test
-                command: ./.ci/test/visual-regression/run
+    - save_cache:
+        key: vendor-{{ checksum "composer.lock" }}
+        paths:
+          - $HOME/example_wordpress_composer/vendor
 
-            - store_artifacts:
-                path: /tmp/artifacts
-                destination: artifacts
+    - persist_to_workspace:
+        root: .
+        paths:
+          - web
+          - vendor
 
-    composer_lock_updater:
-        <<: *defaults
-        steps:
-            - checkout
+  deploy_to_pantheon:
+  <<: *defaults
+  steps:
+    - checkout
 
-            - run:
-                name: setup-environment-vars
-                command: /build-tools-ci/scripts/set-environment
+    # Attach the workspace
+    - attach_workspace:
+      at: /tmp
 
-            - run:
-                name: run composer lock updater
-                command: set -e && clu https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${CI_PROJECT_USERNAME}/${CI_PROJECT_REPONAME}.git | sed -e "s/${GITHUB_TOKEN}/[REDACTED]/g"
+    # Rsync the built web directory
+    - run:
+      name: sync web
+      command: rsync -az /tmp/web/ web
+
+    # Rsync the built vendor directory
+    - run:
+      name: sync vendor
+      command: rsync -az /tmp/vendor/ vendor
+
+    # Deploy to Pantheon
+    - run:
+      name: deploy to Pantheon
+      command: ./.ci/deploy/pantheon/dev-multidev
+
+  behat_test:
+  <<: *defaults
+  steps:
+    - checkout
+
+    - restore_cache:
+        keys:
+          - composer-cache-{{ checksum "composer.lock" }}
+          - composer-cache-
+
+    - run:
+        name: prepare for Behat testing
+        command: ./.ci/test/behat/initialize
+
+    - run:
+        name: run acceptance tests with Behat
+        command: ./.ci/test/behat/run
+
+    - run:
+        name: clean up after Behat
+        command: ./.ci/test/behat/cleanup
+        when: always
+
+    - save_cache:
+        key: composer-cache-{{ checksum "composer.lock" }}
+        paths:
+          - $HOME/.composer/cache
+
+  visual_regression_test:
+    <<: *defaults
+    docker:
+      - image: backstopjs/backstopjs:4.1.9
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - run: cp /tmp/workspace/bash_env.txt $BASH_ENV
+      - run: echo "export CI_BUILD_URL='${CIRCLE_BUILD_URL}'" >> $BASH_ENV
+      - run: echo "export CI_NODE_INDEX='${CIRCLE_NODE_INDEX}'" >> $BASH_ENV
+      - run: source $BASH_ENV
+
+      - run:
+          name: visual regression test
+          command: ./.ci/test/visual-regression/run
+
+      - store_artifacts:
+          path: /tmp/artifacts
+          destination: artifacts
+
+  composer_lock_updater:
+    <<: *defaults
+    steps:
+      - checkout
+
+      - run:
+          name: setup-environment-vars
+          command: /build-tools-ci/scripts/set-environment
+
+      - run:
+          name: run composer lock updater
+          command: set -e && clu https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${CI_PROJECT_USERNAME}/${CI_PROJECT_REPONAME}.git | sed -e "s/${GITHUB_TOKEN}/[REDACTED]/g"
 
 workflows:
   version: 2
   build_deploy_and_test:
-    jobs:
-        - configure_env_vars
-        - static_tests
-        # Create a multidev environment for branches
-        - create_multidev:
-            filters:
-                branches:
-                ignore:
-                    - master
-        - build_php
-        - deploy_to_pantheon:
-            requires:
-                - create_multidev
-                - static_tests
-                - build_php
-        - visual_regression_test:
-            requires:
-                - configure_env_vars
-                - deploy_to_pantheon
-            filters:
-                branches:
-                ignore:
-                    - master
-        - behat_test:
-            requires:
-                - deploy_to_pantheon
-                - visual_regression_test
+  jobs:
+    - configure_env_vars
+    - static_tests
+    # Create a multidev environment for branches
+    - create_multidev:
+      filters:
+        branches:
+          ignore:
+            - master
+    - build_php
+    - deploy_to_pantheon:
+        requires:
+          - create_multidev
+          - static_tests
+          - build_php
+    - visual_regression_test:
+        requires:
+          - configure_env_vars
+          - deploy_to_pantheon
+      filters:
+        branches:
+          ignore:
+            - master
+    - behat_test:
+        requires:
+          - deploy_to_pantheon
+          - visual_regression_test
 
   scheduled_update_check:
-    triggers:
-       - schedule:
-           cron: "0 0 * * *"
-           filters:
-             branches:
-               only:
-                 - master
-    jobs:
-      - composer_lock_updater
+  triggers:
+     - schedule:
+       cron: "0 0 * * *"
+       filters:
+       branches:
+        only:
+          - master
+  jobs:
+    - composer_lock_updater
