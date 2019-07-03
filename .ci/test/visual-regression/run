@@ -30,6 +30,12 @@ GIT_FILE_MODIFIED()
 
 LAST_GIT_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 
+if [[ ${LAST_GIT_COMMIT_MESSAGE} == *"--skip-vr"* ]]
+then
+    echo -e "\nVisual regression tests skipped because the last commit contains --skip-vr"
+    exit 0
+fi
+
 # Always run visual tests if "[vr]" is in the last commit message
 if [[ ${LAST_GIT_COMMIT_MESSAGE} != *"[vr]"* ]]
 then
@@ -57,29 +63,16 @@ echo -e "\nPinging the ${TERMINUS_ENV} multidev environment to wake it from slee
 curl -I "$MULTIDEV_SITE_URL" >/dev/null
 
 # Ping the live environment to wake it from sleep
-echo -e "\nPinging the live environment to wake it from sleep..."
-curl -I "$LIVE_SITE_URL" >/dev/null
-
-# Check for custom backstop.json
-if [ ! -f ./.ci/test/visual-regression/backstop.json ]; then
-	# Create Backstop config file from template if needed
-	echo -e "\nCloning backstop.default json to backstop.json..."
-	cp .ci/test/visual-regression/backstop.default.json .ci/test/visual-regression/backstop.json
-fi
-
-# Dynamically set URLs in backstop.json
-node .ci/test/visual-regression/dynamic-backstop-json-urls.js
+echo -e "\nPinging the dev environment to wake it from sleep..."
+curl -I "$DEV_SITE_URL" >/dev/null
 
 # Backstop visual regression
-echo -e "\nRunning backstop reference on ${LIVE_SITE_URL}..."
-backstop reference --config=.ci/test/visual-regression/backstop.json
-
-# Kill any zombie Chrome instances
-pkill -f "(chrome)?(--headless)"
+echo -e "\nRunning backstop reference on ${DEV_SITE_URL}..."
+backstop reference --config=.ci/test/visual-regression/backstopConfig.js
 
 # Backstop test
 echo -e "\nRunning backstop test on ${MULTIDEV_SITE_URL}..."
-VISUAL_REGRESSION_RESULTS=$(backstop test --config=.ci/test/visual-regression/backstop.json || echo 'true')
+VISUAL_REGRESSION_RESULTS=$(backstop test --config=.ci/test/visual-regression/backstopConfig.js || echo 'true')
 
 echo "${VISUAL_REGRESSION_RESULTS}"
 
