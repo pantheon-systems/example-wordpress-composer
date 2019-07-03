@@ -58,26 +58,16 @@ curl -I "$MULTIDEV_SITE_URL" >/dev/null
 echo -e "\nPinging the live environment to wake it from sleep..."
 curl -I "$LIVE_SITE_URL" >/dev/null
 
-# Check for custom backstop.json
-if [ ! -f ./.ci/test/visual-regression/backstop.json ]; then
-	# Create Backstop config file from template if needed
-	echo -e "\nCloning backstop.default json to backstop.json..."
-	cp .ci/test/visual-regression/backstop.default.json .ci/test/visual-regression/backstop.json
-fi
-
-# Dynamically set URLs in backstop.json
-node .ci/test/visual-regression/dynamic-backstop-json-urls.js
-
 # Backstop visual regression
 echo -e "\nRunning backstop reference on ${LIVE_SITE_URL}..."
-backstop reference --config=.ci/test/visual-regression/backstop.json
+backstop reference --config=.ci/test/visual-regression/backstopConfig.js
 
 # Kill any zombie Chrome instances
 pkill -f "(chrome)?(--headless)"
 
 # Backstop test
 echo -e "\nRunning backstop test on ${MULTIDEV_SITE_URL}..."
-VISUAL_REGRESSION_RESULTS=$(backstop test --config=.ci/test/visual-regression/backstop.json || echo 'true')
+VISUAL_REGRESSION_RESULTS=$(backstop test --config=.ci/test/visual-regression/backstopConfig.js || echo 'true')
 
 echo "${VISUAL_REGRESSION_RESULTS}"
 
