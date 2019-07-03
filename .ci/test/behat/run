@@ -4,6 +4,15 @@
 # This script runs the Behat tests.
 #
 
+# Authenticate with Terminus
+terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+
+# Dynamically set Behat configuration parameters
+export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/wp","users":{"admin":{"username":"'$BEHAT_ADMIN_USERNAME'","password":"'$BEHAT_ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$TERMINUS_SITE'.'$TERMINUS_ENV' --"}}}}'
+
+# Set Behat variables from environment variables
+export RELOCATED_WP_ADMIN=TRUE
+
 # Verbose mode and exit on errors
 set -ex
 
@@ -15,12 +24,6 @@ echo "::::::::::::::::::::::::::::::::::::::::::::::::"
 echo "Behat test site: $TERMINUS_SITE.$TERMINUS_ENV"
 echo "::::::::::::::::::::::::::::::::::::::::::::::::"
 echo
-
-# Dynamically set Behat configuration parameters
-export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/wp","users":{"admin":{"username":"'$BEHAT_ADMIN_USERNAME'","password":"'$BEHAT_ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$TERMINUS_SITE'.'$TERMINUS_ENV' --"}}}}'
-
-# Set Behat variables from environment variables
-export RELOCATED_WP_ADMIN=TRUE
 
 # Run the Behat tests
 ./vendor/bin/behat --config=tests/behat/behat-pantheon.yml --strict --colors  "$@"
