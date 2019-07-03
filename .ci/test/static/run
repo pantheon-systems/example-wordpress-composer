@@ -9,9 +9,6 @@ set -eo pipefail
 # Some example are code sniffing and unit testing
 #
 
-# Configure environment variables
-/build-tools-ci/scripts/set-environment
-
 # Run composer install to get the vendor directory
 composer install
 

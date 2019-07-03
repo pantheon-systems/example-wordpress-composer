@@ -4,9 +4,6 @@
 # This script runs the Behat tests.
 #
 
-# Set environment varaibles
-/build-tools-ci/scripts/set-environment
-
 # Verbose mode and exit on errors
 set -ex
 

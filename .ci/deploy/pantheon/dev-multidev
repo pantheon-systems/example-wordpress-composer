@@ -8,9 +8,6 @@ set -eo pipefail
 # Otherwise a multidev environment is used.
 #
 
-# Set environment variables
-/build-tools-ci/scripts/set-environment
-
 # Authenticate with Terminus
 terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
 
