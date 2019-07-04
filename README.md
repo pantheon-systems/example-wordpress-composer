@@ -83,3 +83,7 @@ You should now be able to edit your site locally. The steps above do not need to
 **Warning:** do NOT push/pull code between Lando and Pantheon directly. All code should be pushed to GitHub and deployed to Pantheon through a continuous integration service, such as CircleCI.
 
 Composer, Terminus and wp-cli commands should be run in Lando rather than on the host machine. This is done by prefixing the desired command with `lando`. For example, after a change to `composer.json` run `lando composer update` rather than `composer update`.
+
+## Multisite
+
+If someone wanted to use Composer and nested docroot with multisite like this example demonstrates, that is something we could potentially help with during on-boarding and creation of the multisite. Please [get in touch with us](https://pantheon.io/plans/elite).
