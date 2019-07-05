@@ -4,36 +4,36 @@ defaults: &defaults
     - image: quay.io/pantheon-public/build-tools-ci:6.x
   working_directory: ~/example_wordpress_composer
   environment:
-  #=========================================================================
-  # In addition to the environment variables defined in this file, also
-  # add the following variables in the Circle CI UI.
-  #
-  # See: https://circleci.com/docs/2.0/env-vars/
-  #
-  # TERMINUS_SITE:  Name of the Pantheon site to run tests on, e.g. my_site
-  # TERMINUS_TOKEN: The Pantheon machine token
-  # GITHUB_TOKEN:   The GitHub personal access token
-  # GIT_EMAIL:    The email address to use when making commits
-  #
-  # TEST_SITE_NAME: The name of the test site to provide when installing.
-  # ADMIN_PASSWORD: The admin password to use when installing.
-  # ADMIN_EMAIL:  The email address to give the admin when installing.
-  #=========================================================================
-  TZ: "/usr/share/zoneinfo/America/Los_Angeles"
-
-  # The variables below usually do not need to be modified.
-
-  #======================================================================================================================================
-  # Circle CI 2.0 does not yet expand environment variables so they have to be manually EXPORTed
-  # Once environment variables can be expanded the variables below can be uncommented and the EXPORTs in set-up-globals.sh can be removed
-  # See: https://discuss.circleci.com/t/unclear-how-to-work-with-user-variables-circleci-provided-env-variables/12810/11
-  # See: https://discuss.circleci.com/t/environment-variable-expansion-in-working-directory/11322
-  # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
-  #======================================================================================================================================
-
-  NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
-  ADMIN_USERNAME: admin
-  TERM: dumb
+    #=========================================================================
+    # In addition to the environment variables defined in this file, also
+    # add the following variables in the Circle CI UI.
+    #
+    # See: https://circleci.com/docs/2.0/env-vars/
+    #
+    # TERMINUS_SITE:  Name of the Pantheon site to run tests on, e.g. my_site
+    # TERMINUS_TOKEN: The Pantheon machine token
+    # GITHUB_TOKEN:   The GitHub personal access token
+    # GIT_EMAIL:    The email address to use when making commits
+    #
+    # TEST_SITE_NAME: The name of the test site to provide when installing.
+    # ADMIN_PASSWORD: The admin password to use when installing.
+    # ADMIN_EMAIL:  The email address to give the admin when installing.
+    #=========================================================================
+    TZ: "/usr/share/zoneinfo/America/Los_Angeles"
+  
+    # The variables below usually do not need to be modified.
+  
+    #======================================================================================================================================
+    # Circle CI 2.0 does not yet expand environment variables so they have to be manually EXPORTed
+    # Once environment variables can be expanded the variables below can be uncommented and the EXPORTs in set-up-globals.sh can be removed
+    # See: https://discuss.circleci.com/t/unclear-how-to-work-with-user-variables-circleci-provided-env-variables/12810/11
+    # See: https://discuss.circleci.com/t/environment-variable-expansion-in-working-directory/11322
+    # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
+    #======================================================================================================================================
+  
+    NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
+    ADMIN_USERNAME: admin
+    TERM: dumb
 
 version: 2
 jobs:
