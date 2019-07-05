@@ -198,6 +198,10 @@ jobs:
           paths:
             - $HOME/.composer/cache
 
+      - store_artifacts:
+          path: /tmp/artifacts
+          destination: artifacts
+
   visual_regression_test:
     <<: *defaults
     docker:

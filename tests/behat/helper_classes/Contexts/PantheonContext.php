@@ -15,6 +15,7 @@ use PaulGibbs\WordpressBehatExtension\Context\Traits\UserAwareContextTrait;
 use PaulGibbs\WordpressBehatExtension\PageObject\LoginPage;
 use Behat\Mink\Exception\ExpectationException;
 use RuntimeException;
+use FailAid\Context\FailureContext;
 
 /**
  * Define application features from the specific context.
@@ -197,8 +198,44 @@ class PantheonContext extends RawWordpressContext
      */
     protected function loginAsWordPressAdmin()
     {
+        // Get the admin user
         $found_user = $this->getAdminUser();
-        $this->logIn($found_user['username'], $found_user['password']);
+        
+        // Verify the session
+        $session = $this->verifySession();
+
+        // Stash the current URL to redirect back to
+        $this->setPreviousURL();
+
+        // Log out if currently logged in
+        if( $this->loggedIn() ) {
+            $this->logOut();
+        }
+
+        // Go to the login page
+        $this->visitPath('wp-login.php');
+
+        // Fill in login form details
+        $this->login_page->setUserName($found_user['username']);
+        $this->login_page->setUserPassword($found_user['password']);
+        $this->login_page->setRememberMe();
+
+        // Take a screenshot of the login form
+        $this->takeScreenshot('login-form-' . date('Y-m-d-H-i-s') . '.png');
+
+        // Submit the login form
+        $this->login_page->submitLoginForm();
+
+        FailureContext::addState('username', $found_user['username']);
+        FailureContext::addState('password ', $found_user['password']);
+        FailureContext::addState('current URL ', $session->getCurrentUrl());
+
+        if (! $this->loggedIn()) {
+            throw new ExpectationException('[W803] The user ' . $found_user['username'] . ' could not be logged-in.', $this->getSession()->getDriver());
+        }
+
+        // Go back to the previous URL
+        $this->goToPreviousURL();
     }
 
     /**
