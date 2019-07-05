@@ -19,8 +19,6 @@ default:
     Behat\MinkExtension:
       # base_url set by ENV
       browser_name: chrome
-      default_session: headless
-      javascript_session: javascript
       sessions:
         default:
           chrome:
