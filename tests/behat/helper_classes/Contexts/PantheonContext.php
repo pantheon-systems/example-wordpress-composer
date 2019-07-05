@@ -4,12 +4,7 @@ declare(strict_types=1);
 
 namespace PantheonSystems\WordHatHelpers\Contexts;
 
-use Behat\Behat\Context\Context;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\MinkExtension\Context\MinkContext;
 use PaulGibbs\WordpressBehatExtension\Context\RawWordpressContext;
-use PaulGibbs\WordpressBehatExtension\Context\UserContext;
-use PaulGibbs\WordpressBehatExtension\Context\EditPostContext;
 use PaulGibbs\WordpressBehatExtension\Context\Traits\ContentAwareContextTrait;
 use PaulGibbs\WordpressBehatExtension\Context\Traits\UserAwareContextTrait;
 use PaulGibbs\WordpressBehatExtension\PageObject\LoginPage;
