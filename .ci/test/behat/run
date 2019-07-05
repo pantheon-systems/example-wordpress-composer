@@ -16,6 +16,9 @@ export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://
 # Set Behat variables from environment variables
 export RELOCATED_WP_ADMIN=TRUE
 
+# Create the desired admin user
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $BEHAT_ADMIN_USERNAME $BEHAT_ADMIN_EMAIL --user_pass=$BEHAT_ADMIN_PASSWORD --role=administrator
+
 # Verbose mode and exit on errors
 set -ex
 

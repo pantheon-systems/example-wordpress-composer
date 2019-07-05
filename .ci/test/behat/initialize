@@ -34,11 +34,5 @@ terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
 # Create a backup before running Behat tests
 terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
 
-# Create the desired admin user
-terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $BEHAT_ADMIN_USERNAME $BEHAT_ADMIN_EMAIL --user_pass=$BEHAT_ADMIN_PASSWORD --role=administrator
-
-# Confirm the admin user exists
-terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user list --login=$BEHAT_ADMIN_USERNAME
-
 # Clear the environment cache
 terminus -n env:clear-cache $TERMINUS_SITE.$TERMINUS_ENV
