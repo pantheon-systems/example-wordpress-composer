@@ -49,7 +49,7 @@ class PantheonContext extends RawWordpressContext
     {
         return $this->getWordpressParameter('site_url') . ('/wp-admin/index.php');
     }
-    
+
     private function getFrontendURL()
     {
         return $this->getMinkParameter('base_url');
@@ -131,7 +131,7 @@ class PantheonContext extends RawWordpressContext
         // Set previous URL to the current URL
         $this->previous_url = $session->getCurrentUrl();
     }
-    
+
     private function goToPreviousURL()
     {
         // Verify the session
@@ -200,37 +200,11 @@ class PantheonContext extends RawWordpressContext
     {
         // Get the admin user
         $found_user = $this->getAdminUser();
-        
-        // Verify the session
-        $session = $this->verifySession();
 
-        // Stash the current URL to redirect back to
-        $this->setPreviousURL();
-
-        // Log out if currently logged in
-        if( $this->loggedIn() ) {
-            $this->logOut();
-        }
-
-        // Go to the login page
-        $this->visitPath('wp-login.php');
-
-        // Fill in login form details
-        $this->login_page->setUserName($found_user['username']);
-        $this->login_page->setUserPassword($found_user['password']);
-        $this->login_page->setRememberMe();
-
-        // Submit the login form
-        $this->login_page->submitLoginForm();
+        // Login to WordPress with the admin user details
+        $this->logIn($found_user['username'], $found_user['password']);
 
         FailureContext::addState('username', $found_user['username']);
-
-        if (! $this->loggedIn()) {
-            throw new ExpectationException('[W803] The user ' . $found_user['username'] . ' could not be logged-in.', $this->getSession()->getDriver());
-        }
-
-        // Go back to the previous URL
-        $this->goToPreviousURL();
     }
 
     /**
@@ -249,10 +223,10 @@ class PantheonContext extends RawWordpressContext
 
         // Verify the session
         $session = $this->verifySession();
-        
+
         // Get the current page from the session
         $page = $session->getPage();
-        
+
         // Are we currently logged in?
         $logged_in = $this->loggedIn();
 
