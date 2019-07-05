@@ -17,8 +17,7 @@ cache:
   - $HOME/.composer/cache
 
 stages:
-- configure
-- build
+- configure-and-build
 - deploy
 - visual-test
 - behat-test
@@ -34,7 +33,7 @@ before_script:
 - terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
 
 configure:env-vars:
-  stage: configure
+  stage: configure-and-build
   before_script:
   # See https://docs.gitlab.com/ee/ci/ssh_keys/README.html
   - eval $(ssh-agent -s) && ssh-add <(echo "$SSH_PRIVATE_KEY")
@@ -54,14 +53,14 @@ configure:env-vars:
   - master
 
 configure:create-multidev:
-  stage: configure
+  stage: configure-and-build
   script:
   - ./.ci/deploy/pantheon/create-multidev
   only:
   - merge_requests
 
 test:static:
-  stage: configure
+  stage: configure-and-build
   script:
   - ./.ci/test/static/run
   only:
@@ -69,7 +68,7 @@ test:static:
   - master
 
 build:php:
-  stage: build
+  stage: configure-and-build
   script:
   - ./.ci/build/php
   artifacts:
@@ -117,7 +116,6 @@ test:visual-regression:
     - deploy:pantheon
   only:
   - merge_requests
-  - master
 
 test:behat:
   stage: behat-test
