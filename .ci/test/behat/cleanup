@@ -38,4 +38,7 @@ echo -e "\nCopying behat-screenshots files to $ARTIFACTS_FULL_DIR..."
 if [ -d "$ARTIFACTS_FULL_DIR/behat-screenshots" ]; then
   rm -rf $ARTIFACTS_FULL_DIR/behat-screenshots
 fi
-cp -r behat-screenshots $ARTIFACTS_FULL_DIR/
+
+if [ -d behat-screenshots ]; then
+    cp -r behat-screenshots $ARTIFACTS_FULL_DIR/
+fi

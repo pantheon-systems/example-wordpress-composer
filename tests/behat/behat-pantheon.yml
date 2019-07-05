@@ -32,7 +32,7 @@ default:
     
     DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
 
-    FailAid\Extension: ~
+    FailAid\Extension:
       screenshot:
         directory: /tmp/artifacts/behat/screenshots/
         autoClean: false
