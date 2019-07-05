@@ -104,11 +104,11 @@ class PantheonContext extends RawWordpressContext
     /**
      * Take a screenshot
      *
-     * Example: And I take a screenshot
-     * Example: And I take a screenshot "some-page.png"
+     * Example: And I take a Chrome screenshot
+     * Example: And I take a Chrome screenshot "some-page.png"
      *
-     * @Then /^(?:|I )take a screenshot "(?P<file_name>[^"]+)"$/
-     * @Given I take a screenshot
+     * @Then /^(?:|I )take a Chrome screenshot "(?P<file_name>[^"]+)"$/
+     * @Given I take a Chrome screenshot
      */
     public function takeScreenshot($file_name=null)
     {
