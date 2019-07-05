@@ -18,10 +18,11 @@ cache:
 
 stages:
 - configure
-- pre-test
+- static-test
 - build
 - deploy
-- post-test
+- visual-test
+- behat-test
 - cleanup
 
 before_script:
@@ -61,7 +62,7 @@ configure:create-multidev:
   - merge_requests
 
 test:static:
-  stage: pre-test
+  stage: static-test
   script:
   - ./.ci/test/static/run
   only:
@@ -96,7 +97,7 @@ deploy:pantheon:
   - master
 
 test:visual-regression:
-  stage: post-test
+  stage: visual-test
   image: backstopjs/backstopjs:4.1.9
   variables:
     CI_BUILD_URL: $CI_PIPELINE_IID
@@ -120,7 +121,7 @@ test:visual-regression:
   - master
 
 test:behat:
-  stage: post-test
+  stage: behat-test
   script:
   - ./.ci/test/behat/initialize
   - ./.ci/test/behat/run
