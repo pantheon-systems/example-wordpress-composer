@@ -96,7 +96,9 @@ deploy:pantheon:
 
 test:visual-regression:
   stage: visual-test
-  image: backstopjs/backstopjs:4.1.9
+  image: 
+    name: backstopjs/backstopjs:4.1.9
+    entrypoint: [""]
   variables:
     CI_BUILD_URL: $CI_PIPELINE_IID
     CI_REPOSITORY_URL: $CI_MERGE_REQUEST_IID
