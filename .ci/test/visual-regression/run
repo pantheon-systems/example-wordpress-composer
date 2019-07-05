@@ -74,8 +74,6 @@ VISUAL_REGRESSION_RESULTS=$(backstop test --config=.ci/test/visual-regression/ba
 
 echo "${VISUAL_REGRESSION_RESULTS}"
 
-export ARTIFACTS_DIR_URL="${CI_BUILD_URL}/artifacts/${CI_NODE_INDEX}/artifacts"
-
 # Create the artifacts directory if needed
 if [ ! -d "$ARTIFACTS_FULL_DIR" ]; then
   mkdir -p $ARTIFACTS_FULL_DIR
@@ -119,8 +117,11 @@ else
 fi
 
 # Post the image back to the pull request on GitHub
-echo -e "\nPosting visual regression results back to PR #$PR_NUMBER "
-curl -s -i -u "$CI_PROJECT_USERNAME:$GITHUB_TOKEN" -d "{\"body\": \"$PR_MESSAGE\"}" $GITHUB_API_URL/issues/$PR_NUMBER/comments > /dev/null
+if [[ -z ${CI_REPOSITORY_URL} && ${CI_REPOSITORY_URL} == *"github"* ]]
+then
+    echo -e "\nPosting visual regression results back to PR #$PR_NUMBER "
+    curl -s -i -u "$CI_PROJECT_USERNAME:$GITHUB_TOKEN" -d "{\"body\": \"$PR_MESSAGE\"}" $GITHUB_API_URL/issues/$PR_NUMBER/comments > /dev/null
+fi
 
 if [[ ${VISUAL_REGRESSION_RESULTS} == *"Mismatch errors found"* ]]
 then
