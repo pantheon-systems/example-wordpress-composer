@@ -18,7 +18,6 @@ cache:
 
 stages:
 - configure
-- static-test
 - build
 - deploy
 - visual-test
@@ -62,7 +61,7 @@ configure:create-multidev:
   - merge_requests
 
 test:static:
-  stage: static-test
+  stage: configure
   script:
   - ./.ci/test/static/run
   only:
