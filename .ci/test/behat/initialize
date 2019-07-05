@@ -11,7 +11,7 @@ set -eo pipefail
 terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
 
 # Run composer install again to get dev dependencies
-composer install
+composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
 
 # Wake the multidev environment before running tests
 terminus -n env:wake $TERMINUS_SITE.$TERMINUS_ENV

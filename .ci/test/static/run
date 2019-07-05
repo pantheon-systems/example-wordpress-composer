@@ -10,7 +10,7 @@ set -eo pipefail
 #
 
 # Run composer install to get the vendor directory
-composer install
+composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
 
 # Delete and reset the web directory
 # This is necessary so that third-party
