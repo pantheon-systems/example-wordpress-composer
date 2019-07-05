@@ -226,6 +226,9 @@ class PantheonContext extends RawWordpressContext
         // Submit the login form
         $this->login_page->submitLoginForm();
 
+        // Take a screenshot after submitting the login form
+        $this->takeScreenshot('login-form-' . date('Y-m-d-H-i-s') . '.png');
+
         FailureContext::addState('username', $found_user['username']);
         FailureContext::addState('password ', $found_user['password']);
         FailureContext::addState('current URL ', $session->getCurrentUrl());

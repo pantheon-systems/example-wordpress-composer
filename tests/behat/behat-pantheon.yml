@@ -19,6 +19,8 @@ default:
     Behat\MinkExtension:
       # base_url set by ENV
       browser_name: chrome
+      default_session: headless
+      javascript_session: javascript
       sessions:
         default:
           chrome:
@@ -34,5 +36,5 @@ default:
 
     FailAid\Extension:
       screenshot:
-        directory: /tmp/artifacts/behat/screenshots/
+        directory: behat-screenshots/
         autoClean: false
