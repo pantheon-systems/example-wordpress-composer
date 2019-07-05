@@ -220,18 +220,10 @@ class PantheonContext extends RawWordpressContext
         $this->login_page->setUserPassword($found_user['password']);
         $this->login_page->setRememberMe();
 
-        // Take a screenshot of the login form
-        $this->takeScreenshot('login-form-' . date('Y-m-d-H-i-s') . '.png');
-
         // Submit the login form
         $this->login_page->submitLoginForm();
 
-        // Take a screenshot after submitting the login form
-        $this->takeScreenshot('dashboard-after-login-' . date('Y-m-d-H-i-s') . '.png');
-
         FailureContext::addState('username', $found_user['username']);
-        FailureContext::addState('password ', $found_user['password']);
-        FailureContext::addState('current URL ', $session->getCurrentUrl());
 
         if (! $this->loggedIn()) {
             throw new ExpectationException('[W803] The user ' . $found_user['username'] . ' could not be logged-in.', $this->getSession()->getDriver());
