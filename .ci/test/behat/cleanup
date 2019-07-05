@@ -12,5 +12,14 @@ terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
 # Restore the DB backup made before testing
 terminus -n backup:restore $TERMINUS_SITE.$TERMINUS_ENV --element=database --yes
 
+# Check if an admin user with our desired username exists
+BEHAT_ADMIN_USER_EXISTS=$(terminus -n wp ${TERMINUS_SITE}.${TERMINUS_ENV} -- user list --login=${BEHAT_ADMIN_USERNAME} --format=count)
+
+# If so, delete the existing admin user
+if [[ "$BEHAT_ADMIN_USER_EXISTS" == "1" ]]
+then
+  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $BEHAT_ADMIN_USERNAME --yes
+fi
+
 # Clear site cache
 terminus -n env:clear-cache $TERMINUS_SITE.$TERMINUS_ENV
