@@ -106,13 +106,14 @@ test:visual-regression:
   before_script:
   # See https://docs.gitlab.com/ee/ci/ssh_keys/README.html
   - eval $(ssh-agent -s) && ssh-add <(echo "$SSH_PRIVATE_KEY")
+  - export BASH_ENV="$HOME/.envvarsrc"
   - cp bash_env.txt $BASH_ENV
   - source $BASH_ENV
   script:
   - ./.ci/test/visual-regression/run
   artifacts:
     paths:
-      - /tmp/artifacts
+      - backstop_data
   dependencies:
     - configure:env-vars
     - deploy:pantheon
@@ -123,7 +124,12 @@ test:behat:
   stage: behat-test
   script:
   - ./.ci/test/behat/initialize
+  # Start headless Chrome
+  - google-chrome --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
   - ./.ci/test/behat/run
+  artifacts:
+    paths:
+      - behat-screenshots
   dependencies:
     - deploy:pantheon
     - test:visual-regression
