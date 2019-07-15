@@ -39,7 +39,7 @@ configure:env-vars:
   - eval $(ssh-agent -s) && ssh-add <(echo "$SSH_PRIVATE_KEY")
   script:
   # Set TERMINUS_ENV and related environment variables.
-  # https://github.com/pantheon-systems/docker-build-tools-ci/blob/5.x/scripts/set-environment
+  # https://github.com/pantheon-systems/docker-build-tools-ci/blob/6.x/scripts/set-environment
   - export PATH="$PATH:$CI_PROJECT_DIR/.ci/scripts"
   - export BASH_ENV="$HOME/.envvarsrc"
   - /build-tools-ci/scripts/set-environment
