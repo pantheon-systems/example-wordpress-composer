@@ -126,7 +126,7 @@ jobs:
       - save_cache:
           key: vendor-{{ checksum "composer.lock" }}
           paths:
-            - $HOME/example_wordpress_composer/vendor
+            - $CIRCLE_WORKING_DIRECTORY/vendor
 
       - persist_to_workspace:
           root: .
