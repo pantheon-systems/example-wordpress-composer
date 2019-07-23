@@ -1014,16 +1014,16 @@
         },
         {
             "name": "brain/monkey",
-            "version": "2.2.1",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Brain-WP/BrainMonkey.git",
-                "reference": "326a537bf518edd61bc57ab275e8b075ebb8a1a9"
+                "reference": "e19ad8f13c31c51507dcad10f186552907384471"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Brain-WP/BrainMonkey/zipball/326a537bf518edd61bc57ab275e8b075ebb8a1a9",
-                "reference": "326a537bf518edd61bc57ab275e8b075ebb8a1a9",
+                "url": "https://api.github.com/repos/Brain-WP/BrainMonkey/zipball/e19ad8f13c31c51507dcad10f186552907384471",
+                "reference": "e19ad8f13c31c51507dcad10f186552907384471",
                 "shasum": ""
             },
             "require": {
@@ -1056,9 +1056,9 @@
             "authors": [
                 {
                     "name": "Giuseppe Mazzapica",
+                    "role": "Developer",
                     "email": "giuseppe.mazzapica@gmail.com",
-                    "homepage": "https://gmazzap.me",
-                    "role": "Developer"
+                    "homepage": "https://gmazzap.me"
                 }
             ],
             "description": "Mocking utility for PHP functions and WordPress plugin API",
@@ -1074,7 +1074,7 @@
                 "test",
                 "testing"
             ],
-            "time": "2019-03-15T13:42:24+00:00"
+            "time": "2019-07-22T16:10:56+00:00"
         },
         {
             "name": "container-interop/container-interop",
