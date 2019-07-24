@@ -52,13 +52,6 @@ configure:env-vars:
   - merge_requests
   - master
 
-configure:create-multidev:
-  stage: configure-and-build
-  script:
-  - ./.ci/deploy/pantheon/create-multidev
-  only:
-  - merge_requests
-
 test:static:
   stage: configure-and-build
   script:
@@ -89,7 +82,6 @@ deploy:pantheon:
   - ./.ci/deploy/pantheon/dev-multidev
   dependencies:
   - build:php
-  - configure:create-multidev
   only:
   - merge_requests
   - master
