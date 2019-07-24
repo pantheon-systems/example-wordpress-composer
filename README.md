@@ -19,7 +19,7 @@ Before running the `terminus build:project:create` command, make sure you have a
 
 * [A Pantheon account](https://dashboard.pantheon.io/register)
 * [Terminus, the Pantheon command line tool](https://pantheon.io/docs/terminus/install/)
-* [The Terminus Build Tools Plugin](https://github.com/pantheon-systems/terminus-build-tools-plugin)
+* [The Terminus Build Tools Plugin](https://github.com/pantheon-systems/terminus-build-tools-plugin/#installation) Installation
 * An account with GitHub and an authentication token capable of creating new repos.
 * An account with CircleCI and an authentication token.
 
@@ -37,6 +37,8 @@ Once you have all of the prerequisites in place, you can create your copy of thi
 ```
 terminus build:project:create pantheon-systems/example-wordpress-composer my-new-site --team="Agency Org Name"
 ```
+
+Note: If you are getting an error "There are no commands defined in the "build:project" namespace.", you may need to install the Terminus plugin first. See the [The Terminus Build Tools Plugin](https://github.com/pantheon-systems/terminus-build-tools-plugin/#installation) Installation section first.
 
 The parameters shown here are:
 
