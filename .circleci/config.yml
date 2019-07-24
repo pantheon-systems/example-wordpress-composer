@@ -59,22 +59,6 @@ jobs:
           paths:
             - bash_env.txt
 
-  create_multidev:
-    <<: *defaults
-
-    steps:
-      - checkout
-
-      - run:
-          # Set TERMINUS_ENV and related environment variables.
-          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/6.x/scripts/set-environment
-          name: setup-environment-vars
-          command: /build-tools-ci/scripts/set-environment
-
-      - run:
-          name: create multidev
-          command: ./.ci/deploy/pantheon/create-multidev
-
   static_tests:
     <<: *defaults
 
@@ -248,16 +232,9 @@ workflows:
     jobs:
       - configure_env_vars
       - static_tests
-      # Create a multidev environment for branches
-      - create_multidev:
-          filters:
-            branches:
-              ignore:
-                - master
       - build_php
       - deploy_to_pantheon:
           requires:
-            - create_multidev
             - static_tests
             - build_php
       - visual_regression_test:
