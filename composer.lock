@@ -1014,16 +1014,16 @@
         },
         {
             "name": "brain/monkey",
-            "version": "v2.3.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Brain-WP/BrainMonkey.git",
-                "reference": "e19ad8f13c31c51507dcad10f186552907384471"
+                "reference": "74cdccad5dbb7edc59f59e1ad6ef392f83a34776"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Brain-WP/BrainMonkey/zipball/e19ad8f13c31c51507dcad10f186552907384471",
-                "reference": "e19ad8f13c31c51507dcad10f186552907384471",
+                "url": "https://api.github.com/repos/Brain-WP/BrainMonkey/zipball/74cdccad5dbb7edc59f59e1ad6ef392f83a34776",
+                "reference": "74cdccad5dbb7edc59f59e1ad6ef392f83a34776",
                 "shasum": ""
             },
             "require": {
@@ -1074,7 +1074,7 @@
                 "test",
                 "testing"
             ],
-            "time": "2019-07-22T16:10:56+00:00"
+            "time": "2019-07-26T19:00:28+00:00"
         },
         {
             "name": "container-interop/container-interop",
