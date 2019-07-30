@@ -13,6 +13,7 @@ default:
         - PaulGibbs\WordpressBehatExtension\Context\EditPostContext
         - PaulGibbs\WordpressBehatExtension\Context\WidgetContext
         - PantheonSystems\WordHatHelpers\Contexts\PantheonContext
+        - FailAid\Context\FailureContext
 
   extensions:
     Behat\MinkExtension:
@@ -30,3 +31,8 @@ default:
       path: web/wp
     
     DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
+
+    FailAid\Extension:
+      screenshot:
+        directory: behat-screenshots/
+        autoClean: false

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#
+# This script runs the Behat tests.
+#
+
+# Authenticate with Terminus
+terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+
+# Source $BASH_ENV
+source $BASH_ENV
+
+# Dynamically set Behat configuration parameters
+export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io"},"PaulGibbs\\WordpressBehatExtension":{"site_url":"https://'$TERMINUS_ENV'-'$TERMINUS_SITE'.pantheonsite.io/wp","users":{"admin":{"username":"'$BEHAT_ADMIN_USERNAME'","password":"'$BEHAT_ADMIN_PASSWORD'"}},"wpcli":{"binary":"terminus -n wp '$TERMINUS_SITE'.'$TERMINUS_ENV' --"}}}}'
+
+# Set Behat variables from environment variables
+export RELOCATED_WP_ADMIN=TRUE
+
+# Create the desired admin user
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user create $BEHAT_ADMIN_USERNAME $BEHAT_ADMIN_EMAIL --user_pass=$BEHAT_ADMIN_PASSWORD --role=administrator
+
+# Verbose mode and exit on errors
+set -ex
+
+# Start headless Chrome
+echo "\n Starting Chrome in headless mode ..."
+google-chrome --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
+
+echo "::::::::::::::::::::::::::::::::::::::::::::::::"
+echo "Behat test site: $TERMINUS_SITE.$TERMINUS_ENV"
+echo "::::::::::::::::::::::::::::::::::::::::::::::::"
+echo
+
+# Run the Behat tests
+./vendor/bin/behat --config=tests/behat/behat-pantheon.yml --strict --colors  "$@"

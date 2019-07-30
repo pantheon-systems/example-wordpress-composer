@@ -13,16 +13,16 @@ defaults: &defaults
     # TERMINUS_SITE:  Name of the Pantheon site to run tests on, e.g. my_site
     # TERMINUS_TOKEN: The Pantheon machine token
     # GITHUB_TOKEN:   The GitHub personal access token
-    # GIT_EMAIL:      The email address to use when making commits
+    # GIT_EMAIL:    The email address to use when making commits
     #
     # TEST_SITE_NAME: The name of the test site to provide when installing.
     # ADMIN_PASSWORD: The admin password to use when installing.
-    # ADMIN_EMAIL:    The email address to give the admin when installing.
+    # ADMIN_EMAIL:  The email address to give the admin when installing.
     #=========================================================================
     TZ: "/usr/share/zoneinfo/America/Los_Angeles"
-
+  
     # The variables below usually do not need to be modified.
-
+  
     #======================================================================================================================================
     # Circle CI 2.0 does not yet expand environment variables so they have to be manually EXPORTed
     # Once environment variables can be expanded the variables below can be uncommented and the EXPORTs in set-up-globals.sh can be removed
@@ -30,193 +30,233 @@ defaults: &defaults
     # See: https://discuss.circleci.com/t/environment-variable-expansion-in-working-directory/11322
     # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
     #======================================================================================================================================
-
+  
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     ADMIN_USERNAME: admin
-    # BUILD_TOOLS_VERSION: ^2.0.0-alpha4
     TERM: dumb
 
 version: 2
 jobs:
-    configure_env_vars:
-        <<: *defaults
+  configure_env_vars:
+    <<: *defaults
 
-        steps:
-            - checkout
+    steps:
+      - checkout
 
-            - run:
-                # Set TERMINUS_ENV and related environment variables.
-                # https://github.com/pantheon-systems/docker-build-tools-ci/blob/5.x/scripts/set-environment
-                name: setup-environment-vars
-                command: /build-tools-ci/scripts/set-environment
+      - run:
+          # Set TERMINUS_ENV and related environment variables.
+          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/6.x/scripts/set-environment
+          name: setup-environment-vars
+          command: /build-tools-ci/scripts/set-environment
 
-            - run:
-                name: clone-bash-env
-                command: cp $BASH_ENV bash_env.txt
+      - run:
+          name: clone-bash-env
+          command: cp $BASH_ENV bash_env.txt
 
-            # https://circleci.com/docs/2.0/workflows/#using-workspaces-to-share-data-among-jobs
-            - persist_to_workspace:
-                root: .
-                paths:
-                    - bash_env.txt
+      # https://circleci.com/docs/2.0/workflows/#using-workspaces-to-share-data-among-jobs
+      - persist_to_workspace:
+          root: .
+          paths:
+            - bash_env.txt
 
-    # @todo: common initialization: 'composer install' for the site-under-test
-    unit:
-        <<: *defaults
+  static_tests:
+    <<: *defaults
 
-        steps:
-            - checkout
+    steps:
+      - checkout
 
-            - restore_cache:
-                keys:
-                    - composer-cache
+      - restore_cache:
+          keys:
+            - composer-cache-{{ checksum "composer.lock" }}
+            - composer-cache-
 
-            - run:
-                name: setup-environment-vars
-                command: /build-tools-ci/scripts/set-environment
+      - run:
+          # Set TERMINUS_ENV and related environment variables.
+          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/6.x/scripts/set-environment
+          name: setup-environment-vars
+          command: /build-tools-ci/scripts/set-environment
 
-            - run:
-                name: run composer install to get the vendor directory
-                command: composer install
+      - run:
+          name: run static tests
+          command: ./.ci/test/static/run
 
-            - save_cache:
-                key: composer-cache
-                paths:
-                    - $HOME/.composer/cache
+      - save_cache:
+          key: composer-cache-{{ checksum "composer.lock" }}
+          paths:
+            - $HOME/.composer/cache
 
-            - run:
-                name: delete web
-                command: rm -rf web
+  build_php:
+    <<: *defaults
+    steps:
+      - checkout
 
-            - run:
-                name: reset web
-                command: git checkout -- web
+      - restore_cache:
+          keys:
+            - composer-cache-{{ checksum "composer.lock" }}
+            - composer-cache-
+            - vendor-{{ checksum "composer.lock" }}
+            - vendor-
 
-            - run:
-                name: lint php code for syntax errors
-                command: composer -n lint
+      - run:
+          # Set TERMINUS_ENV and related environment variables.
+          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/6.x/scripts/set-environment
+          name: setup-environment-vars
+          command: /build-tools-ci/scripts/set-environment
 
-            - run:
-                name: check coding standards
-                command: composer -n code-sniff
+      - run:
+          name: run PHP build step
+          command: ./.ci/build/php
 
-            - run:
-                name: run unit tests
-                command: composer -n unit-test
+      - save_cache:
+          key: vendor-{{ checksum "composer.lock" }}
+          paths:
+            - $CIRCLE_WORKING_DIRECTORY/vendor
 
-    functional:
-        <<: *defaults
-        steps:
-            - checkout
+      - persist_to_workspace:
+          root: .
+          paths:
+            - web
+            - vendor
 
-            - restore_cache:
-                keys:
-                    - composer-cache
+  deploy_to_pantheon:
+    <<: *defaults
+    steps:
+      - checkout
 
-            - run:
-                name: setup-environment-vars
-                command: /build-tools-ci/scripts/set-environment
+      # Attach the workspace
+      - attach_workspace:
+          at: /tmp
 
-            - run:
-                name: log in
-                command: terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+      - run:
+          # Set TERMINUS_ENV and related environment variables.
+          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/6.x/scripts/set-environment
+          name: setup-environment-vars
+          command: /build-tools-ci/scripts/set-environment
 
-            - run:
-                name: install dev dependencies, build assets, etc.
-                command: ./.ci/scripts/01-prepare
+      # Rsync the built web directory
+      - run:
+          name: sync web
+          command: rsync -az /tmp/web/ web
 
-            - run:
-                name: build assets
-                command: composer -n build-assets
+      # Rsync the built vendor directory
+      - run:
+          name: sync vendor
+          command: rsync -az /tmp/vendor/ vendor
 
-            - run:
-                name: prepare database for site-under test
-                command: ./.ci/scripts/02-init-site-under-test-clone-existing
-                # command: ./.ci/scripts/02-init-site-under-test-reinstall-new
+      # Deploy to Pantheon
+      - run:
+          name: deploy to Pantheon
+          command: ./.ci/deploy/pantheon/dev-multidev
 
-            - run:
-                name: run composer install again to get dev dependencies
-                command: composer install
+  behat_test:
+    <<: *defaults
+    steps:
+      - checkout
 
-            - run:
-                name: run functional tests with Behat
-                command: ./.ci/scripts/03-test
+      - restore_cache:
+          keys:
+            - composer-cache-{{ checksum "composer.lock" }}
+            - composer-cache-
 
-            - run:
-                name: behat-cleanup
-                command: ./.ci/scripts/behat-cleanup
-                when: always
+      - run:
+          # Set TERMINUS_ENV and related environment variables.
+          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/6.x/scripts/set-environment
+          name: setup-environment-vars
+          command: /build-tools-ci/scripts/set-environment
 
-            - run:
-                name: post-test actions
-                command: ./.ci/scripts/04-post-test
+      - run:
+          name: prepare for Behat testing
+          command: ./.ci/test/behat/initialize
 
-            - run:
-                name: handle merge to master (if needed)
-                command: ./.ci/scripts/05-merge-master
+      - run:
+          name: run acceptance tests with Behat
+          command: ./.ci/test/behat/run
 
-            - run:
-                name: remove transient test fixtures
-                command: ./.ci/scripts/09-cleanup-fixtures
+      - run:
+          name: clean up after Behat
+          command: ./.ci/test/behat/cleanup
+          when: always
 
-    composer_lock_updater:
-        <<: *defaults
-        steps:
-            - checkout
+      - save_cache:
+          key: composer-cache-{{ checksum "composer.lock" }}
+          paths:
+            - $HOME/.composer/cache
 
-            - run:
-                name: setup-environment-vars
-                command: /build-tools-ci/scripts/set-environment
+      - store_artifacts:
+          path: /tmp/artifacts
+          destination: artifacts
 
-            - run:
-                name: run composer lock updater
-                command: set -e && clu https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${CI_PROJECT_USERNAME}/${CI_PROJECT_REPONAME}.git | sed -e "s/${GITHUB_TOKEN}/[REDACTED]/g"
+  visual_regression_test:
+    <<: *defaults
+    docker:
+      - image: backstopjs/backstopjs:4.1.9
+    steps:
+      - checkout
 
-    visual_regression_test:
-        <<: *defaults
-        docker:
-            - image: backstopjs/backstopjs:3.9.5
-        steps:
-            - checkout
+      - attach_workspace:
+          at: /tmp/workspace
 
-            - attach_workspace:
-                at: /tmp/workspace
+      - run: cp /tmp/workspace/bash_env.txt $BASH_ENV
+      - run: echo "export CI_BUILD_URL='${CIRCLE_BUILD_URL}'" >> $BASH_ENV
+      - run: echo "export CI_NODE_INDEX='${CIRCLE_NODE_INDEX}'" >> $BASH_ENV
+      - run: echo "export CI_REPOSITORY_URL='${CIRCLE_REPOSITORY_URL}'" >> $BASH_ENV
+      - run: echo "export ARTIFACTS_DIR_URL='${CIRCLE_BUILD_URL}/artifacts/${CIRCLE_NODE_INDEX}/artifacts'" >> $BASH_ENV
+      - run: source $BASH_ENV
 
-            - run: cp /tmp/workspace/bash_env.txt $BASH_ENV
-            - run: echo "export CI_BUILD_URL='${CIRCLE_BUILD_URL}'" >> $BASH_ENV
-            - run: echo "export CI_NODE_INDEX='${CIRCLE_NODE_INDEX}'" >> $BASH_ENV
-            - run: source $BASH_ENV
+      - run:
+          name: visual regression test
+          command: ./.ci/test/visual-regression/run
 
-            - run:
-                name: visual regression test
-                command: ./.ci/visual-regression-test.sh
+      - store_artifacts:
+          path: /tmp/artifacts
+          destination: artifacts
 
-            - store_artifacts:
-                path: /tmp/artifacts
-                destination: artifacts
+  composer_lock_updater:
+    <<: *defaults
+    steps:
+      - checkout
+
+      - run:
+          # Set TERMINUS_ENV and related environment variables.
+          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/6.x/scripts/set-environment
+          name: setup-environment-vars
+          command: /build-tools-ci/scripts/set-environment
+
+      - run:
+          name: run composer lock updater
+          command: set -e && clu https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${CI_PROJECT_USERNAME}/${CI_PROJECT_REPONAME}.git | sed -e "s/${GITHUB_TOKEN}/[REDACTED]/g"
 
 workflows:
   version: 2
-  build_and_test:
+  build_deploy_and_test:
     jobs:
-        # Set up environment variables
-        - configure_env_vars
-        # Install dev dependencies and do simple tests (sniff, unit tests, etc.)
-        - unit
-        # Build deploy and test on target platform
-        - functional
-        # Deploy before running visual test
-        - visual_regression_test:
-            requires:
-                - configure_env_vars
-                - functional
+      - configure_env_vars
+      - static_tests
+      - build_php
+      - deploy_to_pantheon:
+          requires:
+            - static_tests
+            - build_php
+      - visual_regression_test:
+          requires:
+            - configure_env_vars
+            - deploy_to_pantheon
+          filters:
+            branches:
+              ignore:
+                - master
+      - behat_test:
+          requires:
+            - deploy_to_pantheon
+            - visual_regression_test
+
   scheduled_update_check:
     triggers:
        - schedule:
            cron: "0 0 * * *"
            filters:
              branches:
-               only:
-                 - master
+              only:
+                - master
     jobs:
       - composer_lock_updater

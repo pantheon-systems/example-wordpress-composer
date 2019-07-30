@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -eo pipefail
+
+#
+# This script makes the preparations
+# needed to run Behat tests.
+#
+
+# Authenticate with Terminus
+terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+
+# Run composer install again to get dev dependencies
+composer install --no-ansi --no-interaction --optimize-autoloader --no-progress
+
+# Wake the multidev environment before running tests
+terminus -n env:wake $TERMINUS_SITE.$TERMINUS_ENV
+
+# Ping wp-cli to start ssh with the app server
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- cli version
+
+# Check if an admin user with our desired username exists
+BEHAT_ADMIN_USER_EXISTS=$(terminus -n wp ${TERMINUS_SITE}.${TERMINUS_ENV} -- user list --login=${BEHAT_ADMIN_USERNAME} --format=count)
+
+# If so, delete the existing admin user
+if [[ "$BEHAT_ADMIN_USER_EXISTS" == "1" ]]
+then
+  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $BEHAT_ADMIN_USERNAME --yes
+fi
+
+# Update WordPress database
+terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- core update-db
+
+# Create a backup before running Behat tests
+terminus -n backup:create $TERMINUS_SITE.$TERMINUS_ENV
+
+# Clear the environment cache
+terminus -n env:clear-cache $TERMINUS_SITE.$TERMINUS_ENV

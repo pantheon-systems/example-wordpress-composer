@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -eo pipefail
+
+#
+# This script prepares the PHP build artifacts.
+# The web and vendor artifact directories will
+# need to be persisted to other jobs.
+#
+
+# Build Composer Assets
+composer -n build-assets

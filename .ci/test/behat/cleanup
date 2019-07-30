@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -eo pipefail
+
+#
+# This script runs cleanup after Behat tests complete.
+#
+
+# Authenticate with Terminus
+terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+
+# Restore the DB backup made before testing
+terminus -n backup:restore $TERMINUS_SITE.$TERMINUS_ENV --element=database --yes
+
+# Check if an admin user with our desired username exists
+BEHAT_ADMIN_USER_EXISTS=$(terminus -n wp ${TERMINUS_SITE}.${TERMINUS_ENV} -- user list --login=${BEHAT_ADMIN_USERNAME} --format=count)
+
+# If so, delete the existing admin user
+if [[ "$BEHAT_ADMIN_USER_EXISTS" == "1" ]]
+then
+  terminus -n wp $TERMINUS_SITE.$TERMINUS_ENV -- user delete $BEHAT_ADMIN_USERNAME --yes
+fi
+
+# Clear site cache
+terminus -n env:clear-cache $TERMINUS_SITE.$TERMINUS_ENV
+
+# Store artifacts
+export ARTIFACTS_DIR_URL="${CI_BUILD_URL}/artifacts/${CI_NODE_INDEX}/artifacts"
+
+# Create the artifacts directory if needed
+if [ ! -d "$ARTIFACTS_FULL_DIR" ]; then
+  mkdir -p $ARTIFACTS_FULL_DIR
+fi
+
+
+# Copy behat-screenshots files to ARTIFACTS_FULL_DIR
+echo -e "\nCopying behat-screenshots files to $ARTIFACTS_FULL_DIR..."
+if [ -d "$ARTIFACTS_FULL_DIR/behat-screenshots" ]; then
+  rm -rf $ARTIFACTS_FULL_DIR/behat-screenshots
+fi
+
+if [ -d behat-screenshots ]; then
+    cp -r behat-screenshots $ARTIFACTS_FULL_DIR/
+fi

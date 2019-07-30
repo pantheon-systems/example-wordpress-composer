@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace PantheonSystems\WordHatHelpers\Contexts;
 
-use Behat\Behat\Context\Context;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\MinkExtension\Context\MinkContext;
 use PaulGibbs\WordpressBehatExtension\Context\RawWordpressContext;
-use PaulGibbs\WordpressBehatExtension\Context\UserContext;
-use PaulGibbs\WordpressBehatExtension\Context\EditPostContext;
 use PaulGibbs\WordpressBehatExtension\Context\Traits\ContentAwareContextTrait;
 use PaulGibbs\WordpressBehatExtension\Context\Traits\UserAwareContextTrait;
 use PaulGibbs\WordpressBehatExtension\PageObject\LoginPage;
 use Behat\Mink\Exception\ExpectationException;
 use RuntimeException;
+use FailAid\Context\FailureContext;
 
 /**
  * Define application features from the specific context.
@@ -48,7 +44,7 @@ class PantheonContext extends RawWordpressContext
     {
         return $this->getWordpressParameter('site_url') . ('/wp-admin/index.php');
     }
-    
+
     private function getFrontendURL()
     {
         return $this->getMinkParameter('base_url');
@@ -103,11 +99,11 @@ class PantheonContext extends RawWordpressContext
     /**
      * Take a screenshot
      *
-     * Example: And I take a screenshot
-     * Example: And I take a screenshot "some-page.png"
+     * Example: And I take a Chrome screenshot
+     * Example: And I take a Chrome screenshot "some-page.png"
      *
-     * @Then /^(?:|I )take a screenshot "(?P<file_name>[^"]+)"$/
-     * @Given I take a screenshot
+     * @Then /^(?:|I )take a Chrome screenshot "(?P<file_name>[^"]+)"$/
+     * @Given I take a Chrome screenshot
      */
     public function takeScreenshot($file_name=null)
     {
@@ -130,7 +126,7 @@ class PantheonContext extends RawWordpressContext
         // Set previous URL to the current URL
         $this->previous_url = $session->getCurrentUrl();
     }
-    
+
     private function goToPreviousURL()
     {
         // Verify the session
@@ -197,8 +193,13 @@ class PantheonContext extends RawWordpressContext
      */
     protected function loginAsWordPressAdmin()
     {
+        // Get the admin user
         $found_user = $this->getAdminUser();
+
+        // Login to WordPress with the admin user details
         $this->logIn($found_user['username'], $found_user['password']);
+
+        FailureContext::addState('username', $found_user['username']);
     }
 
     /**
@@ -217,10 +218,10 @@ class PantheonContext extends RawWordpressContext
 
         // Verify the session
         $session = $this->verifySession();
-        
+
         // Get the current page from the session
         $page = $session->getPage();
-        
+
         // Are we currently logged in?
         $logged_in = $this->loggedIn();
 
