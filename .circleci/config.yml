@@ -258,5 +258,6 @@ workflows:
              branches:
               only:
                 - master
+                - clu-0-6-0
     jobs:
       - composer_lock_updater
