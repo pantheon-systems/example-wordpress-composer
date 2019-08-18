@@ -59,6 +59,8 @@ test:static:
   only:
   - merge_requests
   - master
+  except:
+  - schedules
 
 build:php:
   stage: configure-and-build
@@ -71,6 +73,8 @@ build:php:
   only:
   - merge_requests
   - master
+  except:
+  - schedules
 
 deploy:pantheon:
   stage: deploy
@@ -85,6 +89,8 @@ deploy:pantheon:
   only:
   - merge_requests
   - master
+  except:
+  - schedules
 
 test:visual-regression:
   stage: visual-test
@@ -111,6 +117,8 @@ test:visual-regression:
     - deploy:pantheon
   only:
   - merge_requests
+  except:
+  - schedules
 
 test:behat:
   stage: behat-test
@@ -128,6 +136,8 @@ test:behat:
   only:
   - merge_requests
   - master
+  except:
+  - schedules
 
 test:behat:cleanup:
   stage: cleanup
@@ -137,5 +147,31 @@ test:behat:cleanup:
   only:
   - merge_requests
   - master
+  except:
+  - schedules
   dependencies:
   - test:behat
+
+schedule:composer:update:
+  # Temporarily specify explicit image for testing. Can be removed when https://github.com/pantheon-systems/docker-build-tools-ci/pull/30 is merged.
+  image: quay.io/pantheon-public/build-tools-ci:clu-0-6-0
+  stage: build
+  variables:
+    # The default set of CI credentials do not contain the necessary permissions in GitLab for our operations.
+    LAB_CORE_TOKEN: $GITLAB_TOKEN
+    LAB_CORE_USER: $CI_REGISTRY_USER
+    LAB_CORE_HOST: "https://$CI_SERVER_HOST"
+    GIT_STRATEGY: none
+  script:
+  # Composer is a memory hog. Temporary workaround until updated in container.
+  # Can be removed when https://github.com/pantheon-systems/docker-build-tools-ci/pull/31 is merged.
+  - echo "memory_limit=-1" > /usr/local/etc/php/conf.d/memory.ini
+  # The default repository URL uses a token without permission to write so replace it with ours.
+  - FULL_REPOSITORY_URL=$(sed 's|'"$CI_JOB_TOKEN"'|'"$GITLAB_TOKEN"'|' <<< "$CI_REPOSITORY_URL")
+  # lab tries to use CI variables with improper permissions.
+  - unset CI_PROJECT_URL
+  - unset CI_REGISTRY_USER
+  - unset CI_JOB_TOKEN
+  - set -e && clu --provider=gitlab $FULL_REPOSITORY_URL
+  only:
+  - schedules
