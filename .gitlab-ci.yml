@@ -163,9 +163,6 @@ schedule:composer:update:
     LAB_CORE_HOST: "https://$CI_SERVER_HOST"
     GIT_STRATEGY: none
   script:
-  # Composer is a memory hog. Temporary workaround until updated in container.
-  # Can be removed when https://github.com/pantheon-systems/docker-build-tools-ci/pull/31 is merged.
-  - echo "memory_limit=-1" > /usr/local/etc/php/conf.d/memory.ini
   # The default repository URL uses a token without permission to write so replace it with ours.
   - FULL_REPOSITORY_URL=$(sed 's|'"$CI_JOB_TOKEN"'|'"$GITLAB_TOKEN"'|' <<< "$CI_REPOSITORY_URL")
   # lab tries to use CI variables with improper permissions.
