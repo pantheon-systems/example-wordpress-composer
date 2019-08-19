@@ -22,6 +22,7 @@ stages:
 - visual-test
 - behat-test
 - cleanup
+- updates
 
 before_script:
 - export PATH="$PATH:$CI_PROJECT_DIR/.ci/scripts"
@@ -153,7 +154,7 @@ test:behat:cleanup:
   - test:behat
 
 schedule:composer:update:
-  stage: build
+  stage: updates
   variables:
     # The default set of CI credentials do not contain the necessary permissions in GitLab for our operations.
     LAB_CORE_TOKEN: $GITLAB_TOKEN
