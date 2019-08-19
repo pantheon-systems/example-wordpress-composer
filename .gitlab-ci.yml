@@ -153,8 +153,6 @@ test:behat:cleanup:
   - test:behat
 
 schedule:composer:update:
-  # Temporarily specify explicit image for testing. Can be removed when https://github.com/pantheon-systems/docker-build-tools-ci/pull/30 is merged.
-  image: quay.io/pantheon-public/build-tools-ci:clu-0-6-0
   stage: build
   variables:
     # The default set of CI credentials do not contain the necessary permissions in GitLab for our operations.
