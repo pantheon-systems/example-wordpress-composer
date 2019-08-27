@@ -133,15 +133,10 @@ jobs:
           name: setup-environment-vars
           command: /build-tools-ci/scripts/set-environment
 
-      # Rsync the built web directory
+      # Rsync the build artifact pieces web directory
       - run:
-          name: sync web
-          command: rsync -az /tmp/web/ web
-
-      # Rsync the built vendor directory
-      - run:
-          name: sync vendor
-          command: rsync -az /tmp/vendor/ vendor
+          name: sync build artifact
+          command: rsync -az /tmp/web /tmp/vendor .
 
       # Deploy to Pantheon
       - run:
