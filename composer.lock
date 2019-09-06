@@ -203,16 +203,16 @@
         },
         {
             "name": "pantheon-systems/wordpress-composer",
-            "version": "5.2.2",
+            "version": "5.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pantheon-systems/wordpress-composer.git",
-                "reference": "2a41a60bb25a4879c1b94c4c3c5b244e9135dbca"
+                "reference": "b8ad67f697fd48469c6faac8a31bbc83bcc5c98b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pantheon-systems/wordpress-composer/zipball/2a41a60bb25a4879c1b94c4c3c5b244e9135dbca",
-                "reference": "2a41a60bb25a4879c1b94c4c3c5b244e9135dbca",
+                "url": "https://api.github.com/repos/pantheon-systems/wordpress-composer/zipball/b8ad67f697fd48469c6faac8a31bbc83bcc5c98b",
+                "reference": "b8ad67f697fd48469c6faac8a31bbc83bcc5c98b",
                 "shasum": ""
             },
             "require": {
@@ -230,10 +230,10 @@
             ],
             "description": "WordPress for Pantheon with a composer.json file.",
             "support": {
-                "source": "https://github.com/pantheon-systems/wordpress-composer/tree/5.2.2",
+                "source": "https://github.com/pantheon-systems/wordpress-composer/tree/5.2.3",
                 "issues": "https://github.com/pantheon-systems/wordpress-composer/issues"
             },
-            "time": "2019-06-18T19:34:32+00:00"
+            "time": "2019-09-05T03:08:00+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -571,16 +571,16 @@
     "packages-dev": [
         {
             "name": "antecedent/patchwork",
-            "version": "2.1.8",
+            "version": "2.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antecedent/patchwork.git",
-                "reference": "3bb81ace3914c220aa273d1c0603d5e1b454c0d7"
+                "reference": "1229bb22283177e196b572120de0772d9ee9baac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antecedent/patchwork/zipball/3bb81ace3914c220aa273d1c0603d5e1b454c0d7",
-                "reference": "3bb81ace3914c220aa273d1c0603d5e1b454c0d7",
+                "url": "https://api.github.com/repos/antecedent/patchwork/zipball/1229bb22283177e196b572120de0772d9ee9baac",
+                "reference": "1229bb22283177e196b572120de0772d9ee9baac",
                 "shasum": ""
             },
             "require": {
@@ -608,7 +608,7 @@
                 "runkit",
                 "testing"
             ],
-            "time": "2018-02-19T18:52:50+00:00"
+            "time": "2019-08-18T15:18:18+00:00"
         },
         {
             "name": "behat/behat",
@@ -1215,9 +1215,9 @@
             "authors": [
                 {
                     "name": "Franck Nijhof",
-                    "role": "Developer / IT Manager",
                     "email": "franck.nijhof@dealerdirect.com",
-                    "homepage": "http://www.frenck.nl"
+                    "homepage": "http://www.frenck.nl",
+                    "role": "Developer / IT Manager"
                 }
             ],
             "description": "PHP_CodeSniffer Standards Composer Installer Plugin",
