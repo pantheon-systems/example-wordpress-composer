@@ -1,7 +1,6 @@
 # These are yaml anchors, reused later
 x-bash-env-steps:
-  - &bash_env_export export BASH_ENV="$HOME/.bashrc"
-  - &bash_env_cp cp bash_env.txt $BASH_ENV
+  - &bash_env_export export BASH_ENV="$BITBUCKET_CLONE_DIR/.bashrc"
   - &bash_env_source source $BASH_ENV
 
 # This is a larger yaml anchor, reused for each pipeline
@@ -10,11 +9,10 @@ default_steps: &default_steps
       name: Configure Environment Variables
       script:
         - *bash_env_export
-        - CI_BRANCH=$BITBUCKET_BRANCH CI_BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER PR_NUMBER=$BITBUCKET_PR_ID
+        - CI_BRANCH=${BITBUCKET_BRANCH:-master} CI_BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER PR_NUMBER=$BITBUCKET_PR_ID
         - /build-tools-ci/scripts/set-environment
-        - cp $BASH_ENV bash_env.txt
       artifacts:
-        - bash_env.txt
+        - .bashrc
   - parallel:
     - step:
         name: Static Tests
@@ -22,7 +20,6 @@ default_steps: &default_steps
           - composer
         script:
           - *bash_env_export
-          - *bash_env_cp
           - *bash_env_source
           - ./.ci/test/static/run
     - step:
@@ -31,7 +28,6 @@ default_steps: &default_steps
           - composer
         script:
           - *bash_env_export
-          - *bash_env_cp
           - *bash_env_source
           - ./.ci/build/php
         artifacts:
@@ -41,7 +37,6 @@ default_steps: &default_steps
       name: Deploy to Pantheon
       script:
         - *bash_env_export
-        - *bash_env_cp
         - *bash_env_source
         - ./.ci/deploy/pantheon/dev-multidev
       artifacts:
@@ -58,7 +53,6 @@ default_steps: &default_steps
         ARTIFACTS_DIR_URL: https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/jobs/$CI_JOB_ID/artifacts
       script:
         - *bash_env_export
-        - *bash_env_cp
         - *bash_env_source
         - ./.ci/test/visual-regression/run
       artifacts:
@@ -69,7 +63,6 @@ default_steps: &default_steps
           - composer
       script:
         - *bash_env_export
-        - *bash_env_cp
         - *bash_env_source
         - ./.ci/test/behat/initialize
         # Start headless Chrome
