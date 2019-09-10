@@ -7,16 +7,27 @@ x-bash-env-steps:
 default_steps: &default_steps
   - step:
       name: Configure Environment Variables
+      services:
+          - docker
+      caches:
+          - docker
       script:
         - *bash_env_export
-        - CI_BRANCH=${BITBUCKET_BRANCH:-master} CI_BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER PR_NUMBER=$BITBUCKET_PR_ID
+        - export CI_BRANCH=${BITBUCKET_BRANCH:-master}
+        - export CI_BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
+        - export CI_PROJECT_USERNAME=$BITBUCKET_REPO_OWNER
+        - export CI_PROJECT_REPONAME=$BITBUCKET_REPO_SLUG
+        - export CI_PROJECT_NAME=$BITBUCKET_REPO_FULL_NAME
         - /build-tools-ci/scripts/set-environment
       artifacts:
         - .bashrc
   - parallel:
     - step:
         name: Static Tests
+        services:
+          - docker
         caches:
+          - docker
           - composer
         script:
           - *bash_env_export
@@ -24,7 +35,10 @@ default_steps: &default_steps
           - ./.ci/test/static/run
     - step:
         name: Build PHP
+        services:
+          - docker
         caches:
+          - docker
           - composer
         script:
           - *bash_env_export
@@ -35,6 +49,10 @@ default_steps: &default_steps
           - vendor/**
   - step:
       name: Deploy to Pantheon
+      services:
+          - docker
+      caches:
+          - docker
       script:
         - *bash_env_export
         - *bash_env_source
@@ -45,7 +63,10 @@ default_steps: &default_steps
   - step:
       name: Test Visual Regression
       image: backstopjs/backstopjs:4.1.9
+      services:
+          - docker
       caches:
+          - docker
           - node
       variables:
         CI_BUILD_URL: $CI_PIPELINE_IID
@@ -59,7 +80,10 @@ default_steps: &default_steps
         - backstop_data/**
   - step:
       name: Test Behat
+      services:
+          - docker
       caches:
+          - docker
           - composer
       script:
         - *bash_env_export
