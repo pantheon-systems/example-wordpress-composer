@@ -1,0 +1,81 @@
+bash_env: &bash_env
+  - cp bash_env.txt $BASH_ENV
+  - source $BASH_ENV
+
+default_steps: &default_steps
+  - step:
+      name: Configure Environment Variables
+      image: quay.io/pantheon-public/build-tools-ci:6.x
+      script:
+        - CI_BRANCH=$BITBUCKET_BRANCH CI_BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER PR_NUMBER=$BITBUCKET_PR_ID
+        - /build-tools-ci/scripts/set-environment
+        - cp $BASH_ENV bash_env.txt
+      artifacts:
+        - bash_env.txt
+  - parallel:
+    - step:
+        name: Static Tests
+        caches:
+          - composer
+        script:
+          <<: *bash_env
+          - ./.ci/test/static/run
+    - step:
+        name: Build PHP
+        caches:
+          - composer
+        script:
+          <<: *bash_env
+          - ./.ci/build/php
+        artifacts:
+          - web/**
+          - vendor/**
+  - step:
+      name: Deploy to Pantheon
+      script:
+        <<: *bash_env
+        - ./.ci/deploy/pantheon/dev-multidev
+      artifacts:
+        - web/**
+        - vendor/**
+  - step:
+      name: Test Visual Regression
+      image: backstopjs/backstopjs:4.1.9
+      caches:
+          - npm
+      variables:
+        CI_BUILD_URL: $CI_PIPELINE_IID
+        CI_REPOSITORY_URL: $CI_MERGE_REQUEST_IID
+        ARTIFACTS_DIR_URL: https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/jobs/$CI_JOB_ID/artifacts
+      script:
+        <<: *bash_env
+        - ./.ci/test/visual-regression/run
+      artifacts:
+        - backstop_data/**
+  - step:
+      name: Test Behat
+      caches:
+          - composer
+      script:
+        <<: *bash_env
+        - ./.ci/test/behat/initialize
+        # Start headless Chrome
+        - google-chrome --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
+        - ./.ci/test/behat/run
+      after-script:
+        - ./.ci/test/behat/cleanup
+      artifacts:
+        - behat-screenshots/**
+
+image: quay.io/pantheon-public/build-tools-ci:6.x
+
+options:
+  max-time: 30
+
+pipelines:
+  pull-requests:
+    '**':
+      <<: *default_steps
+  branches:
+    master:
+      <<: *default_steps
