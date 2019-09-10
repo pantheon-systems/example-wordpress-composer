@@ -1,5 +1,6 @@
 # These are yaml anchors, reused later
 x-bash-env-steps:
+  - &bash_env_export export BASH_ENV="$HOME/.bashrc"
   - &bash_env_cp cp bash_env.txt $BASH_ENV
   - &bash_env_source source $BASH_ENV
 
@@ -8,6 +9,7 @@ default_steps: &default_steps
   - step:
       name: Configure Environment Variables
       script:
+        - *bash_env_export
         - CI_BRANCH=$BITBUCKET_BRANCH CI_BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER PR_NUMBER=$BITBUCKET_PR_ID
         - /build-tools-ci/scripts/set-environment
         - cp $BASH_ENV bash_env.txt
@@ -19,6 +21,7 @@ default_steps: &default_steps
         caches:
           - composer
         script:
+          - *bash_env_export
           - *bash_env_cp
           - *bash_env_source
           - ./.ci/test/static/run
@@ -27,6 +30,7 @@ default_steps: &default_steps
         caches:
           - composer
         script:
+          - *bash_env_export
           - *bash_env_cp
           - *bash_env_source
           - ./.ci/build/php
@@ -36,6 +40,7 @@ default_steps: &default_steps
   - step:
       name: Deploy to Pantheon
       script:
+        - *bash_env_export
         - *bash_env_cp
         - *bash_env_source
         - ./.ci/deploy/pantheon/dev-multidev
@@ -52,6 +57,7 @@ default_steps: &default_steps
         CI_REPOSITORY_URL: $CI_MERGE_REQUEST_IID
         ARTIFACTS_DIR_URL: https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/jobs/$CI_JOB_ID/artifacts
       script:
+        - *bash_env_export
         - *bash_env_cp
         - *bash_env_source
         - ./.ci/test/visual-regression/run
@@ -62,6 +68,7 @@ default_steps: &default_steps
       caches:
           - composer
       script:
+        - *bash_env_export
         - *bash_env_cp
         - *bash_env_source
         - ./.ci/test/behat/initialize
