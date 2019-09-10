@@ -1,11 +1,12 @@
-bash_env: &bash_env
-  - cp bash_env.txt $BASH_ENV
-  - source $BASH_ENV
+# These are yaml anchors, reused later
+x-bash-env-steps:
+  - &bash_env_cp cp bash_env.txt $BASH_ENV
+  - &bash_env_source source $BASH_ENV
 
+# This is a larger yaml anchor, reused for each pipeline
 default_steps: &default_steps
   - step:
       name: Configure Environment Variables
-      image: quay.io/pantheon-public/build-tools-ci:6.x
       script:
         - CI_BRANCH=$BITBUCKET_BRANCH CI_BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER PR_NUMBER=$BITBUCKET_PR_ID
         - /build-tools-ci/scripts/set-environment
@@ -18,14 +19,16 @@ default_steps: &default_steps
         caches:
           - composer
         script:
-          <<: *bash_env
+          - *bash_env_cp
+          - *bash_env_source
           - ./.ci/test/static/run
     - step:
         name: Build PHP
         caches:
           - composer
         script:
-          <<: *bash_env
+          - *bash_env_cp
+          - *bash_env_source
           - ./.ci/build/php
         artifacts:
           - web/**
@@ -33,7 +36,8 @@ default_steps: &default_steps
   - step:
       name: Deploy to Pantheon
       script:
-        <<: *bash_env
+        - *bash_env_cp
+        - *bash_env_source
         - ./.ci/deploy/pantheon/dev-multidev
       artifacts:
         - web/**
@@ -42,13 +46,14 @@ default_steps: &default_steps
       name: Test Visual Regression
       image: backstopjs/backstopjs:4.1.9
       caches:
-          - npm
+          - node
       variables:
         CI_BUILD_URL: $CI_PIPELINE_IID
         CI_REPOSITORY_URL: $CI_MERGE_REQUEST_IID
         ARTIFACTS_DIR_URL: https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/jobs/$CI_JOB_ID/artifacts
       script:
-        <<: *bash_env
+        - *bash_env_cp
+        - *bash_env_source
         - ./.ci/test/visual-regression/run
       artifacts:
         - backstop_data/**
@@ -57,7 +62,8 @@ default_steps: &default_steps
       caches:
           - composer
       script:
-        <<: *bash_env
+        - *bash_env_cp
+        - *bash_env_source
         - ./.ci/test/behat/initialize
         # Start headless Chrome
         - google-chrome --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
@@ -74,8 +80,8 @@ options:
 
 pipelines:
   pull-requests:
-    '**':
-      <<: *default_steps
+    # Using the default_steps anchor means no other items can be added
+    '**': *default_steps
   branches:
-    master:
-      <<: *default_steps
+    # Using the default_steps anchor means no other items can be added
+    master: *default_steps
