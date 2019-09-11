@@ -13,12 +13,15 @@ default_steps: &default_steps
           - docker
       script:
         - *bash_env_export
-        - export CI_BRANCH=${BITBUCKET_BRANCH:-master}
-        - export CI_BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER
-        - export CI_PROJECT_USERNAME=$BITBUCKET_REPO_OWNER
-        - export CI_PROJECT_REPONAME=$BITBUCKET_REPO_SLUG
-        - export CI_PROJECT_NAME=$BITBUCKET_REPO_FULL_NAME
+        - export CI_BRANCH=${BITBUCKET_BRANCH:-master} && echo $CI_BRANCH
+        - export PR_NUMBER=$BITBUCKET_PR_ID && echo $PR_NUMBER
+        - export CI_PR_URL=https://bitbucket.org/$BITBUCKET_REPO_OWNER/$BITBUCKET_REPO_SLUG/pull-requests/$BITBUCKET_PR_ID && echo $CI_PR_URL
+        - export CI_BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER && echo $CI_BUILD_NUMBER
+        - export CI_PROJECT_USERNAME=$BITBUCKET_REPO_OWNER && echo $CI_PROJECT_USERNAME
+        - export CI_PROJECT_REPONAME=$BITBUCKET_REPO_SLUG && echo $CI_PROJECT_REPONAME
+        - export CI_PROJECT_NAME=$BITBUCKET_REPO_FULL_NAME && echo $CI_PROJECT_NAME
         - /build-tools-ci/scripts/set-environment
+        - echo $TERMINUS_ENV
       artifacts:
         - .bashrc
   - parallel:
@@ -68,10 +71,6 @@ default_steps: &default_steps
       caches:
           - docker
           - node
-      variables:
-        CI_BUILD_URL: $CI_PIPELINE_IID
-        CI_REPOSITORY_URL: $CI_MERGE_REQUEST_IID
-        ARTIFACTS_DIR_URL: https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/jobs/$CI_JOB_ID/artifacts
       script:
         - *bash_env_export
         - *bash_env_source
@@ -93,6 +92,8 @@ default_steps: &default_steps
         - google-chrome --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
         - ./.ci/test/behat/run
       after-script:
+        - *bash_env_export
+        - *bash_env_source
         - ./.ci/test/behat/cleanup
       artifacts:
         - behat-screenshots/**
