@@ -1,0 +1,112 @@
+# These are yaml anchors, reused later
+x-bash-env-steps:
+  - &bash_env_export export BASH_ENV="$BITBUCKET_CLONE_DIR/.bashrc"
+  - &bash_env_source source $BASH_ENV
+
+# This is a larger yaml anchor, reused for each pipeline
+default_steps: &default_steps
+  - step:
+      name: Configure Environment Variables
+      services:
+          - docker
+      caches:
+          - docker
+      script:
+        - *bash_env_export
+        - export CI_BRANCH=${BITBUCKET_BRANCH:-master} && echo $CI_BRANCH
+        - export PR_NUMBER=$BITBUCKET_PR_ID && echo $PR_NUMBER
+        - export CI_PR_URL=https://bitbucket.org/$BITBUCKET_REPO_OWNER/$BITBUCKET_REPO_SLUG/pull-requests/$BITBUCKET_PR_ID && echo $CI_PR_URL
+        - export CI_BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER && echo $CI_BUILD_NUMBER
+        - export CI_PROJECT_USERNAME=$BITBUCKET_REPO_OWNER && echo $CI_PROJECT_USERNAME
+        - export CI_PROJECT_REPONAME=$BITBUCKET_REPO_SLUG && echo $CI_PROJECT_REPONAME
+        - export CI_PROJECT_NAME=$BITBUCKET_REPO_FULL_NAME && echo $CI_PROJECT_NAME
+        - /build-tools-ci/scripts/set-environment
+        - echo $TERMINUS_ENV
+      artifacts:
+        - .bashrc
+  - parallel:
+    - step:
+        name: Static Tests
+        services:
+          - docker
+        caches:
+          - docker
+          - composer
+        script:
+          - *bash_env_export
+          - *bash_env_source
+          - ./.ci/test/static/run
+    - step:
+        name: Build PHP
+        services:
+          - docker
+        caches:
+          - docker
+          - composer
+        script:
+          - *bash_env_export
+          - *bash_env_source
+          - ./.ci/build/php
+        artifacts:
+          - web/**
+          - vendor/**
+  - step:
+      name: Deploy to Pantheon
+      services:
+          - docker
+      caches:
+          - docker
+      script:
+        - *bash_env_export
+        - *bash_env_source
+        - ./.ci/deploy/pantheon/dev-multidev
+      artifacts:
+        - web/**
+        - vendor/**
+  - step:
+      name: Test Visual Regression
+      image: backstopjs/backstopjs:4.1.9
+      services:
+          - docker
+      caches:
+          - docker
+          - node
+      script:
+        - *bash_env_export
+        - *bash_env_source
+        - ./.ci/test/visual-regression/run
+      artifacts:
+        - backstop_data/**
+  - step:
+      name: Test Behat
+      services:
+          - docker
+      caches:
+          - docker
+          - composer
+      script:
+        - *bash_env_export
+        - *bash_env_source
+        - ./.ci/test/behat/initialize
+        # Start headless Chrome
+        - google-chrome --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
+        - ./.ci/test/behat/run
+      after-script:
+        - *bash_env_export
+        - *bash_env_source
+        - ./.ci/test/behat/cleanup
+      artifacts:
+        - behat-screenshots/**
+
+image: quay.io/pantheon-public/build-tools-ci:6.x
+
+options:
+  max-time: 30
+
+pipelines:
+  pull-requests:
+    # Using the default_steps anchor means no other items can be added
+    '**': *default_steps
+  branches:
+    # Using the default_steps anchor means no other items can be added
+    master: *default_steps
