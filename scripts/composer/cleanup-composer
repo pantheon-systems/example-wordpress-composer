@@ -4,7 +4,7 @@
 set -ex
 
 if [ -d "web/wp/wp-content/mu-plugins/" ]; then
-  rsync -a web/wp/wp-content/mu-plugins/* web/wp-content/mu-plugins/
+  rsync -r web/wp/wp-content/mu-plugins/* web/wp-content/mu-plugins/
 fi
 
 if [ -f "web/wp/wp-config.php" ]; then
