@@ -91,7 +91,7 @@ Visual regression testing uses a headless browser to take screenshots of web pag
 To get started using Lando to develop locally complete these one-time steps. Please note than Lando is an independent product and is not supported by Pantheon. For further assistance please refer to the [Lando documentation](https://docs.devwithlando.io/).
 
 * [Install Lando](https://docs.devwithlando.io/installation/system-requirements.html), if not already installed.
-* Clone your project repository locally.
+* Clone your project repository from GitHub (or GitLab or BitBucket) locally.
 * Manually create a `.lando.yml` file with your preferred configuration, based on the [WordPress recipe](https://docs.lando.dev/config/wordpress.html#configuration).
 * Run `lando start` to start Lando.
     - Save the local site URL. It should be similar to `https://<PROJECT_NAME>.lndo.site`.
