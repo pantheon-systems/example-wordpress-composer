@@ -127,4 +127,4 @@ pipelines:
           - export CI_PROJECT_NAME=$BITBUCKET_REPO_FULL_NAME && echo $CI_PROJECT_NAME
           - /build-tools-ci/scripts/set-environment
           - terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
-          - terminus project:clu $TERMINUS_SITE
+          - set -e && terminus project:clu $TERMINUS_SITE
