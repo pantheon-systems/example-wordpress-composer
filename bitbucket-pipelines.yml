@@ -110,3 +110,21 @@ pipelines:
   branches:
     # Using the default_steps anchor means no other items can be added
     master: *default_steps
+  custom:
+    clu:
+    - step:
+        name: Composer Lock Update
+        services:
+          - docker
+        caches:
+          - docker
+          - composer
+        script:
+          - export CI_BRANCH=${BITBUCKET_BRANCH:-master} && echo $CI_BRANCH
+          - export CI_BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER && echo $CI_BUILD_NUMBER
+          - export CI_PROJECT_USERNAME=$BITBUCKET_REPO_OWNER && echo $CI_PROJECT_USERNAME
+          - export CI_PROJECT_REPONAME=$BITBUCKET_REPO_SLUG && echo $CI_PROJECT_REPONAME
+          - export CI_PROJECT_NAME=$BITBUCKET_REPO_FULL_NAME && echo $CI_PROJECT_NAME
+          - /build-tools-ci/scripts/set-environment
+          - terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+          - terminus project:clu $TERMINUS_SITE
