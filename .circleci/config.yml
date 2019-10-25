@@ -218,6 +218,10 @@ jobs:
           command: /build-tools-ci/scripts/set-environment
 
       - run:
+          name: Authenticate with Terminus
+          command: terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+
+      - run:
           name: run composer lock updater
           command: set -e && terminus project:clu $TERMINUS_SITE
 
