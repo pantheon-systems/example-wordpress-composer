@@ -248,11 +248,10 @@ workflows:
   scheduled_update_check:
     triggers:
        - schedule:
-           cron: "* * * * *"
+           cron: "0 0 * * *"
            filters:
              branches:
               only:
                 - master
-                - terminus-clu
     jobs:
       - composer_lock_updater
