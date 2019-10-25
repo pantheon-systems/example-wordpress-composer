@@ -155,19 +155,7 @@ test:behat:cleanup:
 
 schedule:composer:update:
   stage: updates
-  variables:
-    # The default set of CI credentials do not contain the necessary permissions in GitLab for our operations.
-    LAB_CORE_TOKEN: $GITLAB_TOKEN
-    LAB_CORE_USER: $CI_REGISTRY_USER
-    LAB_CORE_HOST: "https://$CI_SERVER_HOST"
-    GIT_STRATEGY: none
   script:
-  # The default repository URL uses a token without permission to write so replace it with ours.
-  - FULL_REPOSITORY_URL=$(sed 's|'"$CI_JOB_TOKEN"'|'"$GITLAB_TOKEN"'|' <<< "$CI_REPOSITORY_URL")
-  # lab tries to use CI variables with improper permissions.
-  - unset CI_PROJECT_URL
-  - unset CI_REGISTRY_USER
-  - unset CI_JOB_TOKEN
-  - set -e && clu --provider=gitlab $FULL_REPOSITORY_URL
+  - set -e && terminus project:clu $TERMINUS_SITE
   only:
   - schedules
