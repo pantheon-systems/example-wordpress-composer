@@ -156,8 +156,7 @@ if ( isset( $_ENV['PANTHEON_ENVIRONMENT'] ) ):
 		define( 'WP_SITEURL', $scheme . '://' . $_SERVER['HTTP_HOST'] . '/wp' );
 
 	}
-	// Don't show deprecations; useful under PHP 5.5
-	error_reporting( E_ALL ^ E_DEPRECATED );
+
 	// Force the use of a safe temp directory when in a container
 	if ( defined( 'PANTHEON_BINDING' ) ):
 		define( 'WP_TEMP_DIR', sprintf( '/srv/bindings/%s/tmp', PANTHEON_BINDING ) );
