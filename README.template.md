@@ -1,9 +1,3 @@
-# FIXME WordPress
-
-[![Dev Site fix-me](https://img.shields.io/badge/site-fix_me-blue.svg)](http://dev-fix-me.pantheonsite.io/)  
-[![Dashboard fix-me](https://img.shields.io/badge/dashboard-fix_me-yellow.svg)](https://dashboard.pantheon.io/sites/FIXME#dev/code)  
-[![CircleCI](https://circleci.com/gh/Threespot/fix-me.svg?style=shield&circle-token=94d0633ad856a188c8cf3582fcc8f259269f74f9)](https://circleci.com/gh/Threespot/fix-me)  
-
 ## Outline
 
 - [Pantheon Environments](#pantheon-environments)
