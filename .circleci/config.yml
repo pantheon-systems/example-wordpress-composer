@@ -107,6 +107,10 @@ jobs:
           name: run PHP build step
           command: ./.ci/build/php
 
+      - run:
+          name: install theme composer dependencies
+          command: cd web/wp-content/themes/sage && composer install
+
       - save_cache:
           key: vendor-{{ checksum "composer.lock" }}
           paths:
@@ -117,6 +121,41 @@ jobs:
           paths:
             - web
             - vendor
+
+  build_yarn:
+    <<: *defaults
+    docker:
+      - image: circleci/node:10.16.2
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - yarn-packages-{{ checksum "web/wp-content/themes/sage/yarn.lock" }}
+            - yarn-packages- # used if checksum fails
+
+      - run:
+          name: install theme yarn dependencies
+          command: cd web/wp-content/themes/sage && yarn install
+
+      - run:
+          name: build theme assets
+          # If non-hashed versions of site assets are needed for 3rd parties, also run `yarn build:nohash`
+          command: cd web/wp-content/themes/sage && yarn build
+
+      - save_cache:
+          name: cache Yarn files
+          key: yarn-packages-{{ checksum "web/wp-content/themes/sage/yarn.lock" }}
+          paths:
+            - $HOME/.cache/yarn
+
+      - persist_to_workspace:
+          # Must be relative path from working_directory
+          root: .
+          # Must be relative path from root
+          paths:
+            - web/wp-content/themes/sage/dist
 
   deploy_to_pantheon:
     <<: *defaults
@@ -230,24 +269,26 @@ workflows:
   build_deploy_and_test:
     jobs:
       - configure_env_vars
-      - static_tests
+      # - static_tests
+      - build_yarn
       - build_php
       - deploy_to_pantheon:
           requires:
-            - static_tests
+            # - static_tests
+            - build_yarn
             - build_php
-      - visual_regression_test:
-          requires:
-            - configure_env_vars
-            - deploy_to_pantheon
-          filters:
-            branches:
-              ignore:
-                - master
-      - behat_test:
-          requires:
-            - deploy_to_pantheon
-            - visual_regression_test
+      # - visual_regression_test:
+      #     requires:
+      #       - configure_env_vars
+      #       - deploy_to_pantheon
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - master
+      # - behat_test:
+      #     requires:
+      #       - deploy_to_pantheon
+      #       - visual_regression_test
 
   scheduled_update_check:
     triggers:

@@ -1,6 +1,6 @@
 {
-  "name": "pantheon-systems/example-wordpress-composer",
-  "description": "",
+  "name": "threespot/example-wordpress-composer",
+  "description": "Terminus build tools template for a Pantheon Composer WordPress application",
   "type": "project",
   "keywords": [],
   "repositories": [
@@ -94,6 +94,8 @@
     "unit-test": [
       "./vendor/bin/phpunit tests/unit/*"
     ],
-    "lint": "find web/wp-content -name '*.php' -exec php -l {} \\;"
+    "lint": "find web/wp-content -name '*.php' -exec php -l {} \\;",
+    "deploy:test": "terminus env:deploy fix-me.test && terminus env:clear-cache fix-me.test",
+    "deploy:live": "terminus env:deploy fix-me.live"
   }
 }
