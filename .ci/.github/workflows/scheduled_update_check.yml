@@ -1,0 +1,64 @@
+name: Schedule update check
+on:
+  schedule:
+    - cron:  '0 0 * * *'
+defaults:
+  run:
+    shell: bash
+env:
+  TZ: "/usr/share/zoneinfo/America/Los_Angeles"
+  NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
+  TERM: dumb
+  ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+  ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+  ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+  # Needed because the default token is not supported to push.
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  TERMINUS_TOKEN: ${{ secrets.TERMINUS_TOKEN }}
+  TEST_SITE_NAME: ${{ secrets.TERMINUS_SITE }}
+  BASH_ENV: "./bash_env.txt"
+  CI_BRANCH: ${{ github.ref }}
+  COMMIT_SHA: ${{ github.sha }}
+  CI_BUILD_NUMBER: ${{ github.run_number }}
+  DEFAULT_SITE: ${{ secrets.TERMINUS_SITE }}
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  GITHUB_OWNER: ${{ github.repository_owner }}
+  CI_PROJECT_NAME: ${{ github.repository }}
+
+jobs:
+  scheduled_update_check:
+    container:
+      image: quay.io/pantheon-public/build-tools-ci:6.x
+      options: --user root
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Cache bash_env.txt
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-bash-env
+        with:
+          path: bash_env.txt
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.run_number }}
+
+      # Set TERMINUS_ENV and related environment variables.
+      # https://github.com/pantheon-systems/docker-build-tools-ci/blob/6.x/scripts/set-environment
+      - name: setup-environment-vars
+        run: |
+          /build-tools-ci/scripts/set-environment
+
+      - name: Authenticate with Terminus
+        run: terminus -n auth:login --machine-token="$TERMINUS_TOKEN"
+
+      - name: run composer lock updater
+        run: |
+          echo "$SSH_PRIVATE_KEY" > ../private.key
+          chmod 600 ../private.key
+          eval `ssh-agent -s`
+          ssh-add ../private.key
+          source $BASH_ENV
+          set -e && terminus project:clu $TERMINUS_SITE
