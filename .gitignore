@@ -20,11 +20,15 @@ web/wp-content/mu-plugins/*
 !web/wp-content/mu-plugins/.gitkeep
 !web/wp-content/plugins/
 web/wp-content/plugins/*
-!web/wp-content/plugins/custom/
+# Uncomment the next line and the update folder name to add a custom plugin to
+# the repository.  Repeat as needed.
+# !web/wp-content/plugins/custom_plugin_name/
 !web/wp-content/plugins/.gitkeep
 !web/wp-content/themes
 web/wp-content/themes/*
-!web/wp-content/themes/custom/
+# Uncomment the next line and the update folder name to add a custom theme to
+# the repository.  Repeat as needed.
+# !web/wp-content/themes/custom_theme_name/
 !web/wp-content/themes/.gitkeep
 !web/wp-content/config/
 web/wp
