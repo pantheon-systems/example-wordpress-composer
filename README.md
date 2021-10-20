@@ -61,6 +61,9 @@ Scripts for facilitating code deployment to Pantheon.
 #### Automated Test Scripts `.ci/tests`
 Scripts that run automated tests. Feel free to add or remove scripts here depending on your testing needs.
 
+#### Github Actions Workflows `.ci/.github`
+This folder should be copied to .github folder in root to enable Github Actions. Also, some secrets need to be added to Github Actions configuration.
+
 **Static Testing** `.ci/test/static` and `tests/unit`
 Static tests analyze code without executing it. It is good at detecting syntax error but not functionality.
 
@@ -86,6 +89,17 @@ Visual regression testing uses a headless browser to take screenshots of web pag
   - `tests/behat/tests/behat/features/admin-login.feature` A Behat test file which logs into the WordPress dashboard as an administrator and verifies acess to new user creation
   - `tests/behat/tests/behat/features/admin-login.feature` A Behat test file which logs into the WordPress dashboard as an administrator, updates the `blogname` and `blogdescription` settings, clears the Pantheon cache, visits the home page, and verifies the update blog name and description appear.
 
+## Github Actions
+
+If you need to enable Github Actions for an existing project, you should copy .ci/.github to .github and then add the following secrets to Github Actions configuration:
+
+- ADMIN_EMAIL
+- ADMIN_PASSWORD
+- ADMIN_USERNAME
+- TERMINUS_TOKEN
+- TERMINUS_SITE
+- SSH_PRIVATE_KEY
+- GH_TOKEN
 
 ## Working locally with Lando
 To get started using Lando to develop locally complete these one-time steps. Please note than Lando is an independent product and is not supported by Pantheon. For further assistance please refer to the [Lando documentation](https://docs.devwithlando.io/).
