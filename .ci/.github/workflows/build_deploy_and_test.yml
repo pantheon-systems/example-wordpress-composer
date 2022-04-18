@@ -140,7 +140,7 @@ jobs:
           cache-name: cache-web
         with:
           path: ./web
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.lock') }}
 
       - name: Cache drush folder
         uses: actions/cache@v2
@@ -208,7 +208,7 @@ jobs:
           cache-name: cache-web
         with:
           path: ./web
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.lock') }}
 
       - name: Cache drush folder
         uses: actions/cache@v2
