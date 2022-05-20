@@ -14,6 +14,7 @@ web/*
 !web/wp-config.php
 !web/wp-content/
 web/wp-content/*
+!web/wp-content/cache
 !web/wp-content/mu-plugins/
 web/wp-content/mu-plugins/*
 !web/wp-content/mu-plugins/custom
