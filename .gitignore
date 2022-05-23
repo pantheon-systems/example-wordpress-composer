@@ -99,7 +99,10 @@ pantheon.upstream.yml
 ######################
 .DS_Store*
 ehthumbs.db
-Icon?
+# Info on ignoring Icon? files
+# https://stackoverflow.com/questions/17556250/how-to-ignore-icon-in-git
+Icon[
+]
 Thumbs.db
 ._*
 
