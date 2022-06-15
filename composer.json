@@ -95,6 +95,8 @@
     ],
     "lint": "find web/wp-content -name '*.php' -exec php -l {} \\;",
     "deploy:test": "terminus env:deploy fix-me.test && terminus env:clear-cache fix-me.test",
-    "deploy:live": "terminus env:deploy fix-me.live"
+    "deploy:live": "terminus env:deploy fix-me.live",
+    "deploy:all": "terminus env:deploy fix-me.test && terminus env:clear-cache fix-me.test && terminus env:deploy fix-me.live && terminus env:clear-cache fix-me.live",
+    "theme:dev": "cd web/wp-content/themes/fix-me && yarn dev"
   }
 }
