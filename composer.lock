@@ -3322,12 +3322,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "7756fea7a811a23d92009e03fdad3b91352f9b4f"
+                "reference": "ecbc17ac0817caed746a243e3805dd256be9fcdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/7756fea7a811a23d92009e03fdad3b91352f9b4f",
-                "reference": "7756fea7a811a23d92009e03fdad3b91352f9b4f",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/ecbc17ac0817caed746a243e3805dd256be9fcdb",
+                "reference": "ecbc17ac0817caed746a243e3805dd256be9fcdb",
                 "shasum": ""
             },
             "conflict": {
@@ -3389,7 +3389,7 @@
                 "contao/core-bundle": "<4.9.18|>=4.10,<4.11.7|>=4.13,<4.13.3|= 4.10.0",
                 "contao/listing-bundle": ">=4,<4.4.8",
                 "contao/managed-edition": "<=1.5",
-                "craftcms/cms": ">= 4.0.0-RC1, < 4.2.1|<4.2.1",
+                "craftcms/cms": ">= 4.0.0-RC1, < 4.2.1|<3.7.55.2",
                 "croogo/croogo": "<3.0.7",
                 "cuyz/valinor": "<0.12",
                 "czproject/git-php": "<4.0.3",
@@ -3833,7 +3833,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-09-21T22:04:29+00:00"
+            "time": "2022-09-22T16:04:41+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
