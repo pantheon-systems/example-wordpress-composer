@@ -3322,12 +3322,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "7756fea7a811a23d92009e03fdad3b91352f9b4f"
+                "reference": "50a6bc0d820c35aab4d7818208f5ec815dff1fe1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/7756fea7a811a23d92009e03fdad3b91352f9b4f",
-                "reference": "7756fea7a811a23d92009e03fdad3b91352f9b4f",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/50a6bc0d820c35aab4d7818208f5ec815dff1fe1",
+                "reference": "50a6bc0d820c35aab4d7818208f5ec815dff1fe1",
                 "shasum": ""
             },
             "conflict": {
@@ -3389,7 +3389,7 @@
                 "contao/core-bundle": "<4.9.18|>=4.10,<4.11.7|>=4.13,<4.13.3|= 4.10.0",
                 "contao/listing-bundle": ">=4,<4.4.8",
                 "contao/managed-edition": "<=1.5",
-                "craftcms/cms": ">= 4.0.0-RC1, < 4.2.1|<4.2.1",
+                "craftcms/cms": "<3.7.55.2|>= 4.0.0-RC1, < 4.2.1",
                 "croogo/croogo": "<3.0.7",
                 "cuyz/valinor": "<0.12",
                 "czproject/git-php": "<4.0.3",
@@ -3604,7 +3604,7 @@
                 "phpwhois/phpwhois": "<=4.2.5",
                 "phpxmlrpc/extras": "<0.6.1",
                 "pimcore/data-hub": "<1.2.4",
-                "pimcore/pimcore": "<10.5.6",
+                "pimcore/pimcore": "<=10.5.6",
                 "pocketmine/bedrock-protocol": "<8.0.2",
                 "pocketmine/pocketmine-mp": "<4.7.2|>= 4.0.0-BETA5, < 4.4.2",
                 "pressbooks/pressbooks": "<5.18",
@@ -3833,7 +3833,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-09-21T22:04:29+00:00"
+            "time": "2022-09-23T21:04:15+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
