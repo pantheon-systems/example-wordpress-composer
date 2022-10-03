@@ -1,0 +1,33 @@
+
+{
+  "title": "FIXME WordPress Admin",
+  "category": "LOGIN",
+  "tags": [
+    "wordpress", "admin"
+  ],
+  "urls": [
+    {
+      "label": "Lando",
+      "primary": true,
+      "href": "https://app-name.lndo.site/"
+    },
+    {
+      "label": "FIXME Pantheon Dev",
+      "href": "https://dev-app-name.pantheonsite.io/"
+    },
+    {
+      "label": "FIXME Pantheon Test",
+      "href": "https://test-app-name.pantheonsite.io/"
+    },      
+    {
+      "label": "FIXME Pantheon Live",
+      "href": "https://live-app-name.pantheonsite.io/"
+    },      
+    {
+      "label": "FIXME.org",
+      "href": "https://fixme.org"
+    }
+  ],
+  "fields": [ 
+  ]
+}
