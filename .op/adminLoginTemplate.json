@@ -8,7 +8,6 @@
   "urls": [
     {
       "label": "Lando",
-      "primary": true,
       "href": "https://app-name.lndo.site/"
     },
     {
@@ -25,6 +24,7 @@
     },      
     {
       "label": "FIXME.org",
+      "primary": true,
       "href": "https://fixme.org"
     }
   ],
