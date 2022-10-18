@@ -234,16 +234,16 @@
         },
         {
             "name": "pantheon-systems/wordpress-composer",
-            "version": "6.0.2",
+            "version": "6.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pantheon-systems/wordpress-composer.git",
-                "reference": "d24015fad19234077923e7821c6b955d6707cd84"
+                "reference": "51caa2fac8d8cf491739c0f9fcba491b30c21328"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pantheon-systems/wordpress-composer/zipball/d24015fad19234077923e7821c6b955d6707cd84",
-                "reference": "d24015fad19234077923e7821c6b955d6707cd84",
+                "url": "https://api.github.com/repos/pantheon-systems/wordpress-composer/zipball/51caa2fac8d8cf491739c0f9fcba491b30c21328",
+                "reference": "51caa2fac8d8cf491739c0f9fcba491b30c21328",
                 "shasum": ""
             },
             "require": {
@@ -261,10 +261,10 @@
             ],
             "description": "WordPress for Pantheon with a composer.json file.",
             "support": {
-                "source": "https://github.com/pantheon-systems/wordpress-composer/tree/6.0.2",
+                "source": "https://github.com/pantheon-systems/wordpress-composer/tree/6.0.3",
                 "issues": "https://github.com/pantheon-systems/wordpress-composer/issues"
             },
-            "time": "2022-08-30T19:11:33+00:00"
+            "time": "2022-10-17T22:11:17+00:00"
         },
         {
             "name": "phpoption/phpoption",
