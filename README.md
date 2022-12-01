@@ -121,6 +121,6 @@ You should now be able to edit your site locally. The steps above do not need to
 
 Composer, Terminus and wp-cli commands should be run in Lando rather than on the host machine. This is done by prefixing the desired command with `lando`. For example, after a change to `composer.json` run `lando composer update` rather than `composer update`.
 
-## Upstream automation
+## Re-enabling automation
 
-The automation which ran daily and created PRs with updated `composer.lock` files has been disabled as of `12/1/22`. If at any point it is desired to re-enable this job, uncomment lines `252-261` in `.circleci/config.yml`.
+The automation which ran daily to check for composer updates has been disabled as of `12/1/22`. Build Tools users can re-enable automation to check for composer updates by uncommenting lines `252-261` in `.circleci/config.yml`.
