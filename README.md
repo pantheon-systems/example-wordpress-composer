@@ -123,4 +123,4 @@ Composer, Terminus and wp-cli commands should be run in Lando rather than on the
 
 ## Re-enabling automation
 
-The automation which ran daily to check for composer updates has been disabled as of `12/1/22`. Build Tools users can re-enable automation to check for composer updates by uncommenting uncommenting the  `scheduled_update_check` in `.circleci/config.yml`.
+The automation which ran daily to check for composer updates has been disabled as of `12/5/22`. Build Tools users can re-enable automation to check for composer updates by uncommenting uncommenting the  `scheduled_update_check` in `.circleci/config.yml`.
