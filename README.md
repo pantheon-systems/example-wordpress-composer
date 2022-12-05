@@ -120,3 +120,7 @@ You should now be able to edit your site locally. The steps above do not need to
 **Warning:** do NOT push/pull code between Lando and Pantheon directly. All code should be pushed to GitHub and deployed to Pantheon through a continuous integration service, such as CircleCI.
 
 Composer, Terminus and wp-cli commands should be run in Lando rather than on the host machine. This is done by prefixing the desired command with `lando`. For example, after a change to `composer.json` run `lando composer update` rather than `composer update`.
+
+## Re-enabling automation
+
+The automation which ran daily to check for composer updates has been disabled as of `12/5/22`. Build Tools users can re-enable automation to check for composer updates by uncommenting uncommenting the  `scheduled_update_check` in `.circleci/config.yml`.
