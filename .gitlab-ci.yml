@@ -20,7 +20,6 @@ stages:
 - configure-and-build
 - deploy
 - visual-test
-- behat-test
 - cleanup
 - updates
 
@@ -95,7 +94,7 @@ deploy:pantheon:
 
 test:visual-regression:
   stage: visual-test
-  image: 
+  image:
     name: backstopjs/backstopjs:4.1.9
     entrypoint: [""]
   variables:
@@ -120,38 +119,6 @@ test:visual-regression:
   - merge_requests
   except:
   - schedules
-
-test:behat:
-  stage: behat-test
-  script:
-  - ./.ci/test/behat/initialize
-  # Start headless Chrome
-  - google-chrome --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
-  - ./.ci/test/behat/run
-  artifacts:
-    paths:
-      - behat-screenshots
-  dependencies:
-    - deploy:pantheon
-    - test:visual-regression
-  only:
-  - merge_requests
-  - master
-  except:
-  - schedules
-
-test:behat:cleanup:
-  stage: cleanup
-  when: always
-  script:
-  - ./.ci/test/behat/cleanup
-  only:
-  - merge_requests
-  - master
-  except:
-  - schedules
-  dependencies:
-  - test:behat
 
 schedule:composer:update:
   stage: updates
