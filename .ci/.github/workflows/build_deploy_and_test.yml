@@ -237,105 +237,6 @@ jobs:
           source $BASH_ENV
           ./.ci/deploy/pantheon/dev-multidev
 
-  behat_test:
-    container:
-      image: quay.io/pantheon-public/build-tools-ci:6.x
-      options: --user root
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    needs: [deploy_to_pantheon]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Cache bash_env.txt
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-bash-env
-        with:
-          path: bash_env.txt
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.run_number }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Cache composer cache
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-composer-cache
-        with:
-          path: ~/.composer/cache
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Cache vendor folder
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-vendor
-        with:
-          path: ./vendor
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('composer.lock') }}
-
-      - name: Cache web folder
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-web
-        with:
-          path: ./web
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
-
-      - name: Cache drush folder
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-drush
-        with:
-          path: ./drush
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
-
-      # Set TERMINUS_ENV and related environment variables.
-      # https://github.com/pantheon-systems/docker-build-tools-ci/blob/6.x/scripts/set-environment
-      - name: setup-environment-vars
-        run: /build-tools-ci/scripts/set-environment
-
-      # Uncomment line 26 in .ci/test/behat/initialize to create a backup
-      # prior to running Behat tests. This is useful to reset the multidev
-      # environment to the previous state after Behat tests have run.
-      - name: prepare for Behat testing
-        run: |
-          echo "$SSH_PRIVATE_KEY" > ../private.key
-          chmod 600 ../private.key
-          eval `ssh-agent -s`
-          ssh-add ../private.key
-          source $BASH_ENV
-          ./.ci/test/behat/initialize
-
-      - name: run acceptance tests with Behat
-        run: |
-          eval `ssh-agent -s`
-          ssh-add ../private.key
-          ./.ci/test/behat/run
-
-      # Uncomment line 13 in .ci/test/behat/cleanup to restore a backup
-      # after running Behat tests. This is useful to reset the multidev
-      # environment to the previous state after Behat tests have run.
-      - name: clean up after Behat
-        if: ${{ always() }}
-        run: |
-          eval `ssh-agent -s`
-          ssh-add ../private.key
-          source $BASH_ENV
-          ./.ci/test/behat/cleanup
-
-      - name: Upload artifacts
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: behat-report
-          path: /tmp/artifacts
 
   visual_regression_test:
     container:
@@ -343,7 +244,7 @@ jobs:
       options: --user root
     runs-on: ubuntu-latest
     if: ${{ github.ref != 'refs/heads/master' }}
-    needs: [configure_env_vars, behat_test]
+    needs: [configure_env_vars]
     steps:
       - name: Update git version
         run: |

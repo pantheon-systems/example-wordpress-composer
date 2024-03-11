@@ -77,26 +77,6 @@ default_steps: &default_steps
         - ./.ci/test/visual-regression/run
       artifacts:
         - backstop_data/**
-  - step:
-      name: Test Behat
-      services:
-          - docker
-      caches:
-          - docker
-          - composer
-      script:
-        - *bash_env_export
-        - *bash_env_source
-        - ./.ci/test/behat/initialize
-        # Start headless Chrome
-        - google-chrome --disable-gpu --headless --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --no-sandbox </dev/null &>/dev/null &
-        - ./.ci/test/behat/run
-      after-script:
-        - *bash_env_export
-        - *bash_env_source
-        - ./.ci/test/behat/cleanup
-      artifacts:
-        - behat-screenshots/**
 
 image: quay.io/pantheon-public/build-tools-ci:6.x
 

@@ -20,9 +20,9 @@ defaults: &defaults
     # ADMIN_EMAIL:  The email address to give the admin when installing.
     #=========================================================================
     TZ: "/usr/share/zoneinfo/America/Los_Angeles"
-  
+
     # The variables below usually do not need to be modified.
-  
+
     #======================================================================================================================================
     # Circle CI 2.0 does not yet expand environment variables so they have to be manually EXPORTed
     # Once environment variables can be expanded the variables below can be uncommented and the EXPORTs in set-up-globals.sh can be removed
@@ -30,7 +30,7 @@ defaults: &defaults
     # See: https://discuss.circleci.com/t/environment-variable-expansion-in-working-directory/11322
     # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
     #======================================================================================================================================
-  
+
     NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Created multidev environment [{site}#{env}]({dashboard-url})." {site-url}'
     ADMIN_USERNAME: admin
     TERM: dumb
@@ -143,44 +143,6 @@ jobs:
           name: deploy to Pantheon
           command: ./.ci/deploy/pantheon/dev-multidev
 
-  behat_test:
-    <<: *defaults
-    steps:
-      - checkout
-
-      - restore_cache:
-          keys:
-            - composer-cache-{{ checksum "composer.lock" }}
-            - composer-cache-
-
-      - run:
-          # Set TERMINUS_ENV and related environment variables.
-          # https://github.com/pantheon-systems/docker-build-tools-ci/blob/6.x/scripts/set-environment
-          name: setup-environment-vars
-          command: /build-tools-ci/scripts/set-environment
-
-      - run:
-          name: prepare for Behat testing
-          command: ./.ci/test/behat/initialize
-
-      - run:
-          name: run acceptance tests with Behat
-          command: ./.ci/test/behat/run
-
-      - run:
-          name: clean up after Behat
-          command: ./.ci/test/behat/cleanup
-          when: always
-
-      - save_cache:
-          key: composer-cache-{{ checksum "composer.lock" }}
-          paths:
-            - $HOME/.composer/cache
-
-      - store_artifacts:
-          path: /tmp/artifacts
-          destination: artifacts
-
   visual_regression_test:
     <<: *defaults
     docker:
@@ -244,10 +206,6 @@ workflows:
             branches:
               ignore:
                 - master
-      - behat_test:
-          requires:
-            - deploy_to_pantheon
-            - visual_regression_test
 
   #scheduled_update_check:
   #  triggers:

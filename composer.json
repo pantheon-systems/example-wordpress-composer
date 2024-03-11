@@ -26,12 +26,8 @@
     "wpackagist-theme/twentynineteen": "^1.2"
   },
   "require-dev": {
-    "behat/mink-goutte-driver": "^1.2.1",
     "brain/monkey": "^2.2.0",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
-    "dmore/behat-chrome-extension": "^1.2",
-    "genesis/behat-fail-aid": "^2.1",
-    "paulgibbs/behat-wordpress-extension": "^3.3.0",
     "phpunit/phpunit": "^7.5.1",
     "roave/security-advisories": "dev-master",
     "squizlabs/php_codesniffer": "^3.4.0",
@@ -68,8 +64,7 @@
   "autoload": {
     "classmap": [
       "scripts/composer/ScriptHandler.php"
-    ],
-    "psr-4": { "PantheonSystems\\WordHatHelpers\\": "tests/behat/helper_classes/" }
+    ]
   },
   "scripts": {
     "build-assets": [

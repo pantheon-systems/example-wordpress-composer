@@ -31,7 +31,7 @@ See `/web/wp-config.php` for key settings, such as `WP_SITEURL`, which must be u
 ### `composer.json`
 This project uses Composer to manage third-party PHP dependencies.
 
-The `require` section of `composer.json` should be used for any dependencies your web project needs, even those that might only be used on non-Live environments. All dependencies in `require` will be pushed to Pantheon. 
+The `require` section of `composer.json` should be used for any dependencies your web project needs, even those that might only be used on non-Live environments. All dependencies in `require` will be pushed to Pantheon.
 
 The `require-dev` section should be used for dependencies that are not a part of the web application but are necesarry to build or test the project. Some example are `php_codesniffer` and `phpunit`. Dev dependencies will not be deployed to Pantheon.
 
@@ -78,18 +78,6 @@ Visual regression testing uses a headless browser to take screenshots of web pag
 
 - `.ci/test/visual-regression/run` Runs [BackstopJS](https://github.com/garris/BackstopJS) visual regression testing.
 - `.ci/test/visual-regression/backstopConfig.js` The [BackstopJS](https://github.com/garris/BackstopJS) configuration file. Setting here will need to be updated for your project. For example, the `pathsToTest` variable determines the URLs to test.
-
-**Behat Testing** `.ci/test/behat` and `tests/behat`
-[Behat](http://behat.org/en/latest/) is an acceptance/end-to-end testing framework written in PHP. It faciliates testing the fully built WordPress site on Pantheon infrastucture. [WordHat](https://wordhat.info/) is used to help with integrating Behat and WordPress.
-
-- `.ci/test/behat/initialize` deletes any existing WordPress user from Behat testing and creates a backup of the environment to be tested
-- `.ci/test/behat/run` sets the `BEHAT_PARAMS` environment variable with dynamic information necessary for Behat and configure it to use wp-cli via [Terminus](https://pantheon.io/docs/terminus/), creates the necessary WordPress user, starts headless Chrome, and runs Behat
-- `.ci/test/behat/cleanup` restores the previously made database backup, deletes the WordPress user used for Behat testing, and saves screenshots taken by Behat
-- `tests/behat/behat-pantheon.yml` Behat configuration file compatible with running tests against a Pantheon site
-- `tests/behat/tests/behat/features` Where Behat test files, with the `.feature` extension, should be stored. The provided example tests will need to be replaced with project specific tests.
-  - `tests/behat/tests/behat/features/visit-homepage.feature` A Behat test file which visits the homepage and verifies a `200` response
-  - `tests/behat/tests/behat/features/admin-login.feature` A Behat test file which logs into the WordPress dashboard as an administrator and verifies acess to new user creation
-  - `tests/behat/tests/behat/features/admin-login.feature` A Behat test file which logs into the WordPress dashboard as an administrator, updates the `blogname` and `blogdescription` settings, clears the Pantheon cache, visits the home page, and verifies the update blog name and description appear.
 
 ## Github Actions
 
