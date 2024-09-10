@@ -1,0 +1,12 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: example-wordpress-composer
+  description: Auto-generated catalog info for pantheon-systems/example-wordpress-composer
+  annotations:
+    backstage.io/techdocs-ref: dir:docs/
+spec:
+  type: library
+  lifecycle: deprecated
+  owner: site
