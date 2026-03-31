@@ -9,4 +9,4 @@ metadata:
 spec:
   type: library
   lifecycle: deprecated
-  owner: site
+  owner: site-experience
